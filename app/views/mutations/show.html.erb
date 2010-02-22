@@ -1,0 +1,16 @@
+<% title "Mutation" %>
+
+<p>
+  <strong>Mutation:</strong>
+  <%=h @mutation.mutation_id %>
+</p>
+<p>
+  <strong>Evolution:</strong>
+  <%=h @mutation.evolution_id %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_mutation_path(@mutation) %> |
+  <%= link_to "Destroy", @mutation, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", mutations_path %>
+</p>

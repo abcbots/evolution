@@ -1,0 +1,17 @@
+<% title "Evolutions" %>
+
+<table>
+  <tr>
+    <th>Evolution</th>
+  </tr>
+  <% for evolution in @evolutions %>
+    <tr>
+      <td><%=h evolution.evolution_id %></td>
+      <td><%= link_to "Show", evolution %></td>
+      <td><%= link_to "Edit", edit_evolution_path(evolution) %></td>
+      <td><%= link_to "Destroy", evolution, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Evolution", new_evolution_path %></p>

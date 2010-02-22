@@ -1,0 +1,12 @@
+<% title "Evolution" %>
+
+<p>
+  <strong>Evolution:</strong>
+  <%=h @evolution.evolution_id %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_evolution_path(@evolution) %> |
+  <%= link_to "Destroy", @evolution, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", evolutions_path %>
+</p>
