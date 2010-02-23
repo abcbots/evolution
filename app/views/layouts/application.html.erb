@@ -17,6 +17,11 @@
       <%- end -%>
       
       <%= yield %>
+
+      <% unless @no_links %>
+        <%= render :partial => 'layouts/links' %>
+      <% end %>
+
     </div>
   </body>
 </html>

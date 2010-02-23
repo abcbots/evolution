@@ -1,4 +1,6 @@
-<% form_for ([@evolution, @mutation]) do |f| %>
+<% title "New Mutation" %>
+
+<% form_for @mutation do |f| %>
   <%= f.error_messages %>
   <p>
     <%= f.label :mutation_id %><br />
@@ -10,3 +12,4 @@
   </p>
   <p><%= f.submit "Send" %></p>
 <% end %>
+

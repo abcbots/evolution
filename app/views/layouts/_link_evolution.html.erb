@@ -1,0 +1,13 @@
+
+<p>
+  <b><%= link_to_unless_current "Evolutions", root_path %></b>
+  | <%= link_to_unless_current "new peer", new_evolution_path %>
+  <% if @evolution %>
+    | <%= link_to_unless_current "new child", new_evolution_path %>
+    | <%= link_to_unless_current "self", evolution_path(@evolution) %></b>
+    | <%= link_to_unless_current "edit", edit_evolution_path(@evolution) %>
+    | <%= link_to "destroy", @evolution, :confirm => "Delete?", :method => :delete %>
+  <% end %>
+</p>
+
+

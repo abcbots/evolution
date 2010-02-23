@@ -1,0 +1,12 @@
+<ul><p>
+  <% div_for mutation do %>
+    <li>
+      <b><%= link_to_unless_current mutation.id, mutation_path(mutation) %></b>
+      <% for mutation in mutation.ancestors %>
+	<<
+        <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+      <% end %>
+  <% end %>
+</p></ul>
+
+

@@ -8,7 +8,7 @@ class EvolutionsController < ApplicationController
   end
   
   def new
-    @no_nav = true
+    @no_links = true
     @evolution = Evolution.new
     @evolution.evolution_id = params[:evolution_id]
   end

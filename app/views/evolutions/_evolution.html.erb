@@ -1,0 +1,6 @@
+<% div_for evolution do %>
+  <%= link_to_unless_current evolution.id, evolution_path(evolution) %>
+    <% for mutation in evolution.mutations %>
+      <%= render :partial => mutation %>
+    <% end %>
+<% end %>
