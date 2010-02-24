@@ -1,13 +1,14 @@
 <p>
   <% if @evolution %>
-    <b><%= link_to_unless_current "Evolution >> Mutations", evolution_mutations_path(@evolution) %></b>
-    | <%= link_to_unless_current "new peer", new_evolution_mutation_path(@evolution) %>
+    <%= link_to_unless_current "Evolution >> ", evolution_mutations_path(@evolution) %>
+    <b><%= link_to_unless_current "Mutations", evolution_mutations_path(@evolution) %></b>
+    | <%= link_to_unless_current "new simultaineous mutation", new_evolution_mutation_path(@evolution) %>
   <% end %>
   <% if @mutation %>
-    | <%= link_to_unless_current "new child", new_mutation_child_path(:mutation_id => @mutation.id) %>
-    | <%= link_to_unless_current "self", mutation_path(@mutation) %></b>
-    | <%= link_to_unless_current "edit", edit_mutation_path(@mutation) %>
-    | <%= link_to "destroy", @mutation, :confirm => "Delete?", :method => :delete %>
+    | <%= link_to_unless_current "current mutation", mutation_path(@mutation) %></b>
+    | <%= link_to_unless_current "new prior mutation", new_mutation_child_path(:mutation_id => @mutation.id) %>
+    | <%= link_to_unless_current "edit mutation", edit_mutation_path(@mutation) %>
+    | <%= link_to "destroy mutation", @mutation, :confirm => "Delete this mutation?", :method => :delete %>
   <% end %>
 </p>
 
