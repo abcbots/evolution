@@ -22,6 +22,10 @@
         <%= render :partial => 'layouts/links' %>
       <% end %>
 
+<p>
+  <%= link_to_unless_current "Mutant Agenda", :controller => 'agenda', :action => 'index' %>
+</p>
+
     </div>
   </body>
 </html>

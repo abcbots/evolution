@@ -1,2 +1,9 @@
-<h1>Agenda#index</h1>
-<p>Find me in app/views/agenda/index.html.erb</p>
+<% title "bla" %>
+
+<ul>
+  <% for mutation in @mutations %>
+    <% if mutation.children.empty? %>
+      <li><%= link_to mutation.id, mutation_path(mutation) %>
+    <% end %>
+  <% end %>
+</ul>

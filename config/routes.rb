@@ -6,6 +6,7 @@ ActionController::Routing::Routes.draw do |map|
     end
   end
   map.root :evolutions
+  map.resources :agenda
 end
   # The priority is based upon order of creation: first created -> highest priority.
 
