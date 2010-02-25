@@ -1,71 +1,68 @@
-<TABLE BORDER=0>
-  <TR>
-    <TD rowspan=2>
+<p>
 
-      <% div_for mutation do %>
-        <b>
-          <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
-        </b>
-
-    </TD>
-    <TD>
-
+<% div_for mutation do %>
+        
+  <ul><%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+      
       <% mutation.ancestors.each do |mutation_ancestors| %>
         >>
         <%= link_to_unless_current mutation_ancestors.id, mutation_path(mutation_ancestors) %>
       <% end %>
+
+      <ul><% for mutation in mutation.children %>
+        <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+	<br/>
+        <ul><% for mutation in mutation.children %>
+          <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+	  <br/>
+          <ul><% for mutation in mutation.children %>
+            <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+	    <br/>
+            <ul><% for mutation in mutation.children %>
+              <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+	      <br/>
+              <ul><% for mutation in mutation.children %>
+                <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+	        <br/>
+         
+      <ul><% for mutation in mutation.children %>
+        <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+	<br/>
+        <ul><% for mutation in mutation.children %>
+          <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+	  <br/>
+          <ul><% for mutation in mutation.children %>
+            <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+	    <br/>
+            <ul><% for mutation in mutation.children %>
+              <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+	      <br/>
+              <ul><% for mutation in mutation.children %>
+                <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+	        <br/>
       
-      <% if @evolution %>
-        >>>>>
-        <%= link_to_unless_current @evolution.id, evolution_path(@evolution) %>
+              <% end %>
+	      </ul>
+            <% end %>
+	    </ul>
+          <% end %>
+	  </ul>
+        <% end %>
+	</ul>
       <% end %>
-    
-    </TD>
-  </TR>
-  <TR>
-    <TD>
+      </ul>
 
-      <% mutation.children.each do |mutation| %>
-        << <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+      
+              <% end %>
+	      </ul>
+            <% end %>
+	    </ul>
+          <% end %>
+	  </ul>
+        <% end %>
+	</ul>
+      <% end %>
+      </ul>
 
-      <% mutation.children.each do |mutation| %>
-        << <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
-
-      <% mutation.children.each do |mutation| %>
-        << <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
-
-      <% mutation.children.each do |mutation| %>
-        << <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
-
-      <% mutation.children.each do |mutation| %>
-        << <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
-
-      <% mutation.children.each do |mutation| %>
-        << <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
-
-      <% mutation.children.each do |mutation| %>
-        << <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
-
-      <% mutation.children.each do |mutation| %>
-        << <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
-
-      <% mutation.children.each do |mutation| %>
-        << <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
-
-      <% mutation.children.each do |mutation| %>
-        << <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
-      <% end %>
-      <% end %>
-      <% end %>
-      <% end %>
-      <% end %>
-      <% end %>
-      <% end %>
-      <% end %>
-      <% end %>
-      <% end %>
 <% end %>
-
-    </TD>
-</TABLE>
 
