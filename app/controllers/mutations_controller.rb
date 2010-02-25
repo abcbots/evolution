@@ -53,12 +53,12 @@ protected
     if mutation.evolution_id
       @evolution = Evolution.find(mutation.evolution_id)
       @mutation = @evolution.mutations.find(params[:id])
-      @title = "Mutation"
+      @title = "Mutation #{@mutation.id}"
     else
       mutation_rooting = mutation.ancestors.last
       @evolution = Evolution.find(mutation_rooting.evolution_id)
       @mutation = Mutation.find(params[:id])
-      @title = "Prior Mutation"
+      @title = "Prior Mutation #{@mutation.id}"
     end
   end
 

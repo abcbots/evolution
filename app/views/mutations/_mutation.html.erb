@@ -1,92 +1,71 @@
-<% div_for mutation do %>
-  <b>
-    <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
-  </b>
-  <% mutation.ancestors.each do |mutation_ancestors| %>
-    <<
-    <%= link_to_unless_current mutation_ancestors.id, mutation_path(mutation_ancestors) %>
-  <% end %>
+<TABLE BORDER=0>
+  <TR>
+    <TD rowspan=2>
 
-<p>
-  <ul>
-    <% mutation.children.each do |mutation| %>
-      <li>
-        <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
-<p>
-  <ul>
-    <% mutation.children.each do |mutation| %>
-      <li>
-        <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
-<p>
-  <ul>
-    <% mutation.children.each do |mutation| %>
-      <li>
-        <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
-<p>
-  <ul>
-    <% mutation.children.each do |mutation| %>
-      <li>
-        <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
-<p>
-  <ul>
-    <% mutation.children.each do |mutation| %>
-      <li>
-        <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
-<p>
-  <ul>
-    <% mutation.children.each do |mutation| %>
-      <li>
-        <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
-<p>
-  <ul>
-    <% mutation.children.each do |mutation| %>
-      <li>
-        <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
-<p>
-  <ul>
-    <% mutation.children.each do |mutation| %>
-      <li>
-        <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
-<p>
-  <ul>
-    <% mutation.children.each do |mutation| %>
-      <li>
-        <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
-<p>
-  <ul>
-    <% mutation.children.each do |mutation| %>
-      <li>
-        <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
-    <% end %>
-  </ul>
-</p> 
-    <% end %>
-  </ul>
-</p> 
-    <% end %>
-  </ul>
-</p> 
-    <% end %>
-  </ul>
-</p> 
-    <% end %>
-  </ul>
-</p> 
-    <% end %>
-  </ul>
-</p> 
-    <% end %>
-  </ul>
-</p> 
-    <% end %>
-  </ul>
-</p> 
-    <% end %>
-  </ul>
-</p> 
-    <% end %>
-  </ul>
-</p>
+      <% div_for mutation do %>
+        <b>
+          <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+        </b>
 
+    </TD>
+    <TD>
+
+      <% mutation.ancestors.each do |mutation_ancestors| %>
+        >>
+        <%= link_to_unless_current mutation_ancestors.id, mutation_path(mutation_ancestors) %>
+      <% end %>
+      
+      <% if @evolution %>
+        >>>>>
+        <%= link_to_unless_current @evolution.id, evolution_path(@evolution) %>
+      <% end %>
+    
+    </TD>
+  </TR>
+  <TR>
+    <TD>
+
+      <% mutation.children.each do |mutation| %>
+        << <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+
+      <% mutation.children.each do |mutation| %>
+        << <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+
+      <% mutation.children.each do |mutation| %>
+        << <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+
+      <% mutation.children.each do |mutation| %>
+        << <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+
+      <% mutation.children.each do |mutation| %>
+        << <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+
+      <% mutation.children.each do |mutation| %>
+        << <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+
+      <% mutation.children.each do |mutation| %>
+        << <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+
+      <% mutation.children.each do |mutation| %>
+        << <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+
+      <% mutation.children.each do |mutation| %>
+        << <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+
+      <% mutation.children.each do |mutation| %>
+        << <%= link_to_unless_current mutation.id, mutation_path(mutation) %>
+      <% end %>
+      <% end %>
+      <% end %>
+      <% end %>
+      <% end %>
+      <% end %>
+      <% end %>
+      <% end %>
+      <% end %>
+      <% end %>
 <% end %>
+
+    </TD>
+</TABLE>
 

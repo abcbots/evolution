@@ -1,12 +1,10 @@
 <% form_for ([@evolution, @mutation]) do |f| %>
   <%= f.error_messages %>
   <p>
-    <%= f.label :mutation_id %><br />
-    <%= f.text_field :mutation_id %>
+    <%= f.hidden_field :mutation_id %>
   </p>
   <p>
-    <%= f.label :evolution_id %><br />
-    <%= f.text_field :evolution_id %>
+    <%= f.hidden_field :evolution_id %>
   </p>
   <p><%= f.submit "Send" %></p>
 <% end %>
