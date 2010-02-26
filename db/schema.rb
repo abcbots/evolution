@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100222094212) do
+ActiveRecord::Schema.define(:version => 20100226072130) do
 
   create_table "evolutions", :force => true do |t|
     t.integer  "evolution_id"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(:version => 20100222094212) do
     t.integer  "evolution_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "completed_at"
   end
 
 end
