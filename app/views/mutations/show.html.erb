@@ -1,5 +1,11 @@
 <% title @title  %>
 
+<%= button_to 'Mutation Complete', :action => 'complete' %>
+
+<% if @mutation.completed_at %>
+  <b>Completed: </b><%= time_ago_in_words @mutation.completed_at %> ago
+<% end %>
+
 <%= render :partial => @mutation %>
 
 

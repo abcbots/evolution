@@ -7,6 +7,18 @@ class MutationsController < ApplicationController
   def show
     beautify_mutation
   end
+
+  def complete
+    beautify_mutation
+    @mutation.completed_at = Time.now
+    if @mutation.save
+      flash[:notice] = "Successfully completed mutation(#{@mutation.id}) at #{@mutation.completed_at}"
+      redirect_to :controller => 'agenda', :action => 'index'
+    else
+      flash[:error] = "Sorry, try again."
+      redirect_to @mutation
+    end
+  end
   
   def new
     newify_mutation
