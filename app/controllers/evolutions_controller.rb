@@ -7,6 +7,18 @@ class EvolutionsController < ApplicationController
     @evolution = Evolution.find(params[:id])
   end
   
+  def start
+    @evolution = Evolution.find(params[:id])
+    @evolution.start_time = Time.now
+    if @evolution.save
+      flash[:notice] = "Successfully started evolution(#{@evolution.id}) at #{@evolution.start_time}"
+      redirect_to @evolution
+    else
+      flash[:error] = "Sorry, try again."
+      redirect_to @evolution
+    end
+  end 
+  
   def new
     @no_links = true
     @evolution = Evolution.new

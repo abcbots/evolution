@@ -1,5 +1,11 @@
 <% title "Evolution" %>
 
+<%= button_to 'Evolution Start', :action => 'start' %>
+
+<% if @evolution.start_time %>
+  <b>Started: </b><%= time_ago_in_words @evolution.start_time %> ago
+<% end %>
+
 <%= render :partial => @evolution %>
 
 <%= render :partial => @evolution.mutations %>
