@@ -12,4 +12,19 @@
   <% end %>
 </p>
 
+<p>
+  <% if @evolution %>
+    <b>Evolution Mutations: </b>
+    | <%= link_to_unless_current "Index", evolution_mutations_path(@evolution) %>
+    | <%= link_to_unless_current "Add Root", new_evolution_mutation_path(@evolution) %>
+  <% end %>
+    | <%= link_to_unless_current "Add After", "..." %>
+    | <%= link_to_unless_current "Add Now", "..." %>
+  <% if @mutation %>
+    | <%= link_to_unless_current "Add Before", new_mutation_child_path(:mutation_id => @mutation.id) %>
+    | <%= link_to "Subtract Now", @mutation, :confirm => "Delete this mutation?", :method => :delete %>
+    | <%= link_to_unless_current "Move Now", "..." %>
+  <% end %>
+</p>
+
 
