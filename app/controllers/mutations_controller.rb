@@ -24,6 +24,19 @@ class MutationsController < ApplicationController
     newify_mutation
   end
 
+  def new_after
+    @no_links = true
+    # new parent mutation, trade parent and super parent for id
+    mutation_now = Mutation.find(params[:id])
+    @mutation = Mutation.new
+    @mutation.evolution_id = mutation_now.evolution_id
+    @mutation.mutation_id = mutation_now.mutation_id
+    mutation_now.evolution_id = nil
+    @mutation.save
+    mutation_now.mutation_id = @mutation.id
+    mutation_now.save
+  end
+
   def create
     @mutation = Mutation.new(params[:mutation])
     if @mutation.save

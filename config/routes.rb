@@ -7,8 +7,11 @@ ActionController::Routing::Routes.draw do |map|
   end
   map.root :evolutions
   map.resources :agenda
+
   map.mutation_complete '/mutations/:id/complete', :controller => 'mutations', :action => 'complete'
-  map.evolution_complete '/evolutions/:id/complete', :controller => 'evolutions', :action => 'start'
+  map.new_mutation_after '/mutations/:id/new_after', :controller => 'mutations', :action => 'new_after'
+
+  map.evolution_start '/evolutions/:id/start', :controller => 'evolutions', :action => 'start'
 
 end
   # The priority is based upon order of creation: first created -> highest priority.
