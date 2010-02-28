@@ -20,9 +20,9 @@
   <% end %>
   <% if @mutation %>
     | <%= link_to_unless_current "add After", new_mutation_after_path(@mutation) %>
-    | <%= link_to_unless_current "add Now", "..." %>
+    | <%= link_to_unless_current "add Now", new_mutation_now_path(@mutation) %>
     | <%= link_to_unless_current "add Before", new_mutation_child_path(:mutation_id => @mutation.id) %>
-    | <%= link_to "subtract Now", @mutation, :confirm => "Delete this mutation?", :method => :delete %>
+    | <%= link_to "subtract Now & before", @mutation, :confirm => "Delete this mutation and all previous mutations to this mutation?", :method => :delete %>
     | <%= link_to_unless_current "move Now", "..." %>
   <% end %>
 </p>

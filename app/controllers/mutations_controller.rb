@@ -22,6 +22,8 @@ class MutationsController < ApplicationController
   
   def new
     newify_mutation
+    @mutation.save
+    redirect_to @mutation
   end
 
   def new_after
@@ -35,6 +37,33 @@ class MutationsController < ApplicationController
     @mutation.save
     mutation_now.mutation_id = @mutation.id
     mutation_now.save
+    redirect_to @mutation
+  end
+
+  def new_now
+    @no_links = true
+    # get current mutation
+    @mutation_now = Mutation.find(params[:id])
+    # create new mutation
+    @mutation = Mutation.new
+    # if there is a mutation after then get it
+    if @mutation_now.mutation_id
+      # mutation parent is mutation now's parent
+      @mutation_after = Mutation.find(@mutation_now.mutation_id)
+      # mutation parent is mutation after
+      @mutation.mutation_id = @mutation_after.id
+    # or if there is not a mutation after
+    else
+      if @mutation_now.evolution_id
+        # mutation super parent is mutation now's super parent
+        @mutation.evolution_id = @mutation_now.evolution_id
+      end
+    end
+    @mutation.save
+    redirect_to @mutation
+    # test with parent
+    # test with evolution
+    # test with neither...
   end
 
   def create
@@ -65,10 +94,40 @@ class MutationsController < ApplicationController
   
   def destroy
     beautify_mutation
-    @mutation = @evolution.mutations.find(params[:id])
-    @mutation.destroy
-    flash[:notice] = "Successfully destroyed mutation."
-    redirect_to evolution_mutations_path(@evolution)
+    # get current mutation
+    mutation_now = @evolution.mutations.find(params[:id])
+    # get child mutation(s)
+    mutation_befores = mutation_now.children.all
+    # if mutation has parent then connect parent to child
+    if mutation_after = Mutation.find(mutation_now.mutation_id)
+      # connect parent to child
+      mutation_befores.each do |mutation_before|
+        mutation_before.mutation_id = mutation_after.id
+        mutation_before.save
+      end
+    # else if mutation has no parent then connect evolution to child
+    else
+      # connect evolution to child
+      mutation_befores.each do |mutation_before|
+        mutation_before.evolution_id = @evolution.id
+	mutation_before.mutation_id = nil
+        mutation_before.save
+      end
+    end
+    mutation_now.destroy
+    # if there is a mutation parent, redirect to parent
+    if @mutation = mutation_after
+      # flash confirmation
+      flash[:notice] = "Successfully destroyed mutation(#{mutation_now.id}); now redirecting to parent mutation(#{mutation_after.id})"
+      # redirect to parent mutation
+      redirect_to mutation_path(mutation_after)
+    # else, if no parent, redirect to closest evolution
+    else
+      # flash confirmation
+      flash[:notice] = "Successfully destroyed mutation(#{mutation_now.id}); now redirecting to evolution of mutation(#{mutation_after.id})"
+      # redirect to parent mutation
+      redirect_to mutation_path(@evolution)
+    end
   end
 
 protected

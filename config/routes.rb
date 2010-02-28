@@ -10,6 +10,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.mutation_complete '/mutations/:id/complete', :controller => 'mutations', :action => 'complete'
   map.new_mutation_after '/mutations/:id/new_after', :controller => 'mutations', :action => 'new_after'
+  map.new_mutation_now '/mutations/:id/new_now', :controller => 'mutations', :action => 'new_now'
 
   map.evolution_start '/evolutions/:id/start', :controller => 'evolutions', :action => 'start'
 
