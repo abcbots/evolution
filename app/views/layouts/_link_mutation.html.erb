@@ -1,29 +1,24 @@
 <p>
   <% if @evolution %>
-    <%= link_to_unless_current "Evolution >> ", evolution_mutations_path(@evolution) %>
-    <b><%= link_to_unless_current "Mutations", evolution_mutations_path(@evolution) %></b>
-    | <%= link_to_unless_current "new simultaineous mutation", new_evolution_mutation_path(@evolution) %>
+    <b>Mutations: </b>
+    <%= link_to_unless_current "Index", evolution_mutations_path(@evolution) %>
+    <%= link_to_unless_current "Before", "..." %>
+    <%= link_to_unless_current "After", "..." %>
+    <ul>
+    <b>New:</b>
+    <%= link_to_unless_current "Root", new_evolution_mutation_path(@evolution) %>
   <% end %>
   <% if @mutation %>
-    | <%= link_to_unless_current "current mutation", mutation_path(@mutation) %></b>
-    | <%= link_to_unless_current "new prior mutation", new_mutation_child_path(:mutation_id => @mutation.id) %>
-    | <%= link_to_unless_current "edit mutation", edit_mutation_path(@mutation) %>
-    | <%= link_to "destroy mutation", @mutation, :confirm => "Delete this mutation?", :method => :delete %>
-  <% end %>
-</p>
-
-<p>
-  <% if @evolution %>
-    <b>Evolution Mutations: </b>
-    | <%= link_to_unless_current "Index", evolution_mutations_path(@evolution) %>
-    | <%= link_to_unless_current "add Root", new_evolution_mutation_path(@evolution) %>
-  <% end %>
-  <% if @mutation %>
-    | <%= link_to_unless_current "add After", new_mutation_after_path(@mutation) %>
-    | <%= link_to_unless_current "add Now", new_mutation_now_path(@mutation) %>
-    | <%= link_to_unless_current "add Before", new_mutation_child_path(:mutation_id => @mutation.id) %>
-    | <%= link_to "subtract Now & before", @mutation, :confirm => "Delete this mutation and all previous mutations to this mutation?", :method => :delete %>
-    | <%= link_to_unless_current "move Now", "..." %>
+    <%= link_to_unless_current "Before", new_mutation_child_path(:mutation_id => @mutation.id) %>
+    <%= link_to_unless_current "Current", new_mutation_current_path(@mutation) %>
+    <%= link_to_unless_current "After", new_mutation_after_path(@mutation) %>
+    <br />
+    <b>Destroy:</b>
+    <%= link_to_unless_current "Current", "..." %>
+    <%= link_to "Current & Before", @mutation, :confirm => "Delete this mutation and all previous mutations to this mutation?", :method => :delete %>
+    <br />
+    <b>Move:</b>
+    <%= link_to_unless_current "Current", "..." %>
   <% end %>
 </p>
 
