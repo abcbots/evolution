@@ -1,25 +1,45 @@
 <p>
+
   <% if @evolution %>
     <b>Mutations: </b>
-    <%= link_to_unless_current "Index", evolution_mutations_path(@evolution) %>
-    <%= link_to_unless_current "Before", "..." %>
-    <%= link_to_unless_current "After", "..." %>
+      <%= link_to_unless_current "Index", evolution_mutations_path(@evolution) %>
+      | <%= link_to_unless_current "Before", "..." %>
+      | <%= link_to_unless_current "After", "..." %>
     <ul>
-    <b>New:</b>
-    <%= link_to_unless_current "Root", new_evolution_mutation_path(@evolution) %>
-  <% end %>
-  <% if @mutation %>
-    <%= link_to_unless_current "Before", new_mutation_child_path(:mutation_id => @mutation.id) %>
-    <%= link_to_unless_current "Current", new_mutation_current_path(@mutation) %>
-    <%= link_to_unless_current "After", new_mutation_after_path(@mutation) %>
-    <br />
-    <b>Destroy:</b>
-    <%= link_to_unless_current "Current", "..." %>
-    <%= link_to "Current & Before", @mutation, :confirm => "Delete this mutation and all previous mutations to this mutation?", :method => :delete %>
-    <br />
-    <b>Move:</b>
-    <%= link_to_unless_current "Current", "..." %>
-  <% end %>
-</p>
 
+      <b>New:</b>
+        <%= link_to_unless_current "Root", new_evolution_mutation_path(@evolution) %>
+  <% end %>
+
+  <% if @mutation %>
+      | <%= link_to_unless_current "Before", new_mutation_child_path(:mutation_id => @mutation.id) %>
+      | <%= link_to_unless_current "Current", new_mutation_current_path(@mutation) %>
+      | <%= link_to_unless_current "After", new_mutation_after_path(@mutation) %>
+      <br />
+    <b>Destroy:</b>
+      <%= link_to_unless_current "Current", "..." %>
+      | <%= link_to "Current & Before", @mutation, :confirm => "Delete this mutation and all previous mutations to this mutation?", :method => :delete %>
+      <br />
+    
+  <% if session[:move_mutation_id] %>
+    <b>Place: (<%= session[:move_mutation_id] %>)</b>
+    <%= link_to "Before (#{@mutation.id})", "..." %>
+    | <%= link_to "After (#{@mutation.id})", "..." %>
+    | <%= link_to_unless_current "Cancel", :controller => 'mutations', :action => 'cancel_move', :id => @mutation.id %>
+  <% else %>
+      
+    <b>Clone:</b>
+    <%= link_to_unless_current "Current", "..." %>
+    | <%= link_to_unless_current "Current & Before", "..." %>
+
+    <br />
+      
+    <b>Move:</b>
+    <%= link_to_unless_current "Current & Before", move_mutation_current_path(@mutation) %>
+
+  <% end %>
+  <% end %>
+
+</ul>
+</p>
 

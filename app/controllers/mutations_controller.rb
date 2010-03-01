@@ -1,16 +1,28 @@
 class MutationsController < ApplicationController
   def index
-    @title = "Index"
     evolution_id_to_all_mutations_of_current_evolution
+    @title = "Index"
   end
   
   def show
-    mutation_id_to_mutation_and_evolution
+    id_to_mutation_and_evolution
     @title = "Mutation(#{@mutation.id})"
   end
 
+  def move_current 
+    id_to_mutation_and_tag_for_move
+  end
+ 
+  def cancel_move
+    id_to_mutation
+    # set session move current id to nil
+    session[:move_mutation_id] = nil
+    # redirect to mutation
+    redirect_to @mutation
+  end
+
   def complete
-    mutation_id_to_set_completed_at_of_mutation
+    id_to_set_completed_at_of_mutation
   end
   
   def new
@@ -30,7 +42,7 @@ class MutationsController < ApplicationController
   end
   
   def update
-    mutation_id_to_mutation_and_evolution
+    id_to_mutation_and_evolution
     # for id mutation equals evolution mutation
     @mutation = @evolution.mutations.find(params[:id])
     if @mutation.update_attributes(params[:mutation])
@@ -42,7 +54,7 @@ class MutationsController < ApplicationController
   end
   
   def destroy
-    mutation_id_to_mutation_and_evolution
+    id_to_mutation_and_evolution
     @mutation = @evolution.mutations.find(params[:id])
     @mutation.destroy
     flash[:notice] = "Successfully destroyed mutation."
@@ -51,7 +63,7 @@ class MutationsController < ApplicationController
 
 protected
 
-  def mutation_id_to_mutation_and_evolution
+  def id_to_mutation_and_evolution
     # local mutation equals mutation from id
     mutation = Mutation.find(params[:id])
     # if mutation has the evolution id
@@ -118,8 +130,8 @@ protected
     @mutations = @evolution.mutations.all
   end
 
-  def mutation_id_to_set_completed_at_of_mutation
-    mutation_id_to_mutation_and_evolution
+  def id_to_set_completed_at_of_mutation
+    id_to_mutation_and_evolution
     mutation_completed_at_equals_time_current
     if_mutation_saves_then_flash_confirm_and_goto_index
   end
@@ -208,6 +220,18 @@ protected
     else
       render :action => 'new'
     end
+  end
+
+  def id_to_mutation_and_tag_for_move
+    id_to_mutation
+    # set session current mutation to current mutation
+    session[:move_mutation_id] = @mutation.id
+    # goto current mutation
+    redirect_to @mutation
+  end
+
+  def id_to_mutation
+    @mutation = Mutation.find(params[:id])
   end
 
 end
