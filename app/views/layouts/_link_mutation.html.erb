@@ -17,7 +17,7 @@
       | <%= link_to_unless_current "After", new_mutation_after_path(@mutation) %>
       <br />
     <b>Destroy:</b>
-      <%= link_to_unless_current "Current", "..." %>
+      <%= link_to "Current Only", :controller => 'mutations', :action => 'destroy_current_only', :id => @mutation.id %>
       | <%= link_to "Current & Before", @mutation, :confirm => "Delete this mutation and all previous mutations to this mutation?", :method => :delete %>
       <br />
     

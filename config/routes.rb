@@ -11,7 +11,7 @@ ActionController::Routing::Routes.draw do |map|
   map.move_mutation_current '/mutations/:id/move_current', :controller => 'mutations', :action => 'move_current'
   map.new_mutation_after '/mutations/:id/new_after', :controller => 'mutations', :action => 'new_after'
   map.new_mutation_current '/mutations/:id/new_current', :controller => 'mutations', :action => 'new_current'
-
+  
   map.evolution_start '/evolutions/:id/start', :controller => 'evolutions', :action => 'start'
   map.mutation_complete '/mutations/:id/complete', :controller => 'mutations', :action => 'complete'
 
