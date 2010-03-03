@@ -25,6 +25,12 @@ class MutationsController < ApplicationController
   def new_current
     make_new_current_level_mutation
   end
+  def clone_current
+  end
+  def clone_current_and_before
+    id_to_clone_current_and_before
+    redirect_to @mutation
+  end
   def create
     mutation_params_to_saved_mutation
   end
@@ -262,5 +268,33 @@ protected
     end
   end
 
+  def id_to_clone_current_and_before
+    id_to_evolution_mutation
+    mutation_clone = Mutation.new
+    #for testing purposes
+    mutation_clone.evolution_id = @evolution.id
+    #mutation_clone.information = mutation.information
+    mutation_clone.save
+    clone_mutation_children @mutation, mutation_clone
+  end
+  def clone_mutation_children(mutation, parent)
+    for mutation in mutation.children
+      mutation_clone = Mutation.new
+      mutation_clone.mutation_id = parent.id
+      #mutation_clone.information = mutation.information
+      mutation_clone.save
+      clone_mutation_children_even mutation, mutation_clone
+    end
+  end
+  def clone_mutation_children_even(mutation, parent)
+    for mutation in mutation.children
+      mutation_clone = Mutation.new
+      mutation_clone.mutation_id = parent.id
+      #mutation_clone.information = mutation.information
+      mutation_clone.save
+      clone_mutation_children mutation, mutation_clone
+    end
+  end
+    
 end
 
