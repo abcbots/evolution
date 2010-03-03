@@ -2,10 +2,6 @@
 
   <% if @evolution %>
     <b>Mutations: </b>
-      <%= link_to_unless_current "Index", evolution_mutations_path(@evolution) %>
-      | <%= link_to_unless_current "Before", "..." %>
-      | <%= link_to_unless_current "After", "..." %>
-    <ul>
 
       <b>New:</b>
         <%= link_to_unless_current "Root", new_evolution_mutation_path(@evolution) %>
@@ -17,8 +13,8 @@
       | <%= link_to_unless_current "After", new_mutation_after_path(@mutation) %>
       <br />
     <b>Destroy:</b>
-      <%= link_to "Current Only", :controller => 'mutations', :action => 'destroy_current_only', :id => @mutation.id %>
-      | <%= link_to "Current & Before", @mutation, :confirm => "Delete this mutation and all previous mutations to this mutation?", :method => :delete %>
+      <%= link_to "Destroy Current Only", :confirm => "Delete current mutation only?", :controller => 'mutations', :action => 'destroy_current_only', :id => @mutation.id %>
+      | <%= link_to "Destroy Current & Before", @mutation, :confirm => "Delete this mutation and all previous mutations to this mutation?", :method => :delete %>
       <br />
     
   <% if session[:move_mutation_id] %>
