@@ -1,4 +1,5 @@
 class MutationsController < ApplicationController
+include MutationsHelper
   def index
     evolution_id_to_all_mutations_of_current_evolution
     @title = "Index"

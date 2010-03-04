@@ -1,7 +1,9 @@
 <p>
 
   <% if @evolution %>
-    <b>Mutations: </b>
+    <b><%= toggle_div "Mutations:", "app_menu" %></b>
+    <b><%= toggle_div_id "Mutations:", "app_menu" %></b>
+    <ul>
 
       <b>New:</b>
         <%= link_to_unless_current "Root", new_evolution_mutation_path(@evolution) %>
@@ -45,5 +47,6 @@
   <% end %>
 
 </ul>
+</div>
 </p>
 
