@@ -1,12 +1,15 @@
-<ul><% for mutation in mutation.children %>
-  <li><%= link_to_unless_current mutation.id, mutation %>
+<ul>
+<% for mutation in mutation.children %>
+
+    <li><%= link_to_unless_current mutation.id, mutation %>
+
     <% if !mutation.children.empty? %>
       <%= toggle_div "open", mutation.id %>
-    <% end %>
 
-    <%= toggle_div_id "open", mutation.id %> 
-      <%= render :partial => 'children', :locals => { :mutation => mutation } %>
-    </div>
+      <%= toggle_div_id "open", mutation.id %> 
+        <%= render :partial => 'children', :locals => { :mutation => mutation } %>
+      </div>
+    <% end %>
 
 <% end %>
 </ul>

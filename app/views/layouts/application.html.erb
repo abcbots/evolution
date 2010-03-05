@@ -13,11 +13,9 @@
       <%- flash.each do |name, msg| -%>
         <%= content_tag :div, msg, :id => "flash_#{name}" %>
       <%- end -%>
-      
       <% unless @no_links %>
         <%= render :partial => 'layouts/links' %>
       <% end %>
-
       <p>
         <%= link_to_unless_current "Mutant Agenda", :controller => 'agenda', :action => 'index' %>
       </p>

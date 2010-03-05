@@ -1,19 +1,17 @@
 
 <p>
   <b><%= toggle_div "Evolutions:", "app_menu" %></b>
-  <%= toggle_div_id "Evolutions:", "app_menu" %>
   <ul>
-
-  <b><%= link_to_unless_current "Evolutions", root_path %></b>
-  | <%= link_to_unless_current "new simultaineous evolution", new_evolution_path %>
-  <% if @evolution %>
-    | <%= link_to_unless_current "new prior evolution", new_evolution_path %>
-    | <%= link_to_unless_current "current evolution", evolution_path(@evolution) %></b>
-    | <%= link_to_unless_current "edit evolution", edit_evolution_path(@evolution) %>
-    | <%= link_to "destroy evolution", @evolution, :confirm => "Delete evolution?", :method => :delete %>
-  <% end %>
+  <%= toggle_div_id "Evolutions:", "app_menu" %>
+    <b><%= link_to_unless_current "Evolutions", root_path %></b>
+    | <%= link_to_unless_current "new simultaineous evolution", new_evolution_path %>
+    <% if @evolution %>
+      | <%= link_to_unless_current "new prior evolution", new_evolution_path %>
+      | <%= link_to_unless_current "current evolution", evolution_path(@evolution) %></b>
+      | <%= link_to_unless_current "edit evolution", edit_evolution_path(@evolution) %>
+      | <%= link_to "destroy evolution", @evolution, :confirm => "Delete evolution?", :method => :delete %>
+    <% end %>
+  </div>
   </ul>
-</div>
 </p>
-
 
