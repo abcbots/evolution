@@ -1,15 +1,13 @@
-<ul><% for evolution in evolution.children %>
-
+<ul>
+<% for evolution in evolution.children %>
     <li><%= link_to_unless_current evolution.id, evolution %>
-
+    > <%= evolution.evolution_id %>
     <% if !evolution.children.empty? %>
-      <%= toggle_div "open", evolution.id %>
-
-      <%= toggle_div_id "open", evolution.id %> 
+      <sup><%= toggle_div "Expand", evolution.id %></sup>
+      <%= toggle_div_id "Expand", evolution.id %> 
         <%= render :partial => 'children', :locals => { :evolution => evolution } %>
-        </div>
-      <% end %>
-
+      </div>
     <% end %>
 <% end %>
 </ul>
+
