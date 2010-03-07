@@ -4,9 +4,9 @@
     <li><%= link_to_unless_current mutation.id, mutation %>
 
     <% if !mutation.children.empty? %>
-      <%= toggle_div "open", mutation.id %>
+      <%= toggle_div "Expand", mutation.id %>
 
-      <%= toggle_div_id "open", mutation.id %> 
+      <%= toggle_div_id "Expand", mutation.id %> 
         <%= render :partial => 'children', :locals => { :mutation => mutation } %>
       </div>
     <% end %>

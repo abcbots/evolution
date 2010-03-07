@@ -1,0 +1,10 @@
+<p>
+<ul>
+  <b>
+    <%= link_to "Move \"#{session[:move_mutation_id]}\" after \"#{@mutation.id}\"", "..." %>
+    / <%= link_to "Move \"#{session[:move_mutation_id]}\" before \"#{@mutation.id}\"", "..." %>
+    | <%= link_to "Cancel move", :controller => 'mutations', :action => 'cancel_move', :id => @mutation.id %>
+  </b>
+</ul>
+</p>
+

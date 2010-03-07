@@ -1,0 +1,13 @@
+<% if @mutation %>
+  <%= toggle_div_id "Move", "move_mutation" %>
+    <ul>
+      <b>Move Mutation: </b>
+      <% if session[:move_mutation_id] %>
+        <%= render :partial => 'layouts/link_mutation_in_move' %>
+      <% else %>
+        <%= link_to "Current", "..." %> |
+        <%= link_to "Current & Past", "..." %>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

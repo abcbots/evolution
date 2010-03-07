@@ -6,7 +6,7 @@ include MutationsHelper
   end
   def show
     id_to_evolution_mutation
-    @title = "Mutation(#{@mutation.id})"
+    @title = "Evolution(#{@evolution.id}) > Mutation(#{@mutation.id})"
   end
   def move_current 
     id_to_mutation_and_tag_for_move

@@ -1,50 +1,22 @@
 <p>
 
-  <% if @evolution %>
-    <b><%= toggle_div "Mutations", "app_menu" %></b>:
-    <%= toggle_div_id "Mutations", "app_menu" %>
-    <ul>
-      <b>New:</b>
-        <%= link_to_unless_current "Root", new_evolution_mutation_path(@evolution) %>
+<b>Mutations: </b> 
+<% if @evolution %>
+  <%= toggle_div "New", "new_mutation" %> |
+<% end %>
+<% if @mutation %>
+  <%= toggle_div "Clone", "clone_mutation" %> |
+  <%= toggle_div "Move", "move_mutation" %> |
+  <%= toggle_div "Destroy", "destroy_mutation" %>
+<% end %>
+<% if session[:move_mutation_id] %> 
+  <%= render :partial => 'layouts/link_mutation_in_move' %>
+<% end %>
 
-  <% if @mutation %>
-      | <%= link_to_unless_current "Before", new_mutation_child_path(:mutation_id => @mutation.id) %>
-      | <%= link_to_unless_current "Current", new_mutation_current_path(@mutation) %>
-      | <%= link_to_unless_current "After", new_mutation_after_path(@mutation) %>
-      <br />
-    <b>Destroy:</b>
-      <%= link_to "Destroy Current Only", 
-        :confirm => "Delete current mutation only?", 
-	:controller => 'mutations', 
-	:action => 'destroy_current_only', 
-	:id => @mutation.id %>
-      | <%= link_to "Destroy Current & Beyond", @mutation, 
-        :confirm => "Delete this mutation and all previous mutations to this mutation?", 
-	:method => :delete %>
-      <br />
-    
-  <% if session[:move_mutation_id] %>
-    <b>Place: (<%= session[:move_mutation_id] %>)</b>
-      <%= link_to "Before (#{@mutation.id})", "..." %>
-      | <%= link_to "After (#{@mutation.id})", "..." %>
-      | <%= link_to_unless_current "Cancel", :controller => 'mutations', :action => 'cancel_move', :id => @mutation.id %>
-  <% else %>
-      
-    <b>Clone:</b>
-      <%= link_to_unless_current "Current", "..." %>
-      | <%= link_to_unless_current "Current & Beyond", 
-        :controller => 'mutations', 
-	:action => 'clone_current_and_before', 
-	:id => @mutation.id %>
-    <br />
-      
-    <b>Move:</b>
-    <%= link_to_unless_current "Current & Beyond", move_mutation_current_path(@mutation) %>
 
-  <% end %>
-  <% end %>
-  </div>
-  <% end %>
-</ul>
+<%= render :partial => 'layouts/link_mutation_new' %>
+<%= render :partial => 'layouts/link_mutation_clone' %>
+<%= render :partial => 'layouts/link_mutation_move' %>
+<%= render :partial => 'layouts/link_mutation_destroy' %>
+
 </p>
-
