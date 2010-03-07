@@ -1,22 +1,18 @@
-<p>
-
+<% if @evolution || @mutation || @mutations %>
 <b>Mutations: </b> 
 <% if @evolution %>
-  <%= toggle_div "New", "new_mutation" %> |
+  <%= toggle_div "New", "new_mutation" %>
 <% end %>
 <% if @mutation %>
-  <%= toggle_div "Clone", "clone_mutation" %> |
-  <%= toggle_div "Move", "move_mutation" %> |
-  <%= toggle_div "Destroy", "destroy_mutation" %>
+  | <%= toggle_div "Clone", "clone_mutation" %>
+  | <%= toggle_div "Move", "move_mutation" %>
+  | <%= toggle_div "Destroy", "destroy_mutation" %>
 <% end %>
 <% if session[:move_mutation_id] %> 
-  <%= render :partial => 'layouts/link_mutation_in_move' %>
+  <%= render :partial => 'layouts/mutations/in_move' %>
 <% end %>
-
-
-<%= render :partial => 'layouts/link_mutation_new' %>
-<%= render :partial => 'layouts/link_mutation_clone' %>
-<%= render :partial => 'layouts/link_mutation_move' %>
-<%= render :partial => 'layouts/link_mutation_destroy' %>
-
-</p>
+<%= render :partial => 'layouts/mutations/new' %>
+<%= render :partial => 'layouts/mutations/clone' %>
+<%= render :partial => 'layouts/mutations/move' %>
+<%= render :partial => 'layouts/mutations/destroy' %>
+<% end %>

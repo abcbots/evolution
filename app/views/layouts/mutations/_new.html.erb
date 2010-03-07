@@ -1,0 +1,15 @@
+<% if @evolution %>
+  <%= toggle_div_id "New", "new_mutation" %>
+  <ul>
+    <b>New Mutation: </b>
+      <%= link_to_unless_current "Root", new_evolution_mutation_path(@evolution) %>
+      <% if @mutation %>
+        | <%= link_to_unless_current "Past", new_mutation_child_path(:mutation_id => @mutation.id) %>
+        | <%= link_to_unless_current "Current", new_mutation_current_path(@mutation) %>
+        | <%= link_to_unless_current "Future", new_mutation_after_path(@mutation) %>
+      <% end %>
+  </ul>
+  </div>
+<% end %>
+
+

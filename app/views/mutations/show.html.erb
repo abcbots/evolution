@@ -1,4 +1,9 @@
+
 <% title @title  %>
+
+<%= render :partial => @mutation %>
+
+<%= render :partial => 'children', :locals => { :mutation => @mutation } %>
 
 <%= button_to 'Mutation Complete', :action => 'complete' %>
 
@@ -6,6 +11,3 @@
   <b>Completed: </b><%= time_ago_in_words @mutation.completed_at %> ago
 <% end %>
 
-<%= render :partial => @mutation %>
-
-<%= render :partial => 'children', :locals => { :mutation => @mutation } %>
