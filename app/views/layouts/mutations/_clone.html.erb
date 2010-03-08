@@ -1,12 +1,14 @@
 <% if @mutation %>
-  <%= toggle_div_id "Clone", "clone_mutation" %>
-    <ul>
-      <b>Clone Mutation: </b>
-        <%= link_to_unless_current "Current*", "..." %>
-        <%= link_to_unless_current "Current & Past", 
-          :controller => 'mutations', 
-	  :action => 'clone_current_and_before', 
-	  :id => @mutation.id %> |
-    </ul>
-  </div>
+  <p>
+  <fieldset><legend><b>Clone</b></legend>
+    <%= link_to_unless_current "Current",
+      :controller => 'mutations', 
+      :action => 'clone_current_set', 
+      :id => @mutation.id %> |
+    <%= link_to_unless_current "Current & Past", 
+      :controller => 'mutations', 
+      :action => 'clone_current_and_past_set', 
+      :id => @mutation.id %>
+  </fieldset>
+  </p>
 <% end %>

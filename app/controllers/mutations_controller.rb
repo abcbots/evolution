@@ -8,17 +8,8 @@ include MutationsHelper
     id_to_evolution_mutation
     @title = "Evolution(#{@evolution.id}) > Mutation(#{@mutation.id})"
   end
-  def move_current 
-    id_to_mutation_and_tag_for_move
-  end
-  def cancel_move
-    id_to_mutation_and_save_to_session
-  end
-  def complete
-    id_to_set_completed_at_of_mutation
-  end
   def new
-    make_new_mutation_or_new_before_child_mutation
+    make_new_mutation_or_new_past_child_mutation
   end
   def new_after
     make_new_mutation_after_current_mutation
@@ -26,23 +17,61 @@ include MutationsHelper
   def new_current
     make_new_current_level_mutation
   end
-  def clone_current
+  def clone_current_set
+    go_clone_current_set
   end
-  def clone_current_and_before
-    id_to_clone_current_and_before
-    redirect_to @mutation
+  def clone_current_cancel
+    go_clone_current_cancel
+  end
+  def clone_current_to_root
+  end
+  def clone_current_to_past
+  end
+  def clone_current_to_current
+  end
+  def clone_current_to_future
+  end
+  def clone_current_and_past_set
+    go_clone_current_and_past_set
+  end
+  def clone_current_and_past_cancel
+    go_clone_current_and_past_cancel
+  end
+  def clone_current_and_past_to_root
+    go_clone_current_and_past_to_root 
+  end
+  def clone_current_and_past_to_past
+    go_clone_current_and_past_to_past
+  end
+  def clone_current_and_past_to_current
+  end
+  def clone_current_and_past_to_future
+  end
+  def move_current_set
+    go_move_current_set
+  end
+  def move_current_cancel
+    go_move_current_cancel
+  end
+  def move_current 
+    go_move_current
+  end
+  def move_current_and_past
+  end
+  def complete
+    go_complete
   end
   def create
-    mutation_params_to_saved_mutation
+    go_create
   end
   def update
-    id_to_evolution_mutation_and_update
+    go_update
   end
   def destroy
-    id_to_evolution_mutation_and_destroy
+    go_destroy
   end
-  def destroy_current_only
-    id_to_evolution_mutation_and_detatch_and_destroy
+  def destroy_current
+    go_destroy_current
   end
 
 protected
@@ -114,7 +143,7 @@ protected
     @mutations = @evolution.mutations.all
   end
 
-  def id_to_set_completed_at_of_mutation
+  def go_complete
     id_to_evolution_mutation
     mutation_completed_at_equals_time_current
     if_mutation_saves_then_flash_confirm_and_goto_index
@@ -141,7 +170,7 @@ protected
     end
   end
 
-  def make_new_mutation_or_new_before_child_mutation
+  def make_new_mutation_or_new_past_child_mutation
     new_mutation_or_child_mutation
     # save the mutation
     @mutation.save
@@ -194,7 +223,7 @@ protected
     redirect_to @mutation
   end
 
-  def mutation_params_to_saved_mutation
+  def go_create
     # mutation equals mew mutation with mutation params
     @mutation = Mutation.new(params[:mutation])
     # if mutation saves then flash success and goto mutation show
@@ -206,19 +235,11 @@ protected
     end
   end
 
-  def id_to_mutation_and_tag_for_move
-    id_to_mutation
-    # set session current mutation to current mutation
-    session[:move_mutation_id] = @mutation.id
-    # goto current mutation
-    redirect_to @mutation
-  end
-
   def id_to_mutation
     @mutation = Mutation.find(params[:id])
   end
 
-  def id_to_evolution_mutation_and_update
+  def go_update
     id_to_evolution_mutation
     # for id mutation equals evolution mutation
     @mutation = @evolution.mutations.find(params[:id])
@@ -230,15 +251,13 @@ protected
     end
   end
 
-  def id_to_evolution_mutation_and_destroy
-    id_to_evolution_mutation
-    @mutation = @evolution.mutations.find(params[:id])
-    @mutation.destroy
-    flash[:notice] = "Successfully destroyed mutation."
-    redirect_to evolution_mutations_path(@evolution)
+  def go_move_current_set
+    id_to_evolution_mutation # id to mutation and evolution
+    session[:mutation_to_move_current] = @mutation.id # set mutation to clone id
+    redirect_to @mutation # go back to mutation
   end
 
-  def id_to_mutation_and_save_to_session
+  def go_move_current_cancel
     id_to_mutation
     # set session move current id to nil
     session[:move_mutation_id] = nil
@@ -246,14 +265,9 @@ protected
     redirect_to @mutation
   end
 
-  def id_to_evolution_mutation_and_detatch_and_destroy
-    id_to_evolution_mutation
-    if_mutation_root_or_child_then_transfer_evolution_or_parent_to_children
-    @mutation.evolution_id = nil
-    @mutation.mutation_id = nil
-    @mutation.save
-    redirect_to :action => 'index', :evolution_id => @evolution
+  def go_move_current
   end
+
   def if_mutation_root_or_child_then_transfer_evolution_or_parent_to_children
     if @mutation.mutation_id
       for mutation in @mutation.children
@@ -269,14 +283,15 @@ protected
     end
   end
 
-  def id_to_clone_current_and_before
+  def go_clone_current_set
     id_to_evolution_mutation
-    mutation_clone = Mutation.new
-    #for testing purposes
-    mutation_clone.evolution_id = @evolution.id
-    #mutation_clone.information = mutation.information
-    mutation_clone.save
-    clone_mutation_children @mutation, mutation_clone
+    session[:mutation_to_clone_current] = @mutation.id
+    redirect_to mutation_path(session[:mutation_to_clone_current])
+  end
+  def go_clone_current_and_past_set
+    id_to_evolution_mutation
+    session[:mutation_to_clone_current_and_past] = @mutation.id
+    redirect_to mutation_path(session[:mutation_to_clone_current_and_past])
   end
   def clone_mutation_children(mutation, parent)
     for mutation in mutation.children
@@ -296,6 +311,58 @@ protected
       clone_mutation_children mutation, mutation_clone
     end
   end
+
+  def go_clone_current_cancel
+    id_to_evolution_mutation
+    session[:mutation_to_clone_current] = nil
+    redirect_to @mutation 
+  end
+  
+  def go_clone_current_and_past_cancel
+    id_to_evolution_mutation
+    session[:mutation_to_clone_current_and_past] = nil
+    redirect_to @mutation 
+  end
     
+  def go_clone_current_and_past_to_root 
+    mutation_starter = Mutation.find(session[:mutation_to_clone_current_and_past]) # mutation to clone from
+    mutation_new = Mutation.new # make new mutation
+    mutation_new.evolution_id = params[:id] # copy evolution
+    mutation_new.save # save
+    clone_mutation_children mutation_starter, mutation_new # clone children
+    redirect_to mutation_path(mutation_new) # redirect to mutation new
+  end
+ 
+  def go_clone_current_and_past_to_past
+    mutation_starter = Mutation.find(session[:mutation_to_clone_current_and_past]) # mutation to clone from
+    mutation_new = Mutation.new # make new mutation
+    mutation_new.save # save
+    clone_mutation_children mutation_starter, mutation_new # clone children
+    mutation_loaded = mutation_new
+    mutation_loaded.mutation_id = params[:id] # copy parent id from params
+    mutation_loaded.save # save
+    redirect_to mutation_path(mutation_loaded) # redirect to loaded mutation
+  end
+
+  def mutation_new_mutation_id_to_params_id
+  end
+
+  def go_destroy
+    id_to_evolution_mutation
+    @mutation = @evolution.mutations.find(params[:id])
+    @mutation.destroy
+    flash[:notice] = "Successfully destroyed mutation."
+    redirect_to evolution_mutations_path(@evolution)
+  end
+
+  def go_destroy_current
+    id_to_evolution_mutation
+    if_mutation_root_or_child_then_transfer_evolution_or_parent_to_children
+    @mutation.evolution_id = nil
+    @mutation.mutation_id = nil
+    @mutation.save
+    redirect_to :action => 'index', :evolution_id => @evolution
+  end
+     
 end
 

@@ -1,0 +1,11 @@
+<% if session[:mutation_to_clone_current] %>
+  <% if @evolution || @mutation %>
+    <ul>
+    <fieldset><legend><b>Clone</b></legend>
+      (<%= link_to_unless_current session[:mutation_to_clone_current], 
+      mutation_path(:id => session[:mutation_to_clone_current]) %>)
+      <%= render :partial => "layouts/mutations/in_clone/current" %>
+    </ul>
+    </fieldset>
+  <% end %>
+<% end %>

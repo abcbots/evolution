@@ -1,0 +1,26 @@
+<% if @evolution %>
+  <% if @mutation %>
+
+    <%= link_to "before", "..." %>
+    , 
+    <%= link_to "with", "..." %>
+    or 
+    <%= link_to "after", "..." %>
+
+    Mutation(<%= @mutation.id %>)
+
+    <% if @evolution %>
+      ; or
+    <% end %>
+
+  <% end %>
+
+<%= link_to "to Evolution", "..." %>
+
+Evolution(<%= link_to_unless_current @evolution.id, evolution_path(:id => @evolution.id) %>)
+; or
+<%= link_to "cancel", :controller => "mutations", :action => "set_clone_current_cancel" %>
+
+<% end %>
+
+

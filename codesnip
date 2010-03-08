@@ -1,0 +1,5 @@
+
+
+
+  <%= render :partial => 'layouts/mutations/move/current' %>
+  <%= render :partial => 'layouts/mutations/move/current_and_past' %>

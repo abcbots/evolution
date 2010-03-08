@@ -1,0 +1,22 @@
+
+<% if @evolution || @mutation %>
+  <p>
+  <fieldset><legend><b>Ready to Clone Mutation (<%= session[:mutation_to_clone_current] %>)</b></legend>
+
+<% if @evolution %>
+  <%= link_to "Root", "..." %>
+<% end %>
+
+<% if @mutation %>
+  | <%= link_to "Past", "..." %>
+  | <%= link_to "Current", "..." %>
+  | <%= link_to "Future", "..." %>
+<% end %>
+  | <%= link_to "Cancel", 
+    :controller => 'mutations', 
+    :action => 'clone_current_cancel',
+    :id => session[:mutation_to_clone_current] %>
+  </fieldset>
+  </p>
+<% end %>
+

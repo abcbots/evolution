@@ -16,6 +16,15 @@ module ApplicationHelper
   def toggle_div_id(link_text, div_id)
     html = nil
     html = "<div id=\"#{div_id}_#{link_text}\", style=\"display:none;\">"
+    html = "<ul><fieldset><legend><b>"
+    html = html + div_id.gsub("_", " ").titleize
+    html = html + "</b></legend>"
+    return html
+  end
+
+  def toggle_div_id_end
+    html = nil
+    html = "</fieldset></ul></div>"
     return html
   end
 

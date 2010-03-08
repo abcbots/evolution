@@ -1,0 +1,33 @@
+<% if @evolution || @mutation %>
+  <p>
+  <fieldset><legend><b>Ready to Clone Mutation (<%= session[:mutation_to_clone_current_and_past] %>) & Past</b></legend>
+
+<% if @evolution %>
+  <%= link_to "Root", 
+    :controller => "mutations",
+    :action => "clone_current_and_past_to_root", 
+    :id => @evolution.id %>
+<% end %>
+
+<% if @mutation %>
+  | <%= link_to "Past", 
+    :controller => "mutations",
+    :action => "clone_current_and_past_to_past", 
+    :id => @mutation.id %>
+  | <%= link_to "Current",
+    :controller => "mutations",
+    :action => "clone_current_and_past_to_current", 
+    :id => @mutation.id %>
+  | <%= link_to "Future", 
+    :controller => "mutations",
+    :action => "clone_current_and_past_to_future", 
+    :id => @mutation.id %>
+<% end %>
+  | <%= link_to "Cancel", 
+    :controller => 'mutations', 
+    :action => 'clone_current_and_past_cancel',
+    :id => session[:mutation_to_clone_current_and_past] %>
+  </fieldset>
+  </p>
+<% end %>
+
