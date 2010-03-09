@@ -135,6 +135,7 @@ protected
       @mutation = @evolution.mutations.new
       @mutation.evolution_id = params[:evolution_id]
     end
+
   end
 
   def evolution_id_to_all_mutations_of_current_evolution
