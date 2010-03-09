@@ -85,6 +85,7 @@ protected
       # evolution equals evolution from first mutation on tree
       # mutation equals passed mutation id
       # title equals prior mutation(mutation id)
+
   def id_to_evolution_mutation
     mutation = Mutation.find(params[:id])
     if mutation.evolution_id
