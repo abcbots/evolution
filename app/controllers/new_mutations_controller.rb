@@ -6,12 +6,13 @@ class MutationsController < ApplicationController
 # new: root | parent | current | child
 
 # clone: current | current_only
-# clone_current_to: root | parent | current | child
-# clone_current_only_to: root | parent | current | child
-
 # move: current | current_only
-# move_current_to: root | parent | current | child
-# move_current_only_to: root | parent | current | child
+
+# clone_current_to: root | parent | current | child | cancel
+# clone_current_only_to: root | parent | current | child | cancel
+
+# move_current_to: root | parent | current | child | cancel
+# move_current_only_to: root | parent | current | child | cancel
 
 # destroy: current | current_only
 
@@ -36,7 +37,6 @@ class MutationsController < ApplicationController
 
   def new_root
     go_new_root
-    # in_process
   end
   def new_parent
     go_new_parent
@@ -48,8 +48,30 @@ class MutationsController < ApplicationController
     go_new_child
   end
 
-  def clone_current_set
-    go_clone_current_set
+  def set_clone_current
+    go_set_clone_current
+  end
+  def set_clone_current_only
+    go_set_clone_current_only
+  end
+  def set_move_current
+    go_set_move_current
+  end
+  def set_move_current_only
+    go_set_move_current_only
+  end
+
+  def cancel_clone_current
+    go_cancel_clone_current
+  end
+  def cancel_clone_current_only
+    go_cancel_clone_current_only
+  end
+  def cancel_move_current
+    go_cancel_move_current
+  end
+  def cancel_move_current_only
+    go_cancel_move_current_only
   end
 
   def clone_current_to_root
@@ -65,10 +87,6 @@ class MutationsController < ApplicationController
     go_clone_current_to_child
   end
 
-  def clone_current_only_set
-    go_clone_current_only_set
-  end
-
   def clone_current_only_to_root
     go_clone_current_only_to_root
   end
@@ -82,10 +100,6 @@ class MutationsController < ApplicationController
     go_clone_current_only_to_child
   end
 
-  def move_current_set
-    go_move_current_set
-  end
-
   def move_current_to_root
     go_move_current_to_root
   end
@@ -97,10 +111,6 @@ class MutationsController < ApplicationController
   end
   def move_current_to_child
     go_move_current_to_child
-  end
-
-  def move_current_only_set
-    go_move_current_only_set
   end
 
   def move_current_only_to_root
@@ -182,7 +192,17 @@ class MutationsController < ApplicationController
 
 
   def go_new_root
-    # in_process
+    mutation_current = Mutation.find(params[:id]) # get current
+    mutation_super = Evolution.find(mutation_current.evolution_id) # get super
+    mutation_root = mutation_current.ancestors.last # get root
+    mutation_new = Mutation.new # get new
+    mutation_new.evolution_id = mutation_super.id # attach new to super
+    mutation_new.save # save new
+    mutation_root.evolution_id = nil # detach root from super
+    mutation_root.mutation_id = mutation_new.id # attach root to new
+    mutation_root.save # save root
+    flash[:notice] "Success, New Root Complete" # flash success, new root planted
+    redirect_to mutation_new # redirect to new
   end
   def go_new_parent
     mutation_current = Mutation.find(params[:id]) # get current
@@ -237,44 +257,148 @@ class MutationsController < ApplicationController
     redirect_to @mutation
   end
 
-
-
-
-      mutation = Mutation.find(params[:mutation_id])
-    
-    else
-      @evolution = Evolution.find(params[:evolution_id])
-      @mutation = @evolution.mutations.new
-      @mutation.evolution_id = params[:evolution_id]
-    end
-
+  def go_set_clone_current
+    mutation_current = Mutation.find(params[:id]) # get current
+    session[:clone_current_id] = mutation_current.id # set clone current
+    redirect_to @mutation # redirect to current
+  end
+  def go_set_clone_current_only
+    mutation_current = Mutation.find(params[:id]) # get current
+    session[:clone_current_only_id] = mutation_current.id # set clone current
+    redirect_to mutation_current # redirect to current
+  end
+  def go_set_move_current
+    mutation_current = Mutation.find(params[:id]) # get current
+    session[:move_current_id] = mutation_current.id # set move current
+    redirect_to mutation_current # redirect to current
+  end
+  def go_set_move_current_only
+    mutation_current = Mutation.find(params[:id]) # get current
+    session[:move_current_only_id] = mutation_current.id # set move current only
+    redirect_to mutation_current # redirect to current
   end
 
-  def go_clone_current_set
+  def go_cancel_clone_current
+    session[:clone_current_id] = nil # cancel clone current
+  end
+  def go_cancel_clone_current_only
+    session[:clone_current_only_id] = nil # cancel clone current
+  end
+  def go_cancel_move_current
+    session[:move_current_id] = nil # cancel move current
+  end
+  def go_cancel_move_current_only
+    session[:move_current_only_id] = nil # cancel move current only
   end
 
   def go_clone_current_to_root
+    get_mutation_clone_current # then get mutation_clone
+    mutation_current = Mutation.find(params[:id]) # get current
+    mutation_root = mutation_current.ancestors.last # get root
+    @mutation_clone.evolution_id = mutation_root.evolution_id # attach clone to root super
+    @mutation_clone.save # save clone
+    redirect_to @mutation_clone # redirect to clone
   end
   def go_clone_current_to_parent
+    get_mutation_clone_current # generate @mutation_clone
+    mutation_current = Mutation.find(params[:id]) # get current from passed id
+    if mutation_current.mutation_id # if mutation parent present then
+      @mutation_clone.mutation_id = mutation_current.mutation_id # attach clone to parent
+      @mutation_clone.save # save clone
+      mutation_current.mutation_id = @mutation_clone.id # attach current to clone
+      mutation_current.save # save current
+    else # else
+      if mutation_current.evolution_id # if mutation super present then
+        @mutation_clone.evolution_id = mutation_current.evolution_id # attach clone to super
+        @mutation_clone.save # save clone
+        mutation_current.evolution_id = @mutation_clone.id # attach current to clone
+        mutation_current.save # save current
+      end # end
+    end # end
+    redirect_to @mutation_clone # redirect to clone
   end
   def go_clone_current_to_current
+    get_mutation_clone_current # generate @mutation_clone
+    mutation_current = Mutation.find(params[:id]) # get current from passed id
+    if mutation_current.mutation_id # if mutation parent present then
+      @mutation_clone.mutation_id = mutation_current.mutation_id # attach clone to parent
+      @mutation_clone.save # save clone
+    else # else
+      if mutation_current.evolution_id # if mutation super present then
+        @mutation_clone.evolution_id = mutation_current.evolution_id # attach clone to super
+        @mutation_clone.save # save clone
+      end # end
+    end # end
+    redirect_to @mutation_clone # redirect to clone
   end
   def go_clone_current_to_child
+    get_mutation_clone_current # generate @mutation_clone
+    mutation_current = Mutation.find(params[:id]) # get current from passed id
+    @mutation_clone.mutation_id = mutation_current.id # attach clone to current 
+    @mutation_clone.save # save clone
+    if mutation_current.children.exists? # if current has children
+      for mutation in mutation_current.children # attach children to clone
+        mutation.mutation_id = @mutation_clone.id # attach child to clone
+        mutation.save # save child
+      end # end
+    end # end
+    redirect_to @mutation_clone # redirect to clone
   end
 
-  def go_clone_current_only_set
-  end
+# *** go_clone_current_only_to_
 
   def go_clone_current_only_to_root
+    get_mutation_clone_current_only # get mutation_clone
+    mutation_current = Mutation.find(params[:id]) # get current
+    mutation_root = mutation_current.ancestors.last # get root
+    @mutation_clone.evolution_id = mutation_root.evolution_id # attach clone to root super
+    @mutation_clone.save # save clone
+    redirect_to @mutation_clone # redirect to clone
   end
   def go_clone_current_only_to_parent
+    get_mutation_clone_current_only # generate @mutation_clone
+    mutation_current = Mutation.find(params[:id]) # get current from passed id
+    if mutation_current.mutation_id # if mutation parent present then
+      @mutation_clone.mutation_id = mutation_current.mutation_id # attach clone to parent
+      @mutation_clone.save # save clone
+      mutation_current.mutation_id = @mutation_clone.id # attach current to clone
+      mutation_current.save # save current
+    else # else
+      if mutation_current.evolution_id # if mutation super present then
+        @mutation_clone.evolution_id = mutation_current.evolution_id # attach clone to super
+        @mutation_clone.save # save clone
+        mutation_current.evolution_id = @mutation_clone.id # attach current to clone
+        mutation_current.save # save current
+      end # end
+    end # end
+    redirect_to @mutation_clone # redirect to clone
   end
   def go_clone_current_only_to_current
+    get_mutation_clone_current_only # generate @mutation_clone
+    mutation_current = Mutation.find(params[:id]) # get current from passed id
+    if mutation_current.mutation_id # if mutation parent present then
+      @mutation_clone.mutation_id = mutation_current.mutation_id # attach clone to parent
+      @mutation_clone.save # save clone
+    else # else
+      if mutation_current.evolution_id # if mutation super present then
+        @mutation_clone.evolution_id = mutation_current.evolution_id # attach clone to super
+        @mutation_clone.save # save clone
+      end # end
+    end # end
+    redirect_to @mutation_clone # redirect to clone
   end
   def go_clone_current_only_to_child
-  end
-
-  def go_move_current_set
+    get_mutation_clone_current_only # generate @mutation_clone
+    mutation_current = Mutation.find(params[:id]) # get current from passed id
+    @mutation_clone.mutation_id = mutation_current.id # attach clone to current 
+    @mutation_clone.save # save clone
+    if mutation_current.children.exists? # if current has children
+      for mutation in mutation_current.children # attach children to clone
+        mutation.mutation_id = @mutation_clone.id # attach child to clone
+        mutation.save # save child
+      end # end
+    end # end
+    redirect_to @mutation_clone # redirect to clone
   end
 
   def go_move_current_to_root
@@ -286,9 +410,6 @@ class MutationsController < ApplicationController
   def go_move_current_to_child
   end
 
-  def go_move_current_only_set
-  end
-
   def go_move_current_only_to_root
   end
   def go_move_current_only_to_parent
@@ -296,6 +417,31 @@ class MutationsController < ApplicationController
   def go_move_current_only_to_current
   end
   def go_move_current_only_to_child
+  end
+
+  def get_mutation_clone_current # clone session set_mutation_clone_current as @mutation_clone
+    mutation_current = Mutation.find(session[:set_mutation_clone_current]) # get current
+    @mutation_clone = Mutation.new # get new clone
+    # copy current info to clone
+    @mutation_clone.save # save clone
+    then_go_clone_children mutation_current, @mutation_clone # clone children of current, to new parent end
+  end
+
+  def then_go_clone_children(pass_mutation, pass_mutation_clone)
+    for mutation in pass_mutation.children # for each child of current children
+      mutation_clone = Mutation.new # get new clone
+      mutation_clone.mutation_id = pass_mutation_clone.id # attach clone to new
+      # this is where you would copy child info to clone 
+      mutation_clone.save # save clone
+      then_go_clone_children mutation, mutation_clone # loop forever until done
+    end
+  end
+
+  def get_mutation_clone_current_only # clone session set_mutation_clone_current_only as @mutation_clone
+    mutation_current = Mutation.find(session[:set_mutation_clone_current_only]) # get current
+    @mutation_clone = Mutation.new # get new clone
+    # copy current info to clone
+    @mutation_clone.save # save clone
   end
 
   def go_destroy_current
