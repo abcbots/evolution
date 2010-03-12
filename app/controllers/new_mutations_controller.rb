@@ -135,49 +135,11 @@ class MutationsController < ApplicationController
 
 #protected
 
-
-  def get_mutations
-    @mutation_current = Mutation.find(params[:id]) # get current
-    @mutation_root = @mutation_current.ancestors.last # get root
-    @evolution = Evolution.find(@mutation_root.evolution_id)
-    if @mutation_current.evolution_id
-      @mutation_super = Mutation.find(@mutation_current.mutation_id)
-    end # get super of current
-    if @mutation_current.mutation_id
-      @mutation_parent = Mutation.find(@mutation_current.mutation_id)
-    end # get parent of current
-
-    if session([:mutation_clone_current_id])
-      @mutation_clone_current = Mutation.find(session[:mutation_clone_current_id]) 
-    end # get clone_current from session
-    if session([:mutation_clone_current_only_id])
-      @mutation_clone_current_only = Mutation.find(session[:mutation_clone_current_only_id]) 
-    end # get clone_current_only from session
-
-    if session([:mutation_move_current_id])
-      @mutation_move_current = Mutation.find(session[:mutation_move_current_id]) 
-    end # get move_current from session
-    if session([:mutation_move_current_only_id])
-      @mutation_move_current_only = Mutation.find(session[:mutation_move_current_only_id]) 
-    end # get move_current_only from session
-  end  
-
   def save_move_current
     if @mutation_move_current.save # save move_current
       flash_success # success
       session[:mutation_move_current_id] = nil # clear move
       redirect_to @mutation_move_current # redirect to current
-    else # else
-      flash_fail # fail
-      redirect_to @mutation_current # redirect to current
-    end
-  end
-  
-  def save_move_current_only
-    if @mutation_move_current_only.save # save move_current_only
-      flash_success # success
-      session[:mutation_move_current_only_id] = nil # clear move
-      redirect_to @mutation_move_current_only # redirect to current
     else # else
       flash_fail # fail
       redirect_to @mutation_current # redirect to current
@@ -224,18 +186,6 @@ class MutationsController < ApplicationController
     else
       flash[:notice] = "Update Fail, Try Again"
       redirect_to @mutation
-    end
-  end
-  def go_destroy
-    get_mutation_and_evolution_with_id_of_mutation
-    mutation_parent = mutation.ancestors.first # get mutation parent
-    @mutation.destroy # destroy mutation
-    if mutation_parent # if mutation parent exists
-      flash[:notice] = "Destruction Success" # flash success
-      redirect_to mutation_parent # redirect to parent
-    else # then mutation evolution exists
-      flash[:notice] = "Destruction Success" # flash success
-      redirect_to evolution_mutations_path(:evolution_id => @evolution.id) # goto index
     end
   end
 
@@ -394,7 +344,7 @@ class MutationsController < ApplicationController
     redirect_to @mutation_clone # redirect to clone
   end
 
-# *** go_clone_current_only_to_
+# **************************************************************************************************
 
   def go_clone_current_only_to_root
     get_mutation_clone_current_only # get mutation_clone
@@ -450,7 +400,7 @@ class MutationsController < ApplicationController
     redirect_to @mutation_clone # redirect to clone
   end
 
-
+# **************************************************************************************************
 
   def go_move_current_to_root
     get_mutations # get mutations
@@ -494,43 +444,36 @@ class MutationsController < ApplicationController
 
 
 
-  def detach_move_current_only # detach move_current
-    get_mutations
-    if @mutation_parent # if parent present
-      for mutation in @mutation_current.children # get children
-        mutation.mutation_id = @mutation_current.mutation_id # attach children to parent
-	mutation.save
-      end # end
-    else # else
-      if @mutation_super # if super present
-        for mutation in @mutation_current.children # get children
-          mutation.evolution_id = @mutation_current.evolution_id # attach children to super
-	  mutation.save
-        end # end
-      end # end
-    end # end
-    @mutation_move_current_only.mutation_id = nil
-    @mutation_move_current_only.evolution_id = nil
-    @mutation_move_current_only.save
-  end
-
   def go_move_current_only_to_root
     get_mutations # get mutations
-    detach_move_current_only # detach move_current
-    # attach root to move_current_only
-    # detach root from super
-    # save root
-    save_move_current_only # save move_current
+    get_detached_mutation @mutation_move_current_only # detach move_current_only
+    @mutation_move_current_only = @detached_mutation
+    attach_mutation_to_super @mutation_move_current_only
+    save_move_current_only # save move_current_only
+  end
+  def go_move_current_only_to_current
+    get_mutations # get mutations
+    get_detached_mutation @mutation_move_current_only # detach move_current_only
+    @mutation_move_current_only = @detached_mutation
+    attach_mutation_to_current @mutation_move_current_only
+    save_move_current_only # save move_current_only
   end
   def go_move_current_only_to_parent
     get_mutations # get mutations
-    detach_move_current_only # detach move_current
-    @mutation_move_current_only.evolution_id = @mutation_root.evolution_id # attach move_current to root
-    save_move_current_only # save move_current
-  end
-  def go_move_current_only_to_current
+    get_detached_mutation @mutation_move_current_only # detach move_current_only
+    @mutation_move_current_only = @detached_mutation
+    attach_mutation_to_parent @mutation_move_current_only
+    save_move_current_only # save move_current_only
   end
   def go_move_current_only_to_child
+    get_mutations # get mutations
+    detach_move_current_only # detach_move_current_only
+    @mutation_move_current_only.mutation_id = @mutation_current.id # attach move_current_only to current 
+    for mutation in @mutation_current.children # for current children
+      mutation.mutation_id = @mutation_move_current_only.id # attach child to move_current_only
+      mutation.save # save child
+    end # end
+    save_move_current_only # save_move_current_only
   end
 
   def get_mutation_clone_current # clone session set_mutation_clone_current as @mutation_clone
@@ -557,11 +500,122 @@ class MutationsController < ApplicationController
     # copy current info to clone
     @mutation_clone.save # save clone
   end
-
+  
   def go_destroy_current
+    get_mutations # get mutations
+    @mutation_current.destroy # destroy current
+    if @mutation_parent # if parent present
+      flash_success # flash success
+      redirect_to @mutation_parent # redirect to parent
+    else # else
+      if @mutation_super # if super present
+        flash_success # flash success
+        redirect_to @evolution.mutations # redirect to roots
+      end # end
+      flash_fail # flash fail
+    end # end
   end
   def go_destroy_current_only
+    get_mutations # get mutations
+    # detach current
+    # go destroy current
   end
+
+  # refactor1
+
+  def get_mutations(pass=params[:id])
+    @mutation_current = Mutation.find(pass) # get current
+    @mutation_root = @mutation_current.ancestors.last # get root
+    @evolution = Evolution.find(@mutation_root.evolution_id)
+    if @mutation_current.evolution_id
+      @mutation_super = Mutation.find(@mutation_current.mutation_id)
+    end # get super of current
+    if @mutation_current.mutation_id
+      @mutation_parent = Mutation.find(@mutation_current.mutation_id)
+    end # get parent of current
+
+    if session([:mutation_clone_current_id])
+      @mutation_clone_current = Mutation.find(session[:mutation_clone_current_id]) 
+    end # get clone_current from session
+    if session([:mutation_clone_current_only_id])
+      @mutation_clone_current_only = Mutation.find(session[:mutation_clone_current_only_id]) 
+    end # get clone_current_only from session
+
+    if session([:mutation_move_current_id])
+      @mutation_move_current = Mutation.find(session[:mutation_move_current_id]) 
+    end # get move_current from session
+    if session([:mutation_move_current_only_id])
+      @mutation_move_current_only = Mutation.find(session[:mutation_move_current_only_id]) 
+    end # get move_current_only from session
+  end  
+  
+  def detach_move_current_only # detach move_current_only
+    get_mutations
+    if @mutation_parent # if parent present
+      for mutation in @mutation_current.children # get children
+        mutation.mutation_id = @mutation_current.mutation_id # attach children to parent
+	mutation.save
+      end # end
+    else # else
+      if @mutation_super # if super present
+        for mutation in @mutation_current.children # get children
+          mutation.evolution_id = @mutation_current.evolution_id # attach children to super
+	  mutation.save
+        end # end
+      end # end
+    end # end
+    @mutation_move_current_only.mutation_id = nil
+    @mutation_move_current_only.evolution_id = nil
+    @mutation_move_current_only.save
+  end
+
+  def save_move_current_only
+    if @mutation_move_current_only.save # save move_current_only
+      flash_success # success
+      session[:mutation_move_current_only_id] = nil # clear move
+      redirect_to @mutation_move_current_only # redirect to current
+    else # else
+      flash_fail # fail
+      redirect_to @mutation_current # redirect to current
+    end
+  end
+  
+  def attach_mutation_to_super(pass)
+    pass.evolution_id = @mutation_super.id # attach mutation to super
+    pass.mutation_id = nil # detach mutation from parent
+    pass.save # save mutation
+  end
+  def attach_mutation_to_parent(pass)
+    pass.evolution_id = nil # detach mutation from super
+    pass.mutation_id = @mutation_parent.id # attach mutation to parent
+    pass.save # save mutation
+  end
+  def attach_mutation_to_current(pass)
+    ###
+    pass.evolution_id = nil # detach mutation from super
+    pass.mutation_id = @mutation_current.id # attach mutation to parent
+    pass.save # save mutation
+  end
+
+  def get_detached_mutation(pass)
+    if pass.mutation_id # if pass parent present
+      for mutation in pass.children # for pass children
+        mutation.evolution_id = nil # detach child from super
+        mutation.mutation_id = pass.mutation_id # pass child to parent
+        mutation.save # save mutation
+      end # end
+    else # else
+    if pass.evolution_id # if pass super present
+      for mutation in pass.children # for pass children
+        mutation.evolution_id = pass.evolution_id # attach child to super
+	mutation.mutation_id = nil # detach child from parent
+        mutation.save # save mutation
+      end # end
+    end # end
+    end # end
+    @detached_mutation = pass # get mutation detach
+  end
+
 
   # new
 
