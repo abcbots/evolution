@@ -1,0 +1,241 @@
+class MutationsController < ApplicationController
+
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+#
+# new | clone | move | destroy
+# current | current_only
+# root | parent | current | child
+# new: root | parent | current | child
+
+# clone: current | current_only
+# move: current | current_only
+
+# clone_current_to: root | parent | current | child | cancel
+# clone_current_only_to: root | parent | current | child | cancel
+
+# move_current_to: root | parent | current | child | cancel
+# move_current_only_to: root | parent | current | child | cancel
+
+# destroy: current | current_only
+#
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+#
+#                                 basics
+#
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+
+  def index
+    go_index
+  end
+  def show
+    go_show
+  end
+  def new
+    go_new
+  end
+  def create
+    go_create
+  end
+  def update
+    go_update
+  end
+  def destroy
+    go_destroy
+  end
+
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+#
+#                                   new
+#
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+
+  def new_root
+    go_new_root
+  end
+  def new_parent
+    go_new_parent
+  end
+  def new_current
+    go_new_current
+  end
+  def new_child
+    go_new_child
+  end
+
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+#
+#                                   set
+#
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+
+  def set_clone_current
+    go_set_clone_current
+  end
+  def set_clone_current_only
+    go_set_clone_current_only
+  end
+  def set_move_current
+    go_set_move_current
+  end
+  def set_move_current_only
+    go_set_move_current_only
+  end
+
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+#
+#                                  cancel
+#
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+
+  def cancel_clone_current
+    go_cancel_clone_current
+  end
+  def cancel_clone_current_only
+    go_cancel_clone_current_only
+  end
+  def cancel_move_current
+    go_cancel_move_current
+  end
+  def cancel_move_current_only
+    go_cancel_move_current_only
+  end
+
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+#
+#                                  clone
+#
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+
+  def clone_current_to_root
+    go_clone_current_to_root
+  end
+  def clone_current_to_parent
+    go_clone_current_to_parent
+  end
+  def clone_current_to_current
+    go_clont_current_to_current
+  end
+  def clone_current_to_child
+    go_clone_current_to_child
+  end
+
+  def clone_current_only_to_root
+    go_clone_current_only_to_root
+  end
+  def clone_current_only_to_parent
+    go_clone_current_only_to_parent
+  end
+  def clone_current_only_to_current
+    go_clone_current_only_to_current
+  end
+  def clone_current_only_to_child
+    go_clone_current_only_to_child
+  end
+
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+#
+#                                   move
+#
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+
+  def move_current_to_root
+    go_move_current_to_root
+  end
+  def move_current_to_parent
+    go_move_current_to_parent
+  end
+  def move_current_to_current
+    go_move_current_to_current
+  end
+  def move_current_to_child
+    go_move_current_to_child
+  end
+
+  def move_current_only_to_root
+    go_move_current_only_to_root
+  end
+  def move_current_only_to_parent
+    go_move_current_only_to_parent
+  end
+  def move_current_only_to_current
+    go_move_current_only_to_current
+  end
+  def move_current_only_to_child
+    go_move_current_only_to_child
+  end
+
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+#
+#                                 destroy
+#
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+
+  def destroy_current
+    go_destroy_current
+  end
+  def destroy_current_only
+    go_destroy_current_only
+  end
+
+#protected
+
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+#
+#                                 helpers                     
+#
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+
+# get_mutations
+# @mutation_super(if exists)
+# @mutation_root
+# @mutation_parent(if exists)
+# @mutation_current
+# @mutation_move_current(if exists)
+# @mutation_move_current_only(if exists)
+# @mutation_clone_current(if exists)
+# @mutation_clone_current_only(if exists)
+
+  def get_mutations(pass=params[:id])
+    @mutation_root = @mutation_current.ancestors.last # get root
+    @mutation_current = Mutation.find(pass) # get current
+    if @mutation_current.evolution_id
+      @mutation_super = Evolution.find(@mutation_current.evolution_id)
+    end # get super of current
+    if @mutation_current.mutation_id
+      @mutation_parent = Mutation.find(@mutation_current.mutation_id)
+    end # get parent of current
+
+    if session([:mutation_clone_current_id])
+      @mutation_clone_current = Mutation.find(session[:mutation_clone_current_id]) 
+    end # get clone_current from session
+    if session([:mutation_clone_current_only_id])
+      @mutation_clone_current_only = Mutation.find(session[:mutation_clone_current_only_id]) 
+    end # get clone_current_only from session
+
+    if session([:mutation_move_current_id])
+      @mutation_move_current = Mutation.find(session[:mutation_move_current_id]) 
+    end # get move_current from session
+    if session([:mutation_move_current_only_id])
+      @mutation_move_current_only = Mutation.find(session[:mutation_move_current_only_id]) 
+  end
+
+# subject = the mutation that will be re-assigned
+# object = the mutation that will remain un-changed
+# whole = indicates if the subject includes all children
+
+  def detach_mutation_from_mutation(subject, object, whole=true)
+  end
+
+  def attach_mutation_to_mutation(subject, object, whole=true)
+  end
+
+  def flash_success
+    flash[:notice] = "Success" # flash success
+  end
+  def flash_fail
+    flash[:error] = "Fail, try again" # flash fail
+  end
+
+end
