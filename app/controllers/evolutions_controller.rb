@@ -1,9 +1,11 @@
 class EvolutionsController < ApplicationController
   def index
+    @title = "Evolutions"
     @evolutions = Evolution.all
   end
   
   def show
+    @title = "Evolution"
     @evolution = Evolution.find(params[:id])
   end
   

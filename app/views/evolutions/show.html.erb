@@ -1,7 +1,15 @@
-<% title @title  %>
+<fieldset><legend><%= render :partial => 'layouts/evolutions/menu' %></legend>
 
 <%= render :partial => @evolution %>
 
+<% if @evolution.mutations %>
+
+<fieldset><legend><%= render :partial => 'layouts/mutations/menu' %></legend>
+  <%= render :partial => @evolution.mutations %>
+</fieldset>
+
+<% end %>
+
 <%= render :partial => 'children', :locals => { :evolution => @evolution } %>
 
-
+</fieldset>

@@ -1,4 +1,4 @@
-# Clone Current: Complete | One # layouts/mutations/clone
+# Clone: Current | Current uni # layouts/mutations/clone
 <% if @mutation %>
   <p>
   <fieldset><legend><b>Clone</b></legend>

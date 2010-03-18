@@ -1,5 +1,3 @@
-# New: Root | Parent | Current | Child # layouts/mutatons/new
-
 <% if @evolution %>
   <p>
   <fieldset><legend><b>New</b></legend>

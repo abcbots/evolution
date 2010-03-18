@@ -1,7 +1,6 @@
 <% if @mutation %>
-  <%= toggle_div_id "Destroy", "destroy_mutation" %>
-    <ul>
-    <fieldset><legend><b>Destroy Mutation</b></legend>
+  <p>
+    <fieldset><legend><b>Destroy</b></legend>
       <%= link_to "Current", 
         :confirm => "Delete current mutation only?", 
 	:controller => 'mutations', 
@@ -10,9 +9,8 @@
       | <%= link_to "Current & Past", @mutation, 
         :confirm => "Delete this mutation and all previous mutations to this mutation?", 
 	:method => :delete %>
-  </ul>
-  </fieldset>
-  </div>
+    </fieldset>
+  </p>
 <% end %>
     
 

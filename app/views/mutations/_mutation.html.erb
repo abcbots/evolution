@@ -1,11 +1,6 @@
-<p>
 <% div_for mutation do %>
   <b><%= link_to_unless_current mutation.id, mutation_path(mutation) %></b>
       <% mutation.ancestors.each do |mutation_ancestors| %>>
         <%= link_to_unless_current mutation_ancestors.id, mutation_path(mutation_ancestors) %>
       <% end %>
-      <% if @evolution %>
-        <b>> <%= link_to_unless_current @evolution.id, evolution_mutations_path(@evolution) %></b>
-      <% end %>
 <% end %>
-</p>

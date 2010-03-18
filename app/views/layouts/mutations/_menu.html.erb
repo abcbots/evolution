@@ -1,0 +1,7 @@
+<% if @evolution.mutations %>
+    Mutations: <%= toggle_div "Tree", "mutation" %>
+    | <%= toggle_div "New", "mutation" %>
+    | <%= toggle_div "Clone", "mutation" %>
+    | <%= toggle_div "Move", "mutation" %>
+    | <%= toggle_div "Destroy", "mutation" %>
+<% end %>

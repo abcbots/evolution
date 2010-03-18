@@ -1,8 +1,6 @@
-<p>
 <% div_for evolution do %>
   <%= link_to_unless_current evolution.id, evolution_path(evolution) %>
       <% evolution.ancestors.each do |evolution_ancestors| %>
         : <%= link_to_unless_current evolution_ancestors.id, evolution_path(evolution_ancestors) %>
       <% end %>
 <% end %>
-</p>
