@@ -9,7 +9,7 @@
   </head>
   <body>
   <fieldset>
-    <legend>www.YourNameHere.com/<%= @title %></legend>
+    <legend><%= render :partial => 'layouts/menu' %></legend>
 
       <%- flash.each do |name, msg| -%>
         <%= content_tag :div, msg, :id => "flash_#{name}" %>
