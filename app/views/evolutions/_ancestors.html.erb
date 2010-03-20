@@ -1,0 +1,14 @@
+<% evolution_current = evolution %>
+  <% evolution.ancestors.each do |evolution| %>
+    <fieldset><legend><%= link_to_unless_current evolution.id, evolution %></legend>
+  <% end %>
+
+<fieldset><legend><b><%= evolution_current.id %></b></legend>
+  <ul>
+    <%= render :partial => 'children', :locals => {:evolution => evolution_current} %>
+  </ul>
+</fieldset>
+
+<% evolution_current.ancestors.each do |evolution| %>
+  </fieldset>
+<% end %>

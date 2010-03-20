@@ -1,0 +1,17 @@
+<!-- for evolution in evolution_current children (passed in)
+open fieldset for evolution children
+link to evolution by id
+if evolution children
+toggle with * 
+loop -->
+<% for evolution in evolution_current.children %>
+  <p><fieldset><legend>Evolution children</legend>
+    <%= link_to_unless_current evolution.id, evolution %>
+    <% if !evolution.children.empty? %>
+      <%= toggle_div "*", evolution.id %></sup>
+      <%= toggle_div_id "*", evolution.id %> 
+        <%= render :partial => 'children', :locals => { :evolution_current => evolution } %>
+      </div>
+    <% end %>
+  </fieldset></p>
+<% end %>
