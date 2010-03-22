@@ -24,7 +24,7 @@ class MutationsController < ApplicationController
 
   def index
     @evolution = Evolution.find(params[:evolution_id]
-    @mutations = @evolution.mutations.all
+    #@mutations = @evolution.mutations.all
   end
   def show
     get_mutations
