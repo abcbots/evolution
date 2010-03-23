@@ -1,0 +1,35 @@
+<p>@evolution = <%= @evolution.id %>
+<p><%= render :partial => 'ancestors', 
+  :locals => {:evolution => @evolution} %>
+  <p>New: 
+    <%= link_to_unless_current "root", 
+      :action => 'new_root',
+      :id => @evolution.id %>
+    | <%= link_to_unless_current "parent",
+      :action => 'new_parent',
+      :id => @evolution.id %>
+    | <%= link_to_unless_current "current",
+      :action => 'new_current',
+      :id => @evolution.id %>
+    | <%= link_to_unless_current "children",
+      :action => 'new_children',
+      :id => @evolution.id %>
+    | <%= link_to_unless_current "child",
+      :action => 'new_child',
+      :id => @evolution.id %>
+
+  <p>Set clone:
+    <%= link_to_unless_current "whole",
+      :action => 'set_clone',
+      :id => @evolution.id %>
+    | <%= link_to_unless_current "part",
+      :action => 'set_clone_uni',
+      :id => @evolution.id %>
+
+  <p>Set move:
+    <%= link_to_unless_current "whole",
+      :action => 'set_move',
+      :id => @evolution.id %>
+    | <%= link_to_unless_current "part",
+      :action => 'set_move_uni',
+      :id => @evolution.id %>

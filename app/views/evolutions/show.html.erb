@@ -1,97 +1,25 @@
 <p><fieldset><legend>Evolution</legend>
 
-
 <% if @evolution_root %>
-  <p>@evolution_root = <%= @evolution_root.id %>
+  <%= render :partial => 'evolutions/if/root' %>
 <% end %>
-
 <% if @evolution_parent %>
-  <p>@evolution_parent = <%= @evolution_parent.id %>
+  <%= render :partial => 'evolutions/if/parent' %>
 <% end %>
-
 <% if @evolution %>
-  <p>@evolution = <%= @evolution.id %>
-  <p>
-        <%= render :partial => 'ancestors', :locals => {:evolution => @evolution} %>
-
-  <p>New: 
-    <%= link_to_unless_current "root", 
-      :action => 'new_root',
-      :id => @evolution.id %>
-    | <%= link_to_unless_current "parent",
-      :action => 'new_parent',
-      :id => @evolution.id %>
-    | <%= link_to_unless_current "current",
-      :action => 'new_current',
-      :id => @evolution.id %>
-    | <%= link_to_unless_current "children",
-      :action => 'new_children',
-      :id => @evolution.id %>
-    | <%= link_to_unless_current "child",
-      :action => 'new_child',
-      :id => @evolution.id %>
-
-  <p>Set clone:
-    <%= link_to_unless_current "whole",
-      :action => 'set_clone',
-      :id => @evolution.id %>
-    | <%= link_to_unless_current "part",
-      :action => 'set_clone_uni',
-      :id => @evolution.id %>
-
-  <p>Set move:
-    <%= link_to_unless_current "whole",
-      :action => 'set_move',
-      :id => @evolution.id %>
-    | <%= link_to_unless_current "part",
-      :action => 'set_move_uni',
-      :id => @evolution.id %>
+  <%= render :partial => 'evolutions/if/current' %>
 <% end %>
-
 <% if @evolution_move %>
-  <p>@evolution_move = <%= @evolution_move.id %>
-  <p>Move to position:
-    <%= link_to_unless_current "root", 
-      :action => 'move_to_root',
-      :id => @evolution.id %>
-    | <%= link_to_unless_current "parent",
-      :action => 'move_to_parent',
-      :id => @evolution.id %>
-    | <%= link_to_unless_current "current",
-      :action => 'move_to_current',
-      :id => @evolution.id %>
-    | <%= link_to_unless_current "children",
-      :action => 'move_to_children',
-      :id => @evolution.id %>
-    | <%= link_to_unless_current "child",
-      :action => 'move_to_child',
-      :id => @evolution.id %>
-
-    | <%= link_to_unless_current "cancel",
-      :action => 'cancel_move',
-      :id => @evolution.id %>
+  <%= render :partial => 'evolutions/if/move' %>
 <% end %>
-
 <% if @evolution_move_uni %>
-  <p>@evolution_move_uni = <%= @evolution_move_uni.id %>
-  <p>Move part:
-    | <%= link_to_unless_current "cancel",
-      :action => 'cancel_move_uni',
-      :id => @evolution.id %>
+  <%= render :partial => 'evolutions/if/move_uni' %>
 <% end %>
 <% if @evolution_clone %>
-  <p>@evolution_clone = <%= @evolution_clone.id %>
-  <p>Clone:
-    | <%= link_to_unless_current "cancel",
-      :action => 'cancel_clone',
-      :id => @evolution.id %>
+  <%= render :partial => 'evolutions/if/clone' %>
 <% end %>
 <% if @evolution_clone_uni %>
-  <p>@evolution_clone_uni = <%= @evolution_clone_uni.id %>
-  <p>Clone part:
-    | <%= link_to_unless_current "cancel",
-      :action => 'cancel_clone_uni',
-      :id => @evolution.id %>
+  <%= render :partial => 'evolutions/if/clone_uni' %>
 <% end %>
 
 </fieldset></p>

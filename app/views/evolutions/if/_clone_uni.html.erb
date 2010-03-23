@@ -1,0 +1,6 @@
+  <p>@evolution_clone_uni = <%= @evolution_clone_uni.id %>
+  <p>Clone part:
+    | <%= link_to_unless_current "cancel",
+      :action => 'cancel_clone_uni',
+      :id => @evolution.id %>
+

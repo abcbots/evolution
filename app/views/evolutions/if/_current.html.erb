@@ -1,0 +1,7 @@
+<p>@evolution = <%= @evolution.id %>
+  <%= render :partial => 'evolutions/if/new' %>
+<p><%= render :partial => 'ancestors', 
+  :locals => {:evolution => @evolution} %>
+
+
+
