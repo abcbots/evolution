@@ -1,0 +1,7 @@
+  <p>Set move:
+    <%= link_to_unless_current "all",
+      :action => 'set_move',
+      :id => @evolution.id %>
+    | <%= link_to_unless_current "one",
+      :action => 'set_move_uni',
+      :id => @evolution.id %>

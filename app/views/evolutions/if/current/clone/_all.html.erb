@@ -1,0 +1,9 @@
+  <p>@evolution_clone = <%= @evolution_clone.id %>
+  <p>Clone to:
+    | <%= link_to "root",
+      :action => "clone_to_root",
+      :id => @evolution.id %>
+    | <%= link_to "cancel",
+      :action => "cancel_clone",
+      :id => @evolution.id %>
+
