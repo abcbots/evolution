@@ -227,15 +227,15 @@ class EvolutionsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def copy_over(pass_from, pass_to)
+  def copy_over(pass1, pass2)
     #...
   end
-  def clone_children(pass_from, pass_to)
-    pass_from.children.each do |evolution|
+  def clone_children(pass1, pass2)
+    pass1.children.each do |evolution|
       evolution_new = Evolution.new
       copy_over evolution, evolution_new
       evolution_new.save
-      attach_to evolution_new, pass_to
+      attach_to evolution_new, pass2
       clone_children evolution, evolution_new
     end
   end
@@ -270,14 +270,14 @@ class EvolutionsController < ApplicationController
     place_at_current @evolution_clone
     save_clone
   end
-  def clone_to_child
-    make_clone
-    place_at_child @evolution_clone
-    save_clone
-  end
   def clone_to_children
     make_clone
     place_at_children @evolution_clone
+    save_clone
+  end
+  def clone_to_child
+    make_clone
+    place_at_child @evolution_clone
     save_clone
   end
   
@@ -328,15 +328,20 @@ class EvolutionsController < ApplicationController
     place_at_current @evolution_move
     save_move
   end
+  def move_to_children
+    get_evolutions
+    place_at_children @evolution_move
+    save_move
+  end
   def move_to_child
     get_evolutions
     place_at_child @evolution_move
     save_move
   end
-  def move_to_children
-    get_evolutions
-    place_at_children @evolution_move
-    save_move
+  def move_children_to(pass)
+    @evolution.children.each do |child| # for children
+      attach_to child, pass # attach child to pass
+    end # end
   end
 
   def move_uni_to_root
@@ -439,8 +444,9 @@ class EvolutionsController < ApplicationController
     pass.save
   end
   def place_at_children(pass)
-    attach_children @mutation, pass
-    attach_to pass, @mutation
+    move_children_to pass
+    place_at_child pass
+    pass.save
   end
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
@@ -483,9 +489,9 @@ class EvolutionsController < ApplicationController
     end
   end
 
-# pass_from = the evolution that will be re-assigned
-# pass_to = the evolution that will remain un-changed
-# whole = indicates if the pass_from includes all children
+# pass1 = the evolution that will be re-assigned
+# pass2 = the evolution that will remain un-changed
+# whole = indicates if the pass1 includes all children
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
@@ -493,16 +499,16 @@ class EvolutionsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def distill_evolution(pass_from)
-    if pass_from.evolution_id # if pass_from has parent
-      pass_from_parent = Evolution.find(pass_from.evolution_id)
-      attach_children pass_from, pass_from_parent
-    else # pass_from has super
-      pass_from_super = Evolution.find(pass_from.evolution_id)
-      attach_children pass_from, pass_from_super, true
+  def distill_evolution(pass1)
+    if pass1.evolution_id # if pass1 has parent
+      pass1_parent = Evolution.find(pass1.evolution_id)
+      attach_children_to pass1, pass1_parent
+    else # pass1 has super
+      pass1_super = Evolution.find(pass1.evolution_id)
+      attach_children_to pass1, pass1_super, true
     end
-    pass_from.evolution_id = pass_from.evolution_id = nil
-    pass_from.save
+    pass1.evolution_id = pass1.evolution_id = nil
+    pass1.save
   end
   
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
@@ -511,27 +517,21 @@ class EvolutionsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def attach_to(pass_from, pass_to, pass_to_is_super=false)
-    if pass_to_is_super
-      pass_from.evolution_id = nil
-      pass_from.evolution_id = pass_to.id
-      pass_from.save
-    else # pass_to is parent
-      pass_from.evolution_id = pass_to.id
-      #pass_from.evolution_id = nil
-      pass_from.save
+  def attach_to(pass1, pass2, pass2_is_super=false)
+    if pass2_is_super
+      pass1.evolution_id = nil
+      pass1.evolution_id = pass2.id
+      pass1.save
+    else # pass2 is parent
+      pass1.evolution_id = pass2.id
+      #pass1.evolution_id = nil
+      pass1.save
     end
   end
 
-  def attach_children(pass_from, pass_to, pass_to_is_super=false)
-    if pass_to_is_super
-      for evolution in pass_from.children
-        attach_to evolution, pass_to, pass_to_is_super
-      end
-    else # pass_to is parent
-      for evolution in pass_from.children
-        attach_to evolution, pass_to 
-      end
+  def attach_children_to(pass1, pass2)
+    for evolution in pass1.children # attach children to pass
+      attach_to evolution, pass2 
     end
   end
 

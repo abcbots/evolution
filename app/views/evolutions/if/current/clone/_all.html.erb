@@ -1,4 +1,5 @@
   <p>@evolution_clone = <%= @evolution_clone.id %>
+
   <p>Clone to:
     [<%= link_to "root",
       :action => "clone_to_root",
@@ -9,11 +10,31 @@
     [<%= link_to "current",
       :action => "clone_to_current",
       :id => @evolution.id %>]
-    [<%= link_to "current",
-      :action => "clone_to_current",
-      :id => @evolution.id %>]
     [<%= link_to "children",
       :action => "clone_to_children",
+      :id => @evolution.id %>]
+    [<%= link_to "child",
+      :action => "clone_to_child",
+      :id => @evolution.id %>]
+    [<%= link_to "cancel",
+      :action => "cancel_clone",
+      :id => @evolution.id %>]
+
+  <p>Clone to:
+    [<%= link_to "starter",
+      :action => "clone_to_root",
+      :id => @evolution.id %>]
+    [<%= link_to "after",
+      :action => "clone_to_parent",
+      :id => @evolution.id %>]
+    [<%= link_to "now",
+      :action => "clone_to_current",
+      :id => @evolution.id %>]
+    [<%= link_to "before-before",
+      :action => "clone_to_children",
+      :id => @evolution.id %>]
+    [<%= link_to "before",
+      :action => "clone_to_child",
       :id => @evolution.id %>]
     [<%= link_to "cancel",
       :action => "cancel_clone",
