@@ -334,32 +334,24 @@ class EvolutionsController < ApplicationController
     save_move
   end
   def move_to_parent
-    if @not_child_or_current
-      get_evolutions
-      place_at_parent @evolution_move
-      save_move
-    end
+    get_evolutions
+    place_at_parent @evolution_move
+    save_move
   end
   def move_to_current
-    if @not_child_or_current
-      get_evolutions
-      place_at_current @evolution_move
-      save_move
-    end
+    get_evolutions
+    place_at_current @evolution_move
+    save_move
   end
   def move_to_children
-    if @not_child_or_current
-      get_evolutions
-      place_at_children @evolution_move
-      save_move
-    end
+    get_evolutions
+    place_at_children @evolution_move
+    save_move
   end
   def move_to_child
-    if @not_child_or_current # if not a child or the current
-      get_evolutions # get evolutions
-      place_at_child @evolution_move # place move at child position
-      save_move # save move
-    end
+    get_evolutions # get evolutions
+    place_at_child @evolution_move # place move at child position
+    save_move # save move
   end
 
   def move_children_to(pass)
@@ -459,9 +451,11 @@ class EvolutionsController < ApplicationController
   end
   def place_at_current(pass)
     if @evolution_parent # if parent 
-      attach_to pass, @evolution_parent
-    end
-    pass.save
+      attach_to pass, @evolution_parent # attach pass to parent
+    else # else, is root
+      pass.evolution_id = nil # erase parent
+    end # end 
+    pass.save # save pass
   end
   def place_at_child(pass)
     attach_to pass, @evolution
