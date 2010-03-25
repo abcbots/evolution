@@ -4,7 +4,13 @@
 
 <fieldset>
 <legend>
-<%= link_to_unless_current evolution.id, evolution %>
+
+<% if evolution == @evolution_move_uni || @evolution_move_uni || @evolution_clone || @evolution_clone_uni %>
+  <b><%= link_to_unless_current evolution.id, evolution %></b>
+<% else %>
+  <%= link_to_unless_current evolution.id, evolution %>
+<% end %>
+
 </legend>
 
 <%- if !evolution.children.empty? -%>
@@ -13,7 +19,6 @@
 <%= render :partial => 'children', 
   :locals => { :evolution => evolution } %>
 </ul>
-
 
 <%- end -%>
 </fieldset>

@@ -1,6 +1,5 @@
-  <p><%= @not_child_or_current %>
-  <p>@evolution_move = <%= @evolution_move.id %>
-  <p>Move to position:
+
+  <p>Move (<%= @evolution_move.id %>) to position:
     [<%= link_to_unless_current "root", 
       :action => 'move_to_root',
       :id => @evolution.id %>]
@@ -21,5 +20,4 @@
     [<%= link_to_unless_current "cancel",
       :action => 'cancel_move',
       :id => @evolution.id %>]
-
 

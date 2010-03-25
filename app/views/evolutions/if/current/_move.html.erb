@@ -1,0 +1,7 @@
+<% if @evolution_move %>
+  <%= render :partial => 'evolutions/if/current/move/all' %>
+<% elsif @evolution_move_uni %>
+  <%= render :partial => 'evolutions/if/current/move/one' %>
+<% else %>
+  <%= render :partial => 'evolutions/if/current/move/set' %>
+<% end %>

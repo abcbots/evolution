@@ -1,16 +1,16 @@
   <p>New: 
-    <%= link_to_unless_current "root", 
+    [<%= link_to_unless_current "root", 
       :action => 'new_root',
-      :id => @evolution.id %>
-    | <%= link_to_unless_current "parent",
+      :id => @evolution.id %>]
+    [<%= link_to_unless_current "parent",
       :action => 'new_parent',
-      :id => @evolution.id %>
-    | <%= link_to_unless_current "current",
+      :id => @evolution.id %>]
+    [<%= link_to_unless_current "current",
       :action => 'new_current',
-      :id => @evolution.id %>
-    | <%= link_to_unless_current "children",
+      :id => @evolution.id %>]
+    [<%= link_to_unless_current "children",
       :action => 'new_children',
-      :id => @evolution.id %>
-    | <%= link_to_unless_current "child",
+      :id => @evolution.id %>]
+    [<%= link_to_unless_current "child",
       :action => 'new_child',
-      :id => @evolution.id %>
+      :id => @evolution.id %>]

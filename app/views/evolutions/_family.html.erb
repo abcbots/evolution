@@ -1,0 +1,39 @@
+<% evolution_current = evolution %>
+
+<% evolution.ancestors.reverse.each do |evolution| %>
+
+<ul>
+<fieldset>
+<legend>
+
+<% if evolution == @evolution_move || @evolution_move_uni || @evolution_clone || @evolution_clone_uni %>
+  <strong>
+<% end %>
+
+  <%= link_to_unless_current evolution.id, evolution %>
+
+<% if evolution == @evolution_move || @evolution_move_uni || @evolution_clone || @evolution_clone_uni %>
+  </strong>
+<% end %>
+
+</legend>
+<% end %>
+
+
+<ul>
+<fieldset>
+<legend>
+<b><%= evolution_current.id %></b>
+</legend>
+
+
+<ul>
+<%= render :partial => 'children', 
+  :locals => {:evolution => evolution_current} %>
+</ul>
+</fieldset>
+
+<% evolution_current.ancestors.each do |evolution| %>
+</fieldset>
+</ul>
+<% end %>

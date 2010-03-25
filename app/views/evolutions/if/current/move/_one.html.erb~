@@ -1,4 +1,4 @@
-  <p>Move single (<strong><%= @evolution_move_uni.id %></strong>) to position:
+  <p>Move one (<%= @evolution_move_uni.id %>) to position:
     [<%= link_to_unless_current "root", 
       :action => 'move_uni_to_root',
       :id => @evolution.id %>]

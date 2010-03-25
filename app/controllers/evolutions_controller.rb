@@ -313,18 +313,20 @@ class EvolutionsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def childship(pass1, pass2)
-    @not_child_or_current = true
-    if pass1 == pass2
-      @not_child_or_current = false
-      return
+  def childship(pass1, pass2) # check for childship
+    @not_child_or_current = true # childship true
+    if pass1 == pass2 # if one equals two
+      @not_child_or_current = false # childship false
+    else
+      childship_children pass1, pass2 # check children
     end
+  end
+  def childship_children(pass1, pass2)
     pass1.children.each do |child|
       if child == pass2
         @not_child_or_current = false
-	return
       end
-      childship child, pass2
+      childship_children child, pass2
     end
   end
     
@@ -467,52 +469,6 @@ class EvolutionsController < ApplicationController
     pass.save
   end
 
-# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
-#
-#                              ***get_evolutions 
-#
-# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
-
-
-# get_evolutions
-## @evolution_super(if exists)
-# @evolution_root
-# @evolution_parent(if exists)
-# @evolution
-# @evolution_move(if exists)
-# @evolution_move_uni(if exists)
-# @evolution_clone(if exists)
-# @evolution_clone_uni(if exists)
-
-  def get_evolutions(pass=params[:id])
-    @evolution = Evolution.find(pass) # get current
-    @evolution_root = @evolution.ancestors.last # get root
-    #if @evolution.evolution_id
-      #@evolution_super = Evolution.find(@evolution.evolution_id)
-    #end # get super of current
-    if @evolution.evolution_id
-      @evolution_parent = Evolution.find(@evolution.evolution_id)
-    end # get parent of current
-    if session[:evolution_clone_id]
-      @evolution_clone = Evolution.find(session[:evolution_clone_id]) 
-    end # get clone_current from session
-    if session[:evolution_clone_uni_id]
-      @evolution_clone_uni = Evolution.find(session[:evolution_clone_uni_id]) 
-    end # get clone_current_uni from session
-    if session[:evolution_move_id]
-      @evolution_move = Evolution.find(session[:evolution_move_id]) 
-      if @evolution # if current
-        childship @evolution_move, @evolution # check for childship
-      end # end
-    end # get move_current from session
-    if session[:evolution_move_uni_id]
-      @evolution_move_uni = Evolution.find(session[:evolution_move_uni_id]) 
-      if @evolution # if current
-        childship @evolution_move_uni, @evolution # check for childship
-      end # end
-    end
-  end
-
 # pass1 = the evolution that will be re-assigned
 # pass2 = the evolution that will remain un-changed
 # whole = indicates if the pass1 includes all children
@@ -584,6 +540,53 @@ class EvolutionsController < ApplicationController
       redirect_to @evolution
     end
   end 
+
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+#
+#                              ***get_evolutions 
+#
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+
+
+# get_evolutions
+## @evolution_super(if exists)
+# @evolution_root
+# @evolution_parent(if exists)
+# @evolution
+# @evolution_move(if exists)
+# @evolution_move_uni(if exists)
+# @evolution_clone(if exists)
+# @evolution_clone_uni(if exists)
+
+  def get_evolutions(pass=params[:id])
+    @evolution = Evolution.find(pass) # get current
+    @evolution_root = @evolution.ancestors.last # get root
+    #if @evolution.evolution_id
+      #@evolution_super = Evolution.find(@evolution.evolution_id)
+    #end # get super of current
+    if @evolution.evolution_id
+      @evolution_parent = Evolution.find(@evolution.evolution_id)
+    end # get parent of current
+    if session[:evolution_clone_id]
+      @evolution_clone = Evolution.find(session[:evolution_clone_id]) 
+    end # get clone_current from session
+    if session[:evolution_clone_uni_id]
+      @evolution_clone_uni = Evolution.find(session[:evolution_clone_uni_id]) 
+    end # get clone_current_uni from session
+    if session[:evolution_move_id]
+      @evolution_move = Evolution.find(session[:evolution_move_id]) 
+      if @evolution # if current
+        childship @evolution_move, @evolution # check for childship
+      end # end
+    end # get move_current from session
+    if session[:evolution_move_uni_id]
+      @evolution_move_uni = Evolution.find(session[:evolution_move_uni_id]) 
+      if @evolution # if current
+        childship @evolution_move_uni, @evolution # check for childship
+      end # end
+    end
+  end
+
 
 
 end

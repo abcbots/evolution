@@ -1,4 +1,4 @@
-<% div_for evolution do %>
+<% div_for evolution do # for each evolution %>
   <%= link_to_unless_current evolution.id, evolution_path(evolution) %>
       <% evolution.ancestors.each do |evolution_ancestors| %>
         : <%= link_to_unless_current evolution_ancestors.id, evolution_path(evolution_ancestors) %>

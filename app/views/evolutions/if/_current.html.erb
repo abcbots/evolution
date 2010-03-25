@@ -1,9 +1,9 @@
 <p>@evolution = <%= @evolution.id %>
+<p><%= render :partial => 'family', :locals => {:evolution => @evolution} %>
   <%= render :partial => 'evolutions/if/current/new' %>
   <%= render :partial => 'evolutions/if/current/clone' %>
   <%= render :partial => 'evolutions/if/current/move' %>
-<p><%= render :partial => 'ancestors', 
-  :locals => {:evolution => @evolution} %>
+
 
 
 
