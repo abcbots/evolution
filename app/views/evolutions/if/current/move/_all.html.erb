@@ -1,21 +1,25 @@
+  <p><%= @not_child_or_current %>
   <p>@evolution_move = <%= @evolution_move.id %>
   <p>Move to position:
-    <%= link_to_unless_current "root", 
+    [<%= link_to_unless_current "root", 
       :action => 'move_to_root',
-      :id => @evolution.id %>
-    | <%= link_to_unless_current "parent",
+      :id => @evolution.id %>]
+  <% if @not_child_or_current %>
+    [<%= link_to_unless_current "parent",
       :action => 'move_to_parent',
-      :id => @evolution.id %>
-    | <%= link_to_unless_current "current",
+      :id => @evolution.id %>]
+    [<%= link_to_unless_current "current",
       :action => 'move_to_current',
-      :id => @evolution.id %>
-    | <%= link_to_unless_current "children",
+      :id => @evolution.id %>]
+    [<%= link_to_unless_current "children",
       :action => 'move_to_children',
-      :id => @evolution.id %>
-    | <%= link_to_unless_current "child",
+      :id => @evolution.id %>]
+    [<%= link_to_unless_current "child",
       :action => 'move_to_child',
-      :id => @evolution.id %>
-    | <%= link_to_unless_current "cancel",
+      :id => @evolution.id %>]
+  <% end %>
+    [<%= link_to_unless_current "cancel",
       :action => 'cancel_move',
-      :id => @evolution.id %>
+      :id => @evolution.id %>]
+
 

@@ -18,7 +18,7 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                 basics
+#                                 ***basics
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -72,7 +72,7 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                   save 
+#                                   ***save 
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -131,7 +131,7 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                   new
+#                                   ***new
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -169,7 +169,7 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                   set
+#                                   ***set
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -196,7 +196,7 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                  cancel
+#                                  ***cancel
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -223,7 +223,7 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                  clone
+#                                  ***clone
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -309,35 +309,59 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                   move
+#                                   *move
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
+  def childship(pass1, pass2)
+    @not_child_or_current = true
+    if pass1 == pass2
+      @not_child_or_current = false
+      return
+    end
+    pass1.children.each do |child|
+      if child == pass2
+        @not_child_or_current = false
+	return
+      end
+      childship child, pass2
+    end
+  end
+    
   def move_to_root
     get_evolutions
     place_at_root @evolution_move
     save_move
   end
   def move_to_parent
-    get_evolutions
-    place_at_parent @evolution_move
-    save_move
+    if @not_child_or_current
+      get_evolutions
+      place_at_parent @evolution_move
+      save_move
+    end
   end
   def move_to_current
-    get_evolutions
-    place_at_current @evolution_move
-    save_move
+    if @not_child_or_current
+      get_evolutions
+      place_at_current @evolution_move
+      save_move
+    end
   end
   def move_to_children
-    get_evolutions
-    place_at_children @evolution_move
-    save_move
+    if @not_child_or_current
+      get_evolutions
+      place_at_children @evolution_move
+      save_move
+    end
   end
   def move_to_child
-    get_evolutions
-    place_at_child @evolution_move
-    save_move
+    if @not_child_or_current # if not a child or the current
+      get_evolutions # get evolutions
+      place_at_child @evolution_move # place move at child position
+      save_move # save move
+    end
   end
+
   def move_children_to(pass)
     @evolution.children.each do |child| # for children
       attach_to child, pass # attach child to pass
@@ -377,7 +401,7 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                 destroy
+#                                 ***destroy
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -413,7 +437,7 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                 place_at 
+#                                 ***place 
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -451,7 +475,7 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                              get_evolutions 
+#                              ***get_evolutions 
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -483,9 +507,15 @@ class EvolutionsController < ApplicationController
     end # get clone_current_uni from session
     if session[:evolution_move_id]
       @evolution_move = Evolution.find(session[:evolution_move_id]) 
+      if @evolution # if current
+        childship @evolution_move, @evolution # check for childship
+      end # end
     end # get move_current from session
     if session[:evolution_move_uni_id]
       @evolution_move_uni = Evolution.find(session[:evolution_move_uni_id]) 
+      if @evolution # if current
+        childship @evolution_move_uni, @evolution # check for childship
+      end # end
     end
   end
 
@@ -495,7 +525,7 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                 distill 
+#                                 ***distill 
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -513,7 +543,7 @@ class EvolutionsController < ApplicationController
   
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                  attach 
+#                                  ***attach 
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -537,7 +567,7 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                  flash 
+#                                  ***flash 
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
