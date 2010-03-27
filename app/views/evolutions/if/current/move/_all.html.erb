@@ -1,23 +1,26 @@
+<% if @evolution_move %>
+<b>[</b>
+  <b>Move <%= @evolution_move.id %></b> to:
+    [<i><%= link_to "solo", :action => 'move_to_move_uni', :id => @evolution.id %></i>]
+    [<%= link_to "root", :action => 'move_to_root', :id => @evolution.id %>]
 
-  <p>Move (<%= @evolution_move.id %>) to position:
-    [<%= link_to_unless_current "root", 
-      :action => 'move_to_root',
-      :id => @evolution.id %>]
-  <% if @not_child_or_current %>
-    [<%= link_to_unless_current "parent",
-      :action => 'move_to_parent',
-      :id => @evolution.id %>]
-    [<%= link_to_unless_current "current",
-      :action => 'move_to_current',
-      :id => @evolution.id %>]
-    [<%= link_to_unless_current "children",
-      :action => 'move_to_children',
-      :id => @evolution.id %>]
-    [<%= link_to_unless_current "child",
-      :action => 'move_to_child',
-      :id => @evolution.id %>]
+  <% unless @child_or_current %>
+  <% if @evolution == @evolution_root %>
+
+    [<%= link_to_unless_current "parent", :action => 'move_to_parent', :id => @evolution.id %>]
+    [<%= link_to_unless_current "current", :action => 'move_to_current', :id => @evolution.id %>]
+
   <% end %>
-    [<%= link_to_unless_current "cancel",
-      :action => 'cancel_move',
-      :id => @evolution.id %>]
+    
+  <% if @evolution != @evolution_move.ancestors.first %>
+    
+    [<%= link_to_unless_current "children", :action => 'move_to_children', :id => @evolution.id %>]
+    [<%= link_to_unless_current "child", :action => 'move_to_child', :id => @evolution.id %>]
+
+  <% end %>
+  <% end %>
+
+    [<%= link_to_unless_current "cancel", :action => 'cancel_move', :id => @evolution.id %>]
+<b>]</b>
+<% end %>
 

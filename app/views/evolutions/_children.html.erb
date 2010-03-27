@@ -2,29 +2,17 @@
 
 <% evolution.children.each do |evolution| %>
 
-<fieldset>
-<legend>
-
-<% if evolution == @evolution_move_uni || @evolution_move_uni || @evolution_clone || @evolution_clone_uni %>
-  <b><%= link_to_unless_current evolution.id, evolution %></b>
-<% else %>
-  <%= link_to_unless_current evolution.id, evolution %>
-<% end %>
+<%= render :partial => evolution, :locals => { :evolution => evolution } %>
 
 </legend>
 
-<%- if !evolution.children.empty? -%>
-
-<ul>
-<%= render :partial => 'children', 
-  :locals => { :evolution => evolution } %>
-</ul>
-
+<%- unless evolution.children.empty? -%>
+  <ul>
+    <%= render :partial => 'children', :locals => { :evolution => evolution } %>
+  </ul>
 <%- end -%>
+
 </fieldset>
 
-<% end %>
-
-<% evolution_current.children.each do |evolution| %>
 <% end %>
 

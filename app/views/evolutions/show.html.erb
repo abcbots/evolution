@@ -1,11 +1,5 @@
 <p><fieldset><legend>Evolution</legend>
 
-<% if @evolution_root %>
-  <%= render :partial => 'evolutions/if/root' %>
-<% end %>
-<% if @evolution_parent %>
-  <%= render :partial => 'evolutions/if/parent' %>
-<% end %>
 <% if @evolution %>
   <%= render :partial => 'evolutions/if/current' %>
 <% end %>

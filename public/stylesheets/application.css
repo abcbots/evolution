@@ -12,6 +12,14 @@ a {
   color: #0000FF;
 }
 
+#move_or_clone fieldset {
+  background-color: yellow;
+}
+legend {
+  padding: 1px;
+  border: 1px solid grey;
+}
+
 .clear {
   clear: both;
   height: 0;

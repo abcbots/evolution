@@ -1,7 +1,7 @@
 
 <% if @evolution_clone_uni %>
 <b>[</b>
-  <b><i>Clone solo <%= @evolution_clone_uni.id %></i></b> to:
+  <b><i>Clone Solo <%= @evolution_clone_uni.id %></i></b> to:
     [<i><%= link_to "solo", :action => 'clone_uni_to_clone', :id => @evolution.id %></i>]
     [<%= link_to "root", :action => 'clone_uni_to_root', :id => @evolution.id %>]
     [<%= link_to "parent", :action => 'clone_uni_to_parent', :id => @evolution.id %>]

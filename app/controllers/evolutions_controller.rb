@@ -194,6 +194,31 @@ class EvolutionsController < ApplicationController
     redirect_to @evolution # redirect to current
   end
 
+  def move_to_move_uni
+    session[:evolution_move_uni_id] = session[:evolution_move_id] # set uni to normal
+    session[:evolution_move_id] = nil # nil normal
+    redirect_to :action => 'show', :id => params[:id] # redirect to show and pass along id
+  end
+
+  def move_uni_to_move
+    session[:evolution_move_id] = session[:evolution_move_uni_id] # set uni to normal
+    session[:evolution_move_uni_id] = nil # nil normal
+    redirect_to :action => 'show', :id => params[:id] # redirect to show and pass along id
+  end
+
+  def clone_to_clone_uni
+    session[:evolution_clone_uni_id] = session[:evolution_clone_id] # set uni to normal
+    session[:evolution_clone_id] = nil # nil normal
+    redirect_to :action => 'show', :id => params[:id] # redirect to show and pass along id
+  end
+
+  def clone_uni_to_clone
+    session[:evolution_clone_id] = session[:evolution_clone_uni_id] # set uni to normal
+    session[:evolution_clone_uni_id] = nil # nil normal
+    redirect_to :action => 'show', :id => params[:id] # redirect to show and pass along id
+  end
+
+
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
 #                                  ***cancel
@@ -296,15 +321,15 @@ class EvolutionsController < ApplicationController
     place_at_current @evolution_clone_uni
     save_clone_uni
   end
-  def clone_to_child
-    make_clone
-    place_at_child @evolution_clone
-    save_clone
-  end
   def clone_uni_to_children
     make_clone_uni
     place_at_children @evolution_clone_uni
     save_clone_uni
+  end
+  def clone_uni_to_child
+    make_clone
+    place_at_child @evolution_clone_uni
+    save_clone
   end
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
@@ -313,20 +338,19 @@ class EvolutionsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def childship(pass1, pass2) # check for childship
-    @not_child_or_current = true # childship true
+  def check_childship(pass1, pass2) # check for childship
     if pass1 == pass2 # if one equals two
-      @not_child_or_current = false # childship false
+      @child_or_current = true # childship false
     else
-      childship_children pass1, pass2 # check children
+      check_childship_children pass1, pass2 # check children
     end
   end
-  def childship_children(pass1, pass2)
+  def check_childship_children(pass1, pass2)
     pass1.children.each do |child|
       if child == pass2
-        @not_child_or_current = false
+        @child_or_current = true
       end
-      childship_children child, pass2
+      check_childship_children child, pass2
     end
   end
     
@@ -481,13 +505,13 @@ class EvolutionsController < ApplicationController
 
   def distill_evolution(pass1)
     if pass1.evolution_id # if pass1 has parent
-      pass1_parent = Evolution.find(pass1.evolution_id)
-      attach_children_to pass1, pass1_parent
+      pass1_parent = Evolution.find(pass1.evolution_id) # let pass1 parent be the pass1 parent
+      attach_children_to pass1, pass1_parent # attach children of pass1 to pass1 parent
     else # pass1 has super
-      pass1_super = Evolution.find(pass1.evolution_id)
-      attach_children_to pass1, pass1_super, true
+      #pass1_super = Evolution.find(pass1.evolution_id) 
+      #attach_children_to pass1, pass1_super, true
     end
-    pass1.evolution_id = pass1.evolution_id = nil
+    pass1.evolution_id = nil
     pass1.save
   end
   
@@ -517,7 +541,7 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                  ***flash 
+# *flash 
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -528,6 +552,11 @@ class EvolutionsController < ApplicationController
     flash[:error] = "Fail, try again" # flash fail
   end
 
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+#
+# *function
+#
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
  
   def start
     @evolution = Evolution.find(params[:id])
@@ -543,7 +572,7 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                              ***get_evolutions 
+# *get_evolutions 
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -576,13 +605,13 @@ class EvolutionsController < ApplicationController
     if session[:evolution_move_id]
       @evolution_move = Evolution.find(session[:evolution_move_id]) 
       if @evolution # if current
-        childship @evolution_move, @evolution # check for childship
+        check_childship @evolution_move, @evolution # check for childship
       end # end
     end # get move_current from session
     if session[:evolution_move_uni_id]
       @evolution_move_uni = Evolution.find(session[:evolution_move_uni_id]) 
       if @evolution # if current
-        childship @evolution_move_uni, @evolution # check for childship
+        check_childship @evolution_move_uni, @evolution # check for childship
       end # end
     end
   end

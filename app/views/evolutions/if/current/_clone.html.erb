@@ -1,7 +1,5 @@
-<% if @evolution_clone %>
-  <%= render :partial => 'evolutions/if/current/clone/all' %>
-<% elsif @evolution_clone_uni %>
-  <%= render :partial => 'evolutions/if/current/clone/one' %>
-<% else %>
-  <%= render :partial => 'evolutions/if/current/clone/set' %>
+
+<% if !@evolution_clone & !@evolution_clone_uni %>
+  [<%= link_to_unless_current "Clone", :action => 'set_clone', :id => @evolution.id %>]
 <% end %>
+
