@@ -2,7 +2,7 @@
 <% if @evolution_clone %>
 <b>[</b>
   <b>Clone <%= @evolution_clone.id %></b> to:
-    [<i><%= link_to_unless_current "solo", :action => 'clone_to_clone_uni', :id => @evolution.id %></i>]
+    [<i><%= link_to_unless_current "uni", :action => 'clone_to_clone_uni', :id => @evolution.id %></i>]
     [<%= link_to_unless_current "root", :action => 'clone_to_root', :id => @evolution.id %>]
     [<%= link_to_unless_current "parent", :action => 'clone_to_parent', :id => @evolution.id %>]
     [<%= link_to_unless_current "current", :action => 'clone_to_current', :id => @evolution.id %>]

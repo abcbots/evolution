@@ -1,7 +1,7 @@
 <% if @evolution_move %>
 <b>[</b>
-  <b>Move <%= @evolution_move.id %></b> to:
-    [<i><%= link_to "solo", :action => 'move_to_move_uni', :id => @evolution.id %></i>]
+  <b>Move <%= link_to_unless_current @evolution_move.id, @evolution_move %></b> to:
+    [<i><%= link_to "uni", :action => 'move_to_move_uni', :id => @evolution.id %></i>]
     [<%= link_to "root", :action => 'move_to_root', :id => @evolution.id %>]
 
   <% unless @child_or_current %>
