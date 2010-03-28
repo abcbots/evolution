@@ -1,0 +1,23 @@
+<% if @evolution_move %>
+[
+  move <%= link_to_unless_current @evolution_move.id, @evolution_move %> to:
+    [<i><%= link_to "uni", :action => 'move_to_move_uni', :id => @evolution.id %></i>]
+    [<%= link_to "root", :action => 'move_to_root', :id => @evolution.id %>]
+
+  <% unless @child_or_current %>
+
+    [<%= link_to_unless_current "parent", :action => 'move_to_parent', :id => @evolution.id %>]
+    [<%= link_to_unless_current "current", :action => 'move_to_current', :id => @evolution.id %>]
+    
+  <% if @evolution != @evolution_move.ancestors.first %>
+    
+    [<%= link_to_unless_current "children", :action => 'move_to_children', :id => @evolution.id %>]
+    [<%= link_to_unless_current "child", :action => 'move_to_child', :id => @evolution.id %>]
+
+  <% end %>
+  <% end %>
+
+    [<%= link_to_unless_current "cancel", :action => 'cancel_move', :id => @evolution.id %>]
+]
+<% end %>
+

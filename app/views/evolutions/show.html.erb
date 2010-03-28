@@ -1,7 +1,7 @@
 <p><fieldset><legend>Evolution</legend>
 
 <% if @evolution %>
-  <%= render :partial => 'evolutions/if/current' %>
+  <p><%= render :partial => 'evolutions/trees/family', :locals => {:evolution => @evolution} %>
 <% end %>
 
 </fieldset></p>

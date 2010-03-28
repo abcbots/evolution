@@ -1,0 +1,63 @@
+<% evolution_current = evolution %>
+<% evolution_ancestors = evolution %>
+
+<% evolution_ancestors.ancestors.reverse.each do |evolution| # for evolution ancestors, do evolution_ancestor %>
+
+  <% if check_for_childship evolution, @evolution_move||@evolution_clone %>
+    <b>
+  <% end %>
+
+  <fieldset>
+  <legend>
+    <%= render :partial => evolution, :locals => { :evolution => evolution } %>
+  </legend>
+
+<% end %>
+
+<fieldset>
+<legend>
+
+  <%= render :partial => 'evolution' %>
+
+  <b>
+
+  [<%= toggle_div "do", "open" %>]
+
+  <%= render :partial => 'evolutions/functions/move/all' %>
+  <%= render :partial => 'evolutions/functions/move/one' %>
+  <%= render :partial => 'evolutions/functions/clone/all' %>
+  <%= render :partial => 'evolutions/functions/clone/one' %>
+
+</legend>
+
+  <%= toggle_div_id "do", "open" %>
+  <ul>
+  do:
+
+    [<%= toggle_div "new", "open" %>]
+    <%= render :partial => 'evolutions/functions/move' %>
+    <%= render :partial => 'evolutions/functions/clone' %>
+    [<%= toggle_div "extend", "open" %>]
+    <%= render :partial => 'evolutions/functions/destroy' %>
+
+    <%= toggle_div_id "new", "open" %>
+      <ul>
+        <%= render :partial => 'evolutions/functions/new' %>
+      </ul>
+    </div>
+
+  </ul>
+  </b>
+  <hr>
+</div>
+
+<%= render :partial => 'evolutions/trees/children', :locals => { :evolution => evolution_current } %>
+
+<% evolution_ancestors.ancestors.each do |evolution| %>
+  <% if check_for_childship evolution, @evolution_move||@evolution_clone %>
+    </b>
+  <% end %>
+  </fieldset>
+<% end %>
+
+</fieldset>

@@ -1,0 +1,14 @@
+
+<% if @evolution_clone %>
+[
+  clone <%= @evolution_clone.id %> to:
+    [<i><%= link_to_unless_current "uni", :action => 'clone_to_clone_uni', :id => @evolution.id %></i>]
+    [<%= link_to_unless_current "root", :action => 'clone_to_root', :id => @evolution.id %>]
+    [<%= link_to_unless_current "parent", :action => 'clone_to_parent', :id => @evolution.id %>]
+    [<%= link_to_unless_current "current", :action => 'clone_to_current', :id => @evolution.id %>]
+    [<%= link_to_unless_current "children", :action => 'clone_to_children', :id => @evolution.id %>]
+    [<%= link_to_unless_current "child", :action => 'clone_to_child', :id => @evolution.id %>]
+    [<%= link_to_unless_current "cancel", :action => 'cancel_clone', :id => @evolution.id %>]
+]
+<% end %>
+

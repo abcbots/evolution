@@ -18,7 +18,7 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                 ***basics
+# *basics
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -61,18 +61,16 @@ class EvolutionsController < ApplicationController
   end
   
   def destroy
-    @evolution = Evolution.find(params[:id])
+    get_evolutions
     @evolution.destroy
-    flash[:notice] = "Successfully destroyed evolution."
-    redirect_to evolutions_url
+    flash_success
+    redirect_to @evolution_parent||evolutions_path
   end
-
-
 
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                   ***save 
+# *save 
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -131,7 +129,7 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                   ***new
+# *new
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -169,7 +167,7 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                   ***set
+# *set
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -221,7 +219,7 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                  ***cancel
+# *cancel
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -248,7 +246,7 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                  ***clone
+# *clone
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -334,7 +332,7 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                   *move
+# *move
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -388,42 +386,42 @@ class EvolutionsController < ApplicationController
 
   def move_uni_to_root
     get_evolutions
-    distill_evolution @evolution_move_uni
+    isolate_evolution @evolution_move_uni
     place_at_root @evolution_move_uni
     save_move_uni
   end
   def move_uni_to_parent
     get_evolutions
-    distill_evolution @evolution_move_uni
+    isolate_evolution @evolution_move_uni
     place_at_parent @evolution_move_uni
     save_move_uni
   end
   def move_uni_to_current
     get_evolutions
-    distill_evolution @evolution_move_uni
+    isolate_evolution @evolution_move_uni
     place_at_current @evolution_move_uni
     save_move_uni
   end
   def move_uni_to_child
     get_evolutions
-    distill_evolution @evolution_move_uni
+    isolate_evolution @evolution_move_uni
     place_at_child @evolution_move_uni
     save_move_uni
   end
   def move_uni_to_children
     get_evolutions
-    distill_evolution @evolution_move_uni
+    isolate_evolution @evolution_move_uni
     place_at_children @evolution_move_uni
     save_move_uni
   end
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                 ***destroy
+# *destroy
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def destroy_current
+  def destroy
     get_evolutions
     if @evolution.destroy
       flash_success
@@ -436,26 +434,35 @@ class EvolutionsController < ApplicationController
       flash_fail
       redirect_to @evolution
     end
-  end
-  def destroy_current_uni
-    get_evolutions
-    distill_evolution @evolution
-    if @evolution.destroy
-      flash_success
-      if @evolution_parent
-        redirect_to @evolution_parent
-      else
-        redirect_to :action => "index"
+  end 
+
+# pass1 = the evolution that will be re-assigned
+# pass2 = the evolution that will remain un-changed
+
+
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+#
+# *isolate 
+#
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+
+  def isolate_evolution(pass1)
+    if pass1.evolution_id # if pass1 has parent
+      pass1_parent = Evolution.find(pass1.evolution_id) # let pass1 parent be the pass1 parent
+      attach_children_to pass1, pass1_parent # attach children of pass1 to pass1 parent
+    else # pass1 is root
+      for evolution in pass1.children
+        evolution.evolution_id = nil
+        evolution.save
       end
-    else
-      flash_fail
-      redirect_to @evolution
-    end
+    end # end 
+    pass1.evolution_id = nil
+    pass1.save
   end
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                 ***place 
+# *place 
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -493,31 +500,10 @@ class EvolutionsController < ApplicationController
     pass.save
   end
 
-# pass1 = the evolution that will be re-assigned
-# pass2 = the evolution that will remain un-changed
-
-
+ 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                 ***distill 
-#
-# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
-
-  def distill_evolution(pass1)
-    if pass1.evolution_id # if pass1 has parent
-      pass1_parent = Evolution.find(pass1.evolution_id) # let pass1 parent be the pass1 parent
-      attach_children_to pass1, pass1_parent # attach children of pass1 to pass1 parent
-    else # pass1 has super
-      #pass1_super = Evolution.find(pass1.evolution_id) 
-      #attach_children_to pass1, pass1_super, true
-    end
-    pass1.evolution_id = nil
-    pass1.save
-  end
-  
-# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
-#
-#                                  ***attach 
+# *attach 
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -532,7 +518,6 @@ class EvolutionsController < ApplicationController
       pass1.save
     end
   end
-
   def attach_children_to(pass1, pass2)
     for evolution in pass1.children # attach children to pass
       attach_to evolution, pass2 

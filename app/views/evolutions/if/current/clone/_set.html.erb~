@@ -1,7 +1,0 @@
-  <p>Set clone:
-    <%= link_to_unless_current "whole",
-      :action => 'set_clone',
-      :id => @evolution.id %>
-    | <%= link_to_unless_current "part",
-      :action => 'set_clone_uni',
-      :id => @evolution.id %>
