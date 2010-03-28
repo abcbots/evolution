@@ -1,18 +1,26 @@
-<% evolution_current = evolution %>
 
 <% evolution.children.each do |evolution| %>
 
-<%= render :partial => evolution, :locals => { :evolution => evolution } %>
+  <ul>
+  
+  <% if check_for_childship evolution, @evolution_move || @evolution_clone # if ev is a child of move or clone %>
+    <fieldset id="highlight"><% # start highlight %>
+  <% else # else, normal %>
+    <fieldset><% # stop highlight %>
+  <% end # end %>
 
-</legend>
+  <legend>
+    <%= render :partial => evolution, :locals => { :evolution => evolution } %>
+  </legend>
 
-<%- unless evolution.children.empty? -%>
+  <%- unless evolution.children.empty? -%>
   <ul>
     <%= render :partial => 'children', :locals => { :evolution => evolution } %>
   </ul>
-<%- end -%>
+  <%- end -%>
 
-</fieldset>
+  </fieldset>
+  </ul>
 
 <% end %>
 

@@ -12,7 +12,7 @@ a {
   color: #0000FF;
 }
 
-#move_or_clone fieldset {
+#highlight fieldset {
   background-color: yellow;
 }
 legend {

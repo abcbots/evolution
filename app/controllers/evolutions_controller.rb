@@ -495,7 +495,7 @@ class EvolutionsController < ApplicationController
 
 # pass1 = the evolution that will be re-assigned
 # pass2 = the evolution that will remain un-changed
-# whole = indicates if the pass1 includes all children
+
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #

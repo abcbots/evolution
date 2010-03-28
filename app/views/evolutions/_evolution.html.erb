@@ -1,23 +1,13 @@
 
-  <% if evolution == @evolution_move %>
-    <fieldset id="move_or_clone">
-    <legend>
+  <% if evolution == @evolution_move # if move %>
       <b><%= link_to_unless_current evolution.id, evolution %></b>
   <% elsif evolution == @evolution_move_uni %>
-    <fieldset id="move_or_clone">
-    <legend>
-      <b><i><%= link_to_unless_current evolution.id, evolution %> Solo</i></b>
+      <b><i><%= link_to_unless_current evolution.id, evolution %></i></b>
   <% elsif evolution == @evolution_clone %>
-    <fieldset id="move_or_clone">
-    <legend>
       <b><%= link_to_unless_current evolution.id, evolution %></b>
   <% elsif evolution == @evolution_clone_uni %>
-    <fieldset id="move_or_clone">
-    <legend>
-      <b><i><%= link_to_unless_current evolution.id, evolution %> Solo</i></b>
+      <b><i><%= link_to_unless_current evolution.id, evolution %></i></b>
   <% else %>
-    <fieldset>
-    <legend>
       <%= link_to_unless_current evolution.id, evolution %>
   <% end %>
 

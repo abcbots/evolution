@@ -1,40 +1,76 @@
 <% evolution_current = evolution %>
+<% evolution_ancestors = evolution %>
+<% evolution_ancestors_end = evolution %>
 
-<% evolution.ancestors.reverse.each do |evolution| %>
-
-<ul>
-  <%= render :partial => evolution, :locals => { :evolution => evolution } %>
+<% evolution_ancestors.ancestors.reverse.each do |evolution| # for evolution ancestors, do evolution_ancestor %>
+  <ul>
+  <fieldset id="highlight">
+  <legend>
+    <%= render :partial => evolution, :locals => { :evolution => evolution } %>
+  </legend>
+</fieldset>
 <% end %>
 
-
 <ul>
-  <b><%= render :partial => evolution, :locals => { :evolution => evolution_current } %></b>
-  [<%= toggle_div "New", "options" %>]
-  <%= render :partial => 'evolutions/if/current/move' %>
+
+<% if evolution_current == @evolution_move # if move %>
+      <fieldset id="highlight">
+      <legend>
+      <b><%= link_to_unless_current evolution_current.id, evolution_current %></b>
+  <% elsif evolution_current == @evolution_move_uni %>
+      <fieldset id="highlight">
+      <legend>
+      <b><i><%= link_to_unless_current evolution_current.id, evolution_current %></i></b>
+  <% elsif evolution_current == @evolution_clone %>
+      <fieldset id="highlight">
+      <legend>
+      <b><%= link_to_unless_current evolution_current.id, evolution_current %></b>
+  <% elsif evolution_current == @evolution_clone_uni %>
+      <fieldset id="highlight">
+      <legend>
+      <b><i><%= link_to_unless_current evolution_current.id, evolution_current %></i></b>
+  <% else %>
+      <b><%= link_to_unless_current evolution_current.id, evolution_current %></b>
+<% end %>
+
+  [<%= toggle_div "do", "open" %>]
+
   <%= render :partial => 'evolutions/if/current/move/all' %>
   <%= render :partial => 'evolutions/if/current/move/one' %>
-  <%= render :partial => 'evolutions/if/current/clone' %>
   <%= render :partial => 'evolutions/if/current/clone/all' %>
   <%= render :partial => 'evolutions/if/current/clone/one' %>
-  [<%= toggle_div "Extend", "options" %>]
-  [<%= toggle_div "Del", "options" %>]
+
 </legend>
 
-  <%= toggle_div_id "New", "options" %>
-    <%= render :partial => 'evolutions/if/current/new' %>
-  </div>
+<%= toggle_div_id "do", "open" %>
 
-  <%= toggle_div_id "Destroy", "options" %>
-    <%= render :partial => 'evolutions/if/current/new' %>
-  </div>
+    [<%= toggle_div "new", "options" %>]
+    [<%= toggle_div "extend", "options" %>]
+    [<%= toggle_div "del", "options" %>]
+    <%= render :partial => 'evolutions/if/current/move' %>
+    <%= render :partial => 'evolutions/if/current/clone' %>
 
-<ul>
-  <%= render :partial => 'children', 
-    :locals => {:evolution => evolution_current} %>
-</ul>
-</fieldset>
+    <hr>
 
-<% evolution_current.ancestors.each do |evolution| %>
-</fieldset>
-</ul>
+    <%= toggle_div_id "new", "options" %>
+      <ul>
+        <%= render :partial => 'evolutions/if/current/new' %>
+      <hr>
+      </ul>
+    </div>
+
+    <%= toggle_div_id "destroy", "options" %>
+      <ul>
+        <%= render :partial => 'evolutions/if/current/new' %>
+      <hr>
+      </ul>
+    </div>
+
+</div>
+
+<%= render :partial => 'children', :locals => { :evolution => evolution_current } %>
+
+<% evolution_ancestors_end.ancestors.each do |evolution| %>
+  </fieldset>
+  </ul>
 <% end %>
