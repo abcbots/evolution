@@ -15,9 +15,14 @@ a {
 #highlight fieldset {
   background-color: yellow;
 }
-legend {
-  padding: 1px;
+
+fieldset {
+  padding: 11px;
   border: 1px solid grey;
+}
+
+legend {
+  background-color: #eee;
 }
 
 .clear {
