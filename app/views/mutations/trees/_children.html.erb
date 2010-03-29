@@ -1,0 +1,25 @@
+
+<% evolution.children.each do |evolution| %>
+
+  <fieldset>
+
+    <% if check_for_childship evolution, @evolution_move||@evolution_clone %>
+      <b>
+    <% end %>
+
+    <legend>
+      <%= render :partial => 'evolution', :locals => { :evolution => evolution } %>
+    </legend>
+
+    <%- unless evolution.children.empty? -%>
+      <%= render :partial => 'evolutions/trees/children', :locals => { :evolution => evolution } %>
+    <%- end -%>
+
+    <% if check_for_childship evolution, @evolution_move||@evolution_clone %>
+      </b>
+    <% end %>
+
+  </fieldset>
+
+<% end %>
+

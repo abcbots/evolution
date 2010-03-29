@@ -1,8 +1,5 @@
-<% form_for ([@evolution, @mutation]) do |f| %>
+<% form_for @evolution do |f| %>
   <%= f.error_messages %>
-  <p>
-    <%= f.hidden_field :mutation_id %>
-  </p>
   <p>
     <%= f.hidden_field :evolution_id %>
   </p>

@@ -30,6 +30,12 @@ class MutationsController < ApplicationController
     get_mutations
   end
    
+  def new
+    @no_links = true
+    @mutation = Mutation.new
+    @mutation.mutation_id = params[:mutation_id]
+  end
+  
   def create
     @mutation = Mutation.new(params[:mutation])
     if @mutation.save
@@ -127,18 +133,6 @@ class MutationsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def new
-    @evolution = Evolution.find(params[:evolution_id])
-    @mutation = Mutation.new
-    @mutation.evolution_id = @evolution.id
-    if @mutation.save
-      flash_success
-      redirect_to @mutation
-    else
-      flash_fail
-      redirect_to @evolution
-    end
-  end
   def new_root
     get_mutations
     @mutation_new = Mutation.new

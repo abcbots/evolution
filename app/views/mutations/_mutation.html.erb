@@ -1,6 +1,15 @@
-<% div_for mutation do %>
-  <b><%= link_to_unless_current mutation.id, mutation_path(mutation) %></b>
-      <% mutation.ancestors.each do |mutation_ancestors| %>>
-        <%= link_to_unless_current mutation_ancestors.id, mutation_path(mutation_ancestors) %>
-      <% end %>
-<% end %>
+
+  <% if mutation == @mutation %>
+    <b><%= link_to_unless_current mutation.id, mutation %></b>
+  <% elsif mutation == @mutation_move %>
+    <b><%= link_to_unless_current mutation.id, mutation %></b>
+  <% elsif mutation == @mutation_clone %>
+    <b><%= link_to_unless_current mutation.id, mutation %></b>
+  <% elsif mutation == @mutation_move_uni %>
+    <b><i><%= link_to_unless_current mutation.id, mutation %></i></b>
+  <% elsif mutation == @mutation_clone_uni %>
+    <b><i><%= link_to_unless_current mutation.id, mutation %></i></b>
+  <% else %>
+    <%= link_to_unless_current mutation.id, mutation %>
+  <% end %>
+

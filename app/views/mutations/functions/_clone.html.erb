@@ -1,0 +1,5 @@
+
+<% if !@evolution_clone & !@evolution_clone_uni %>
+  [<%= link_to_unless_current "clone", :action => 'set_clone', :id => @evolution.id %>]
+<% end %>
+

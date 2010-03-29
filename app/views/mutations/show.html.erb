@@ -1,13 +1,7 @@
+<p><fieldset><legend>Evolution</legend>
 
-<% title @title  %>
-
-<%= render :partial => @mutation %>
-
-<%= render :partial => 'children', :locals => { :mutation => @mutation } %>
-
-<%= button_to 'Mutation Complete', :action => 'complete' %>
-
-<% if @mutation.completed_at %>
-  <b>Completed: </b><%= time_ago_in_words @mutation.completed_at %> ago
+<% if @evolution %>
+  <p><%= render :partial => 'evolutions/trees/family', :locals => {:evolution => @evolution} %>
 <% end %>
 
+</fieldset></p>
