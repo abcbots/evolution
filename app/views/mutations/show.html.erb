@@ -1,7 +1,8 @@
-<p><fieldset><legend>Evolution</legend>
 
-<% if @evolution %>
-  <p><%= render :partial => 'evolutions/trees/family', :locals => {:evolution => @evolution} %>
+<p><fieldset><legend><%= @evolution.class %>: <%= link_to_unless_current @evolution.id, @evolution %></legend>
+
+<% if @mutation %>
+  <p><%= render :partial => 'mutations/trees/family', :locals => {:mutation => @mutation} %>
 <% end %>
 
 </fieldset></p>

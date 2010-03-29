@@ -1,4 +1,4 @@
 
-<% if !@evolution_move & !@evolution_move_uni %>
-  [<%= link_to_unless_current "move", :action => 'set_move', :id => @evolution.id %>]
+<% if !@mutation_move & !@mutation_move_uni %>
+  [<%= link_to_unless_current "move", :action => 'set_move', :id => @mutation.id %>]
 <% end %>

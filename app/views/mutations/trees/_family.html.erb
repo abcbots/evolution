@@ -1,15 +1,15 @@
-<% evolution_current = evolution %>
-<% evolution_ancestors = evolution %>
+<% mutation_current = mutation %>
+<% mutation_ancestors = mutation %>
 
-<% evolution_ancestors.ancestors.reverse.each do |evolution| # for evolution ancestors, do evolution_ancestor %>
+<% mutation_ancestors.ancestors.reverse.each do |mutation| # for mutation ancestors, do mutation_ancestor %>
 
-  <% if check_for_childship evolution, @evolution_move||@evolution_clone %>
+  <% if check_for_childship mutation, @mutation_move||@mutation_clone %>
     <b>
   <% end %>
 
   <fieldset>
   <legend>
-    <%= render :partial => evolution, :locals => { :evolution => evolution } %>
+    <%= render :partial => mutation, :locals => { :mutation => mutation } %>
   </legend>
 
 <% end %>
@@ -17,16 +17,16 @@
 <fieldset>
 <legend>
 
-  <%= render :partial => 'evolution' %>
+  <%= render :partial => 'mutation' %>
 
   <b>
 
   [<%= toggle_div "do", "open" %>]
 
-  <%= render :partial => 'evolutions/functions/move/all' %>
-  <%= render :partial => 'evolutions/functions/move/one' %>
-  <%= render :partial => 'evolutions/functions/clone/all' %>
-  <%= render :partial => 'evolutions/functions/clone/one' %>
+  <%= render :partial => 'mutations/functions/move/all' %>
+  <%= render :partial => 'mutations/functions/move/one' %>
+  <%= render :partial => 'mutations/functions/clone/all' %>
+  <%= render :partial => 'mutations/functions/clone/one' %>
 
 </legend>
 
@@ -35,13 +35,13 @@
   do:
 
     [<%= toggle_div "new", "open" %>]
-    <%= render :partial => 'evolutions/functions/move' %>
-    <%= render :partial => 'evolutions/functions/clone' %>
-    <%= render :partial => 'evolutions/functions/destroy' %>
+    <%= render :partial => 'mutations/functions/move' %>
+    <%= render :partial => 'mutations/functions/clone' %>
+    <%= render :partial => 'mutations/functions/destroy' %>
 
     <%= toggle_div_id "new", "open" %>
       <ul>
-        <%= render :partial => 'evolutions/functions/new' %>
+        <%= render :partial => 'mutations/functions/new' %>
       </ul>
     </div>
 
@@ -50,10 +50,10 @@
   <hr>
 </div>
 
-<%= render :partial => 'evolutions/trees/children', :locals => { :evolution => evolution_current } %>
+<%= render :partial => 'mutations/trees/children', :locals => { :mutation => mutation_current } %>
 
-<% evolution_ancestors.ancestors.each do |evolution| %>
-  <% if check_for_childship evolution, @evolution_move||@evolution_clone %>
+<% mutation_ancestors.ancestors.each do |mutation| %>
+  <% if check_for_childship mutation, @mutation_move||@mutation_clone %>
     </b>
   <% end %>
   </fieldset>

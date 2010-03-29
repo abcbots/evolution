@@ -1,14 +1,14 @@
 
-<% if @evolution_clone %>
+<% if @mutation_clone %>
 <b>[</b>
-  <b>Clone <%= @evolution_clone.id %></b> to:
-    [<i><%= link_to_unless_current "uni", :action => 'clone_to_clone_uni', :id => @evolution.id %></i>]
-    [<%= link_to_unless_current "root", :action => 'clone_to_root', :id => @evolution.id %>]
-    [<%= link_to_unless_current "parent", :action => 'clone_to_parent', :id => @evolution.id %>]
-    [<%= link_to_unless_current "current", :action => 'clone_to_current', :id => @evolution.id %>]
-    [<%= link_to_unless_current "children", :action => 'clone_to_children', :id => @evolution.id %>]
-    [<%= link_to_unless_current "child", :action => 'clone_to_child', :id => @evolution.id %>]
-    [<%= link_to_unless_current "cancel", :action => 'cancel_clone', :id => @evolution.id %>]
+  <b>Clone <%= @mutation_clone.id %></b> to:
+    [<i><%= link_to_unless_current "uni", :action => 'clone_to_clone_uni', :id => @mutation.id %></i>]
+    [<%= link_to_unless_current "root", :action => 'clone_to_root', :id => @mutation.id %>]
+    [<%= link_to_unless_current "parent", :action => 'clone_to_parent', :id => @mutation.id %>]
+    [<%= link_to_unless_current "current", :action => 'clone_to_current', :id => @mutation.id %>]
+    [<%= link_to_unless_current "children", :action => 'clone_to_children', :id => @mutation.id %>]
+    [<%= link_to_unless_current "child", :action => 'clone_to_child', :id => @mutation.id %>]
+    [<%= link_to_unless_current "cancel", :action => 'cancel_clone', :id => @mutation.id %>]
 <b>]</b>
 <% end %>
 

@@ -1,14 +1,14 @@
 
-<% if @evolution_move_uni %>
+<% if @mutation_move_uni %>
 [
-  <i>move <%= link_to_unless_current @evolution_move_uni.id, @evolution_move_uni %> uni</i> to:
-    [<i><%= link_to "uni", :action => 'move_uni_to_move', :id => @evolution.id %></i>]
-    [<%= link_to "root", :action => 'move_uni_to_root', :id => @evolution.id %>]
-    [<%= link_to "parent", :action => 'move_uni_to_parent', :id => @evolution.id %>]
-    [<%= link_to "current", :action => 'move_uni_to_current', :id => @evolution.id %>]
-    [<%= link_to "children", :action => 'move_uni_to_children', :id => @evolution.id %>]
-    [<%= link_to "child", :action => 'move_uni_to_child', :id => @evolution.id %>]
-    [<%= link_to "cancel", :action => 'cancel_move_uni', :id => @evolution.id %>]
+  <i>move <%= link_to_unless_current @mutation_move_uni.id, @mutation_move_uni %> uni</i> to:
+    [<i><%= link_to "uni", :action => 'move_uni_to_move', :id => @mutation.id %></i>]
+    [<%= link_to "root", :action => 'move_uni_to_root', :id => @mutation.id %>]
+    [<%= link_to "parent", :action => 'move_uni_to_parent', :id => @mutation.id %>]
+    [<%= link_to "current", :action => 'move_uni_to_current', :id => @mutation.id %>]
+    [<%= link_to "children", :action => 'move_uni_to_children', :id => @mutation.id %>]
+    [<%= link_to "child", :action => 'move_uni_to_child', :id => @mutation.id %>]
+    [<%= link_to "cancel", :action => 'cancel_move_uni', :id => @mutation.id %>]
 ]
 <% end %>
 
