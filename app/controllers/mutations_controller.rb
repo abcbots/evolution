@@ -23,7 +23,8 @@ class MutationsController < ApplicationController
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
   def index
-    @mutations = Mutation.all
+    @evolution = Evolution.find(params[:evolution_id])
+    @mutations = @evolution.mutations.all
   end
   
   def show
@@ -342,19 +343,19 @@ class MutationsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def check_childship(pass1, pass2) # check for childship
+  def check_for_childship(pass1, pass2) # check for childship
     if pass1 == pass2 # if one equals two
       @child_or_current = true # childship false
     else
-      check_childship_children pass1, pass2 # check children
+      check_for_childship_children pass1, pass2 # check children
     end
   end
-  def check_childship_children(pass1, pass2)
+  def check_for_childship_children(pass1, pass2)
     pass1.children.each do |child|
       if child == pass2
         @child_or_current = true
       end
-      check_childship_children child, pass2
+      check_for_childship_children child, pass2
     end
   end
     
@@ -580,10 +581,8 @@ class MutationsController < ApplicationController
 
   def get_mutations(pass=params[:id])
     @mutation = Mutation.find(pass) # get current
-    @mutation_root = @mutation.ancestors.last # get root
-    #if @mutation.mutation_id
-      #@mutation_super = Mutation.find(@mutation.mutation_id)
-    #end # get super of current
+    @mutation_root = @mutation.ancestors.last || @mutation # get root
+    @evolution = Evolution.find(@mutation_root.evolution_id) # get evolution
     if @mutation.mutation_id
       @mutation_parent = Mutation.find(@mutation.mutation_id)
     end # get parent of current
@@ -596,13 +595,13 @@ class MutationsController < ApplicationController
     if session[:mutation_move_id]
       @mutation_move = Mutation.find(session[:mutation_move_id]) 
       if @mutation # if current
-        check_childship @mutation_move, @mutation # check for childship
+        check_for_childship @mutation_move, @mutation # check for childship
       end # end
     end # get move_current from session
     if session[:mutation_move_uni_id]
       @mutation_move_uni = Mutation.find(session[:mutation_move_uni_id]) 
       if @mutation # if current
-        check_childship @mutation_move_uni, @mutation # check for childship
+        check_for_childship @mutation_move_uni, @mutation # check for childship
       end # end
     end
   end

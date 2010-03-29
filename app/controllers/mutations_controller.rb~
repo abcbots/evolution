@@ -336,19 +336,19 @@ class MutationsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def check_childship(pass1, pass2) # check for childship
+  def check_for_childship(pass1, pass2) # check for childship
     if pass1 == pass2 # if one equals two
       @child_or_current = true # childship false
     else
-      check_childship_children pass1, pass2 # check children
+      check_for_childship_children pass1, pass2 # check children
     end
   end
-  def check_childship_children(pass1, pass2)
+  def check_for_childship_children(pass1, pass2)
     pass1.children.each do |child|
       if child == pass2
         @child_or_current = true
       end
-      check_childship_children child, pass2
+      check_for_childship_children child, pass2
     end
   end
     
@@ -590,13 +590,13 @@ class MutationsController < ApplicationController
     if session[:mutation_move_id]
       @mutation_move = Mutation.find(session[:mutation_move_id]) 
       if @mutation # if current
-        check_childship @mutation_move, @mutation # check for childship
+        check_for_childship @mutation_move, @mutation # check for childship
       end # end
     end # get move_current from session
     if session[:mutation_move_uni_id]
       @mutation_move_uni = Mutation.find(session[:mutation_move_uni_id]) 
       if @mutation # if current
-        check_childship @mutation_move_uni, @mutation # check for childship
+        check_for_childship @mutation_move_uni, @mutation # check for childship
       end # end
     end
   end

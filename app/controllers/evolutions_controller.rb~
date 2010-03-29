@@ -18,7 +18,7 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                 basics
+# *basics
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -61,18 +61,16 @@ class EvolutionsController < ApplicationController
   end
   
   def destroy
-    @evolution = Evolution.find(params[:id])
+    get_evolutions
     @evolution.destroy
-    flash[:notice] = "Successfully destroyed evolution."
-    redirect_to evolutions_url
+    flash_success
+    redirect_to @evolution_parent||evolutions_path
   end
-
-
 
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                   save 
+# *save 
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -131,7 +129,7 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                   new
+# *new
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -169,7 +167,7 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                   set
+# *set
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -194,9 +192,34 @@ class EvolutionsController < ApplicationController
     redirect_to @evolution # redirect to current
   end
 
+  def move_to_move_uni
+    session[:evolution_move_uni_id] = session[:evolution_move_id] # set uni to normal
+    session[:evolution_move_id] = nil # nil normal
+    redirect_to :action => 'show', :id => params[:id] # redirect to show and pass along id
+  end
+
+  def move_uni_to_move
+    session[:evolution_move_id] = session[:evolution_move_uni_id] # set uni to normal
+    session[:evolution_move_uni_id] = nil # nil normal
+    redirect_to :action => 'show', :id => params[:id] # redirect to show and pass along id
+  end
+
+  def clone_to_clone_uni
+    session[:evolution_clone_uni_id] = session[:evolution_clone_id] # set uni to normal
+    session[:evolution_clone_id] = nil # nil normal
+    redirect_to :action => 'show', :id => params[:id] # redirect to show and pass along id
+  end
+
+  def clone_uni_to_clone
+    session[:evolution_clone_id] = session[:evolution_clone_uni_id] # set uni to normal
+    session[:evolution_clone_uni_id] = nil # nil normal
+    redirect_to :action => 'show', :id => params[:id] # redirect to show and pass along id
+  end
+
+
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                  cancel
+# *cancel
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -223,19 +246,19 @@ class EvolutionsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                  clone
+# *clone
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def copy_over(pass_from, pass_to)
+  def copy_over(pass1, pass2)
     #...
   end
-  def clone_children(pass_from, pass_to)
-    pass_from.children.each do |evolution|
+  def clone_children(pass1, pass2)
+    pass1.children.each do |evolution|
       evolution_new = Evolution.new
       copy_over evolution, evolution_new
       evolution_new.save
-      attach_to evolution_new, pass_to
+      attach_to evolution_new, pass2
       clone_children evolution, evolution_new
     end
   end
@@ -270,14 +293,14 @@ class EvolutionsController < ApplicationController
     place_at_current @evolution_clone
     save_clone
   end
-  def clone_to_child
-    make_clone
-    place_at_child @evolution_clone
-    save_clone
-  end
   def clone_to_children
     make_clone
     place_at_children @evolution_clone
+    save_clone
+  end
+  def clone_to_child
+    make_clone
+    place_at_child @evolution_clone
     save_clone
   end
   
@@ -296,23 +319,39 @@ class EvolutionsController < ApplicationController
     place_at_current @evolution_clone_uni
     save_clone_uni
   end
-  def clone_to_child
-    make_clone
-    place_at_child @evolution_clone
-    save_clone
-  end
   def clone_uni_to_children
     make_clone_uni
     place_at_children @evolution_clone_uni
     save_clone_uni
   end
+  def clone_uni_to_child
+    make_clone
+    place_at_child @evolution_clone_uni
+    save_clone
+  end
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                   move
+# *move
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
+  def check_for_childship(pass1, pass2) # check for childship
+    if pass1 == pass2 # if one equals two
+      @child_or_current = true # childship false
+    else
+      check_for_childship_children pass1, pass2 # check children
+    end
+  end
+  def check_for_childship_children(pass1, pass2)
+    pass1.children.each do |child|
+      if child == pass2
+        @child_or_current = true
+      end
+      check_for_childship_children child, pass2
+    end
+  end
+    
   def move_to_root
     get_evolutions
     place_at_root @evolution_move
@@ -328,55 +367,61 @@ class EvolutionsController < ApplicationController
     place_at_current @evolution_move
     save_move
   end
-  def move_to_child
-    get_evolutions
-    place_at_child @evolution_move
-    save_move
-  end
   def move_to_children
     get_evolutions
     place_at_children @evolution_move
     save_move
   end
+  def move_to_child
+    get_evolutions # get evolutions
+    place_at_child @evolution_move # place move at child position
+    save_move # save move
+  end
+
+  def move_children_to(pass)
+    @evolution.children.each do |child| # for children
+      attach_to child, pass # attach child to pass
+    end # end
+  end
 
   def move_uni_to_root
     get_evolutions
-    distill_evolution @evolution_move_uni
+    isolate_evolution @evolution_move_uni
     place_at_root @evolution_move_uni
     save_move_uni
   end
   def move_uni_to_parent
     get_evolutions
-    distill_evolution @evolution_move_uni
+    isolate_evolution @evolution_move_uni
     place_at_parent @evolution_move_uni
     save_move_uni
   end
   def move_uni_to_current
     get_evolutions
-    distill_evolution @evolution_move_uni
+    isolate_evolution @evolution_move_uni
     place_at_current @evolution_move_uni
     save_move_uni
   end
   def move_uni_to_child
     get_evolutions
-    distill_evolution @evolution_move_uni
+    isolate_evolution @evolution_move_uni
     place_at_child @evolution_move_uni
     save_move_uni
   end
   def move_uni_to_children
     get_evolutions
-    distill_evolution @evolution_move_uni
+    isolate_evolution @evolution_move_uni
     place_at_children @evolution_move_uni
     save_move_uni
   end
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                 destroy
+# *destroy
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def destroy_current
+  def destroy
     get_evolutions
     if @evolution.destroy
       flash_success
@@ -389,26 +434,35 @@ class EvolutionsController < ApplicationController
       flash_fail
       redirect_to @evolution
     end
-  end
-  def destroy_current_uni
-    get_evolutions
-    distill_evolution @evolution
-    if @evolution.destroy
-      flash_success
-      if @evolution_parent
-        redirect_to @evolution_parent
-      else
-        redirect_to :action => "index"
+  end 
+
+# pass1 = the evolution that will be re-assigned
+# pass2 = the evolution that will remain un-changed
+
+
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+#
+# *isolate 
+#
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+
+  def isolate_evolution(pass1)
+    if pass1.evolution_id # if pass1 has parent
+      pass1_parent = Evolution.find(pass1.evolution_id) # let pass1 parent be the pass1 parent
+      attach_children_to pass1, pass1_parent # attach children of pass1 to pass1 parent
+    else # pass1 is root
+      for evolution in pass1.children
+        evolution.evolution_id = nil
+        evolution.save
       end
-    else
-      flash_fail
-      redirect_to @evolution
-    end
+    end # end 
+    pass1.evolution_id = nil
+    pass1.save
   end
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                                 place_at 
+# *place 
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -430,22 +484,80 @@ class EvolutionsController < ApplicationController
   end
   def place_at_current(pass)
     if @evolution_parent # if parent 
-      attach_to pass, @evolution_parent
-    end
-    pass.save
+      attach_to pass, @evolution_parent # attach pass to parent
+    else # else, is root
+      pass.evolution_id = nil # erase parent
+    end # end 
+    pass.save # save pass
   end
   def place_at_child(pass)
     attach_to pass, @evolution
     pass.save
   end
   def place_at_children(pass)
-    attach_children_to @mutation, pass
-    attach_to pass, @mutation
+    move_children_to pass
+    place_at_child pass
+    pass.save
+  end
+
+ 
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+#
+# *attach 
+#
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+
+  def attach_to(pass1, pass2, pass2_is_super=false)
+    if pass2_is_super
+      pass1.evolution_id = nil
+      pass1.evolution_id = pass2.id
+      pass1.save
+    else # pass2 is parent
+      pass1.evolution_id = pass2.id
+      #pass1.evolution_id = nil
+      pass1.save
+    end
+  end
+  def attach_children_to(pass1, pass2)
+    for evolution in pass1.children # attach children to pass
+      attach_to evolution, pass2 
+    end
   end
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-#                              get_evolutions 
+# *flash 
+#
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+
+  def flash_success
+    flash[:notice] = "Success" # flash success
+  end
+  def flash_fail
+    flash[:error] = "Fail, try again" # flash fail
+  end
+
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+#
+# *function
+#
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+ 
+  def start
+    @evolution = Evolution.find(params[:id])
+    @evolution.start_time = Time.now
+    if @evolution.save
+      flash[:notice] = "Successfully started evolution(#{@evolution.id}) at #{@evolution.start_time}"
+      redirect_to @evolution
+    else
+      flash[:error] = "Sorry, try again."
+      redirect_to @evolution
+    end
+  end 
+
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+#
+# *get_evolutions 
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
@@ -477,89 +589,18 @@ class EvolutionsController < ApplicationController
     end # get clone_current_uni from session
     if session[:evolution_move_id]
       @evolution_move = Evolution.find(session[:evolution_move_id]) 
+      if @evolution # if current
+        check_for_childship @evolution_move, @evolution # check for childship
+      end # end
     end # get move_current from session
     if session[:evolution_move_uni_id]
       @evolution_move_uni = Evolution.find(session[:evolution_move_uni_id]) 
+      if @evolution # if current
+        check_for_childship @evolution_move_uni, @evolution # check for childship
+      end # end
     end
   end
 
-# pass_from = the evolution that will be re-assigned
-# pass_to = the evolution that will remain un-changed
-# whole = indicates if the pass_from includes all children
-
-# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
-#
-#                                 distill 
-#
-# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
-
-  def distill_evolution(pass_from)
-    if pass_from.evolution_id # if pass_from has parent
-      pass_from_parent = Evolution.find(pass_from.evolution_id)
-      attach_children_to pass_from, pass_from_parent
-    else # pass_from has super
-      pass_from_super = Evolution.find(pass_from.evolution_id)
-      attach_children_to pass_from, pass_from_super, true
-    end
-    pass_from.evolution_id = pass_from.evolution_id = nil
-    pass_from.save
-  end
-  
-# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
-#
-#                                  attach 
-#
-# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
-
-  def attach_to(pass_from, pass_to, pass_to_is_super=false)
-    if pass_to_is_super
-      pass_from.evolution_id = nil
-      pass_from.evolution_id = pass_to.id
-      pass_from.save
-    else # pass_to is parent
-      pass_from.evolution_id = pass_to.id
-      #pass_from.evolution_id = nil
-      pass_from.save
-    end
-  end
-
-  def attach_children_to(pass_from, pass_to, pass_to_is_super=false)
-    if pass_to_is_super
-      for evolution in pass_from.children
-        attach_to evolution, pass_to, pass_to_is_super
-      end
-    else # pass_to is parent
-      for evolution in pass_from.children
-        attach_to evolution, pass_to 
-      end
-    end
-  end
-
-# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
-#
-#                                  flash 
-#
-# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
-
-  def flash_success
-    flash[:notice] = "Success" # flash success
-  end
-  def flash_fail
-    flash[:error] = "Fail, try again" # flash fail
-  end
-
- 
-  def start
-    @evolution = Evolution.find(params[:id])
-    @evolution.start_time = Time.now
-    if @evolution.save
-      flash[:notice] = "Successfully started evolution(#{@evolution.id}) at #{@evolution.start_time}"
-      redirect_to @evolution
-    else
-      flash[:error] = "Sorry, try again."
-      redirect_to @evolution
-    end
-  end 
 
 
 end

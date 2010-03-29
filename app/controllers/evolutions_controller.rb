@@ -316,88 +316,6 @@ class EvolutionsController < ApplicationController
   end
   def clone_uni_to_current
     make_clone_uni
-    place_at_current @evolution_clone_uni
-    save_clone_uni
-  end
-  def clone_uni_to_children
-    make_clone_uni
-    place_at_children @evolution_clone_uni
-    save_clone_uni
-  end
-  def clone_uni_to_child
-    make_clone
-    place_at_child @evolution_clone_uni
-    save_clone
-  end
-
-# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
-#
-# *move
-#
-# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
-
-  def check_childship(pass1, pass2) # check for childship
-    if pass1 == pass2 # if one equals two
-      @child_or_current = true # childship false
-    else
-      check_childship_children pass1, pass2 # check children
-    end
-  end
-  def check_childship_children(pass1, pass2)
-    pass1.children.each do |child|
-      if child == pass2
-        @child_or_current = true
-      end
-      check_childship_children child, pass2
-    end
-  end
-    
-  def move_to_root
-    get_evolutions
-    place_at_root @evolution_move
-    save_move
-  end
-  def move_to_parent
-    get_evolutions
-    place_at_parent @evolution_move
-    save_move
-  end
-  def move_to_current
-    get_evolutions
-    place_at_current @evolution_move
-    save_move
-  end
-  def move_to_children
-    get_evolutions
-    place_at_children @evolution_move
-    save_move
-  end
-  def move_to_child
-    get_evolutions # get evolutions
-    place_at_child @evolution_move # place move at child position
-    save_move # save move
-  end
-
-  def move_children_to(pass)
-    @evolution.children.each do |child| # for children
-      attach_to child, pass # attach child to pass
-    end # end
-  end
-
-  def move_uni_to_root
-    get_evolutions
-    isolate_evolution @evolution_move_uni
-    place_at_root @evolution_move_uni
-    save_move_uni
-  end
-  def move_uni_to_parent
-    get_evolutions
-    isolate_evolution @evolution_move_uni
-    place_at_parent @evolution_move_uni
-    save_move_uni
-  end
-  def move_uni_to_current
-    get_evolutions
     isolate_evolution @evolution_move_uni
     place_at_current @evolution_move_uni
     save_move_uni
@@ -574,7 +492,7 @@ class EvolutionsController < ApplicationController
 
   def get_evolutions(pass=params[:id])
     @evolution = Evolution.find(pass) # get current
-    @evolution_root = @evolution.ancestors.last # get root
+    @evolution_root = @evolution.ancestors.last || @evolution # get root
     #if @evolution.evolution_id
       #@evolution_super = Evolution.find(@evolution.evolution_id)
     #end # get super of current
@@ -590,13 +508,13 @@ class EvolutionsController < ApplicationController
     if session[:evolution_move_id]
       @evolution_move = Evolution.find(session[:evolution_move_id]) 
       if @evolution # if current
-        check_childship @evolution_move, @evolution # check for childship
+        check_for_childship @evolution_move, @evolution # check for childship
       end # end
     end # get move_current from session
     if session[:evolution_move_uni_id]
       @evolution_move_uni = Evolution.find(session[:evolution_move_uni_id]) 
       if @evolution # if current
-        check_childship @evolution_move_uni, @evolution # check for childship
+        check_for_childship @evolution_move_uni, @evolution # check for childship
       end # end
     end
   end
