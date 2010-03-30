@@ -1,2 +1,6 @@
-<%= render :partial => @mutations %>
+
+<hr>
+  <% @mutations.each do |mutation| %>
+    <%= render :partial => 'mutations/trees/agenda', :locals => { :mutation => mutation } %>
+  <% end %>
 

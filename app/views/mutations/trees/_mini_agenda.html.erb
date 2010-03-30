@@ -1,0 +1,30 @@
+<% mutation_current = mutation %>
+<% count = count||0 %>
+
+<% mutation_current.children.each do |mutation| %>
+
+  <fieldset>
+
+    <% count += %>
+
+    <legend>
+      <%= count.to_s %>
+    </legend>
+
+      <% for mutation in mutation.ancestors %>
+        <%= render :partial => mutation %>
+      <% end %>
+    <% end %>
+
+    <% unless mutation.children.empty? %>
+      <%= render :partial => 'mutations/trees/children', :locals => { :mutation => mutation5 } %>
+    <% end %>
+
+    <% if check_for_childship mutation2, @mutation_move||@mutation_clone %>
+      </b>
+    <% end %>
+
+  </fieldset>
+
+<% end %>
+

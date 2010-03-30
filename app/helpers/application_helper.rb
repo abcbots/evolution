@@ -5,19 +5,22 @@ module ApplicationHelper
 # toggle_div to toggle text
 #******************************
 
+# *toggle
+
   # TOGGLE DIV
   def toggle_div(link_text, div_id)
     html = nil
     html = link_to_function link_text, "Effect.toggle('#{div_id}_#{link_text}')"
     return html
   end
-
   # TOGGLE DIV ID---JUST ADD </DIV> AT END
   def toggle_div_id(link_text, div_id)
     html = nil
     html = "<div id=\"#{div_id}_#{link_text}\", style=\"display:none;\">"
     return html
   end
+
+# *check_for_childship
 
   def check_for_childship(pass1, pass2) # get to_be_checked and to_check_from
     result = false # result starts out at false
@@ -37,6 +40,6 @@ module ApplicationHelper
       end # end
       return result # return result
     end # end
-  end
+  end # end
 
 end

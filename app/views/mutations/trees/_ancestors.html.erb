@@ -1,0 +1,8 @@
+
+<% mutation_current = mutation %>
+
+<ul>
+  <% mutation_current.ancestors do |mutation| %>
+    <%= mutation.id %>
+  <% end %>
+</ul>

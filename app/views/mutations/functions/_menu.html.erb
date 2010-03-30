@@ -1,0 +1,22 @@
+
+<%= toggle_div_id "do", "open" %>
+
+<hr>
+
+  <ul>
+  do: <%= render :partial => 'mutations/functions/destroy' %>
+    <%= render :partial => 'mutations/functions/move' %>
+    <%= render :partial => 'mutations/functions/clone' %>
+    [<%= toggle_div "new", "open" %>]
+    <%= toggle_div_id "new", "open" %>
+    <ul>
+      <%= render :partial => 'mutations/functions/new' %>
+    </ul>
+    </div>
+  </ul>
+
+<hr>
+
+</div>
+
+

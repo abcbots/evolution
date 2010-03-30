@@ -1,0 +1,14 @@
+
+<% mutation.children.each do |mutation| %>
+
+<% if mutation.children.empty? # if last mutation on tree %> 
+  | <%= link_to_unless_current mutation.id, mutation %>
+<% end %>
+
+<% unless mutation.children.empty? %>
+  <%= render :partial => 'mutations/trees/agenda', :locals => { :mutation => mutation } %>
+<% end %>
+
+
+<% end %>
+

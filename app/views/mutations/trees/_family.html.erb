@@ -2,27 +2,21 @@
 <% mutation_ancestors = mutation %>
 
 <% mutation_ancestors.ancestors.reverse.each do |mutation| # for mutation ancestors, do mutation_ancestor %>
-
   <% if check_for_childship mutation, @mutation_move||@mutation_clone %>
     <b>
   <% end %>
-
   <fieldset>
   <legend>
     <%= render :partial => mutation, :locals => { :mutation => mutation } %>
   </legend>
-
 <% end %>
 
 <fieldset>
 <legend>
+<b>
 
-  <%= render :partial => 'mutation' %>
-
-  <b>
-
+  <%= mutation_current.id %>
   [<%= toggle_div "do", "open" %>]
-
   <%= render :partial => 'mutations/functions/move/all' %>
   <%= render :partial => 'mutations/functions/move/one' %>
   <%= render :partial => 'mutations/functions/clone/all' %>
@@ -30,26 +24,12 @@
 
 </legend>
 
-  <%= toggle_div_id "do", "open" %>
-  <ul>
-  do:
+  <%= render :partial => 'mutations/functions/menu' %>
 
-    [<%= toggle_div "new", "open" %>]
-    <%= render :partial => 'mutations/functions/move' %>
-    <%= render :partial => 'mutations/functions/clone' %>
-    <%= render :partial => 'mutations/functions/destroy' %>
+</b>
 
-    <%= toggle_div_id "new", "open" %>
-      <ul>
-        <%= render :partial => 'mutations/functions/new' %>
-      </ul>
-    </div>
 
-  </ul>
-  </b>
-  <hr>
-</div>
-
+<%= link_to 'index', evolution_mutations_path(@evolution) %>
 <%= render :partial => 'mutations/trees/children', :locals => { :mutation => mutation_current } %>
 
 <% mutation_ancestors.ancestors.each do |mutation| %>
