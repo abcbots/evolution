@@ -31,13 +31,19 @@ class EvolutionsController < ApplicationController
   end
    
   def new
-    @no_links = true
     @evolution = Evolution.new
-    @evolution.evolution_id = params[:evolution_id]
+    if @evolution.save
+      flash_success   
+      redirect_to @evolution
+    else
+      flash_success   
+      redirect_to evolutions_path
+    end
   end
   
   def create
     @evolution = Evolution.new(params[:evolution])
+
     if @evolution.save
       flash[:notice] = "Successfully created evolution."
       redirect_to @evolution

@@ -1,0 +1,9 @@
+<%= toggle_div_id "content", "functions" %>
+   <p><ul>
+     content: 
+     <%= render :partial => "evolutions/forms/header" %>
+     [<%= toggle_div "header", "forms" %>]
+     <%= render :partial => "evolutions/forms/detail" %>
+     [<%= toggle_div "detail", "forms" %>]
+   </ul></p>
+</div>

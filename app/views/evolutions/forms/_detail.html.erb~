@@ -1,0 +1,11 @@
+<%= toggle_div_id "detail", "form" %>
+
+<% form_for @evolution do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.text_area :detail %>
+  </p>
+  <p><%= f.submit "Go" %></p>
+<% end %>
+
+</div>

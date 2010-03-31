@@ -19,7 +19,7 @@ development:
   adapter: mysql
   encoding: utf8
   reconnect: false
-  database: evolution_test_run_development
+  database: evolution_development
   pool: 5
   username: root
   password:
@@ -32,7 +32,7 @@ test:
   adapter: mysql 
   encoding: utf8
   reconnect: false
-  database: evolution_test_run_test
+  database: evolution_test
   pool: 5
   username: root
   password:
@@ -42,7 +42,7 @@ production:
   adapter: mysql
   encoding: utf8
   reconnect: false
-  database: evolution_test_run_production
+  database: evolution_production
   pool: 5
   username: root
   password: 

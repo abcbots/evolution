@@ -1,4 +1,6 @@
-<p>
+<%= toggle_div_id "new", "open" %>
+  <p>
+    <ul>
   new: 
     [<%= link_to_unless_current "root", 
       :action => 'new_root',
@@ -17,3 +19,5 @@
       :id => @evolution.id %>]
     [<i><%= link_to_unless_current "mutation",
       new_evolution_mutation_path(:evolution_id => @evolution.id) %></i>]
+  </ul>
+</div>

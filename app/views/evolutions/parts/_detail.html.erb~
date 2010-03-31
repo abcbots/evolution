@@ -1,0 +1,5 @@
+<p><%=h @evolution.detail %></p>
+<%= render :partial => "evolutions/forms/detail" %>
+<% unless @evolution.detail %>
+  [<%= toggle_div "detail", "form" %>]
+<% end %>

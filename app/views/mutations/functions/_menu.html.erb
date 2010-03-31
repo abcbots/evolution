@@ -4,10 +4,10 @@
 <hr>
 
   <ul>
-  do: <%= render :partial => 'mutations/functions/destroy' %>
+  do: [<%= toggle_div "new", "open" %>]    
     <%= render :partial => 'mutations/functions/move' %>
     <%= render :partial => 'mutations/functions/clone' %>
-    [<%= toggle_div "new", "open" %>]
+    <%= render :partial => 'mutations/functions/destroy' %>
     <%= toggle_div_id "new", "open" %>
     <ul>
       <%= render :partial => 'mutations/functions/new' %>

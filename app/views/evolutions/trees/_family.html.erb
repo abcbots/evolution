@@ -16,7 +16,7 @@
 <legend>
 <b>
 
-  <%= evolution_current.id %>
+  <%= evolution_current.header||evolution_current.id %>
   [<%= toggle_div "do", "open" %>]
   <%= render :partial => 'evolutions/functions/move/all' %>
   <%= render :partial => 'evolutions/functions/move/one' %>
@@ -25,10 +25,13 @@
 
 </legend>
 
-  <%= render :partial => 'evolutions/functions/menu' %>
+<%= render :partial => 'evolutions/functions/menu' %>
 
 </b>
 
+<%= render :partial => 'evolutions/parts/header' %>
+
+<%= render :partial => 'evolutions/parts/detail' %>
 
 <%= evolution.mutations.to_s %>
 

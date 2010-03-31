@@ -1,2 +1,6 @@
-<%= render :partial => @evolutions %>
+<% if @evolutions %>
+  <%= render :partial => @evolutions %>
+<% else %>
+  <%= link_to "new", :action => "new" %> 
+<% end %>
 

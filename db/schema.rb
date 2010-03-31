@@ -9,13 +9,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100227071509) do
+ActiveRecord::Schema.define(:version => 20100331051559) do
 
   create_table "evolutions", :force => true do |t|
     t.integer  "evolution_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "start_time"
+    t.string   "header"
+    t.text     "detail"
   end
 
   create_table "mutations", :force => true do |t|
