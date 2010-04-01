@@ -1,25 +1,19 @@
 
-<%= toggle_div_id "do", "open" %>
-
 <hr>
-
-  <ul>
+<ul>
 
   do: 
-    [<%= toggle_div "new", "open" %>]
+    [<%= toggle_div "new", "functions" %>]
     <%= render :partial => 'evolutions/functions/move' %>
     <%= render :partial => 'evolutions/functions/clone' %>
     <%= render :partial => 'evolutions/functions/destroy' %>
-    [<%= toggle_div "content", "functions" %>]
 
-    <%= render :partial => 'evolutions/functions/new' %>
+<%= toggle_div_id "new", "functions" %>
+  <%= render :partial => 'evolutions/functions/new' %>
+</div>
 
-    <%= render :partial => 'evolutions/functions/content' %>
-
-  </ul>
-
+</ul>
 <hr>
 
-</div>
 
 

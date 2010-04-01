@@ -1,11 +1,12 @@
-<%= toggle_div_id "detail", "form" %>
-
 <% form_for @evolution do |f| %>
   <%= f.error_messages %>
   <p>
-    <%= f.text_area :detail %>
+    <%= f.text_area :detail, :cols => 90 %>
+    <%= f.check_box "evolution", "show_formatting" %>
+    <%= f.check_box "evolution", "show_space" %>
   </p>
   <p><%= f.submit "Go" %></p>
 <% end %>
 
-</div>
+
+

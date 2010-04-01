@@ -1,0 +1,5 @@
+   <p><ul>
+     content: 
+     [<%= toggle_div "header", "forms" %>]
+     [<%= toggle_div "detail", "forms" %>]
+   </ul></p>

@@ -1,0 +1,6 @@
+  <p><%=h @evolution.detail %></p>
+  <%= toggle_div_id "edit", "detail" %>
+    <p><%= render :partial => 'evolutions/forms/detail' %></p>
+  </div>
+  <p align="right">[<%= toggle_div "edit", "detail" %>]</p>
+

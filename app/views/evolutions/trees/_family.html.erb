@@ -15,25 +15,31 @@
 <fieldset>
 <legend>
 <b>
-
   <%= evolution_current.header||evolution_current.id %>
-  [<%= toggle_div "do", "open" %>]
+  [<%= toggle_div "do", "functions" %>]
   <%= render :partial => 'evolutions/functions/move/all' %>
   <%= render :partial => 'evolutions/functions/move/one' %>
   <%= render :partial => 'evolutions/functions/clone/all' %>
   <%= render :partial => 'evolutions/functions/clone/one' %>
-
 </legend>
 
-<%= render :partial => 'evolutions/functions/menu' %>
+<%= toggle_div_id "do", "functions" %>
+  <%= render :partial => 'evolutions/functions/menu' %>
+</div>
 
 </b>
 
-<%= render :partial => 'evolutions/parts/header' %>
-
-<%= render :partial => 'evolutions/parts/detail' %>
-
-<%= evolution.mutations.to_s %>
+<ul>
+<% if !@evolution.detail %>
+  <%= render :partial => 'evolutions/forms/detail' %>
+<% elsif !@evolution.header %>
+  <%= render :partial => 'evolutions/forms/header' %>
+  <%= render :partial => 'evolutions/contents/detail' %>
+<% else %>
+  <%= render :partial => 'evolutions/contents/header' %>
+  <%= render :partial => 'evolutions/contents/detail' %>
+<% end %>
+</ul>
 
 <%= render :partial => 'evolutions/trees/children', :locals => { :evolution => evolution_current2 } %>
 

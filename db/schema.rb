@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100331051559) do
+ActiveRecord::Schema.define(:version => 20100401072511) do
 
   create_table "evolutions", :force => true do |t|
     t.integer  "evolution_id"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(:version => 20100331051559) do
     t.datetime "start_time"
     t.string   "header"
     t.text     "detail"
+    t.boolean  "show_formatting"
   end
 
   create_table "mutations", :force => true do |t|

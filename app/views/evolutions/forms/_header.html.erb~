@@ -1,11 +1,6 @@
-<%= toggle_div_id "header", "form" %>
 
-<% form_for @evolution do |f| %>
-  <%= f.error_messages %>
   <p>
     <%= f.text_field :header %>
   </p>
   <p><%= f.submit "Go" %></p>
-<% end %>
 
-</div>
