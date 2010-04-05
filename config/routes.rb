@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :evolution_priorities
+
   map.resources :evolutions, :shallow => true do |evolution|
     evolution.resources :children, :controller => 'evolutions'
     evolution.resources :mutations do |mutation|

@@ -9,7 +9,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100401072511) do
+ActiveRecord::Schema.define(:version => 20100405064612) do
+
+  create_table "evolution_priorities", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "evolution_id"
+    t.integer  "mutation_id"
+    t.integer  "prioritization"
+    t.integer  "ancestorization"
+  end
 
   create_table "evolutions", :force => true do |t|
     t.integer  "evolution_id"
@@ -19,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20100401072511) do
     t.string   "header"
     t.text     "detail"
     t.boolean  "show_formatting"
+    t.integer  "ancestor_size"
   end
 
   create_table "mutations", :force => true do |t|

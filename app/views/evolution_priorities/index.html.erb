@@ -1,0 +1,17 @@
+<% title "Evolution Priorities" %>
+
+<table>
+  <tr>
+    <th>Id</th>
+  </tr>
+  <% for evolution_priority in @evolution_priorities %>
+    <tr>
+      <td><%=h evolution_priority.id %></td>
+      <td><%= link_to "Show", evolution_priority %></td>
+      <td><%= link_to "Edit", edit_evolution_priority_path(evolution_priority) %></td>
+      <td><%= link_to "Destroy", evolution_priority, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Evolution Priority", new_evolution_priority_path %></p>

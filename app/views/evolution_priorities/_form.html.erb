@@ -1,0 +1,8 @@
+<% form_for @evolution_priority do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :id %><br />
+    <%= f.text_field :id %>
+  </p>
+  <p><%= f.submit "Submit" %></p>
+<% end %>
