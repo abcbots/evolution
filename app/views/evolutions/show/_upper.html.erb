@@ -1,0 +1,13 @@
+<% evolution_ancestor = evolution %>
+
+<% evolution_ancestor.ancestors.reverse.each do |evolution| %>
+
+<% if check_for_childship evolution, @evolution_move||@evolution_clone %>
+  <b>
+<% end %>
+
+<fieldset>
+  <legend><%= render :partial => evolution, :locals => { :evolution => evolution } %></legend>
+<% end %>
+
+

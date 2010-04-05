@@ -1,5 +1,15 @@
+
+<% evolution_show_upper = @evolution %>
+<% evolution_show_current = @evolution %>
+<% evolution_show_lower = @evolution %>
+
 <p><fieldset><legend>Evolution</legend>
 
-<p><%= render :partial => 'evolutions/trees/family', :locals => {:evolution => @evolution} %></p>
+  <%= render :partial => 'evolutions/show/upper', :locals => { :evolution => evolution_show_upper } %>
+
+  <%= render :partial => 'evolutions/show/current', :locals => { :evolution => evolution_show_current } %>
+
+  <%= render :partial => 'evolutions/show/lower', :locals => { :evolution => evolution_show_lower } %>
 
 </fieldset></p>
+

@@ -1,7 +1,0 @@
-<h1><%=h @evolution.header %></h1>
-<%= render :partial => "evolutions/forms/header" %>
-<% if !@evolution.detail %>
-  [<%= toggle_div "header", "form" %>]
-<% end %>
-
-
