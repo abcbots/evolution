@@ -1,0 +1,8 @@
+<p>
+<% for child in @evolution.children %>
+  <%= child.ancestorization %>
+  |
+  <%= child.childless.to_s %>
+  <br />
+
+<% end %>

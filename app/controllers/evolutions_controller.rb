@@ -580,17 +580,6 @@ class EvolutionsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-
-# get_evolutions
-## @evolution_super(if exists)
-# @evolution_root
-# @evolution_parent(if exists)
-# @evolution
-# @evolution_move(if exists)
-# @evolution_move_uni(if exists)
-# @evolution_clone(if exists)
-# @evolution_clone_uni(if exists)
-
   def get_evolutions(pass=params[:id])
     @evolution = Evolution.find(pass) # get current
     @evolution_root = @evolution.ancestors.last || @evolution # get root
@@ -620,6 +609,49 @@ class EvolutionsController < ApplicationController
     end
   end
 
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+#
+# *agenda
+#
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
+  def get_agenda
+    get_evolutions 				# get root object
+    get_childless @evolution_root 		# send root object to childless checker
+    redirect_to :action => 'agenda', :id => @evolution.id
+  end
+
+  def get_childless(pass) 			# childless checker
+    pass1 = pass				# copy pass
+    pass2 = pass				# copy pass
+    pass3 = pass				# copy pass
+    set_childless_status pass1 			# set childless status
+    set_ancestorization pass2 			# set ancestorization
+    if !pass3.children.empty? 			# if object is not childless, then
+      for child in pass3.children		 
+        get_childless child 			# loop children
+      end
+    end 					# end
+  end 						# end
+
+  def agenda
+    get_evolutions 				# get root object
+  end
+
+  def set_childless_status(pass) 		# set childless status
+    pass1 = pass				# copy pass
+    if pass1.children.empty? 	 		# if object is childless, then
+      pass1.childless = true 			# childless status is true
+    else 					# else, object has childrent, so
+      pass1.childless = false 			# childless status is false
+    end 					# end
+    pass1.save 					# save object
+  end 						# end
+
+  def set_ancestorization(pass) 		# set ancsestorization
+    pass1 = pass				# copy pass
+    pass1.ancestorization = pass1.ancestors.size 	# object ancestorization equals object ancestor size
+    pass1.save 					# save object
+  end						# end
 
 end

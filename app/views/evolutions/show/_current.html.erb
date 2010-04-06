@@ -18,6 +18,9 @@
 
 <ul>
 
+<%= link_to 'agenda', :action => 'get_agenda', :id => @evolution.id %>
+
+
 <% if !evolution.header&!evolution.detail %>
   <%= render :partial => 'evolutions/forms/header_and_detail' %>
 <% elsif evolution.header and !evolution.detail %>
@@ -30,6 +33,7 @@
   <%= render :partial => 'evolutions/contents/header' %>
   <%= render :partial => 'evolutions/contents/detail' %>
 <% end %>
+
 
 </ul>
 
