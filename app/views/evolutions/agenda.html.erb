@@ -1,8 +1,12 @@
 <p>
-<% for child in @evolution.children %>
+<% for child in @evolutions %>
+  <%= child.super_id %>
+  |
+  <%= child.prioritization %>
+  |
   <%= child.ancestorization %>
   |
-  <%= child.childless.to_s %>
+  <%= child.header %>
   <br />
 
 <% end %>
