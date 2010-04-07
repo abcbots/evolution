@@ -1,23 +1,18 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :features
 
-  map.resources :evolution_priorities
+  # take this out: map.resources :evolution_priorities
 
-  map.resources :evolutions, :shallow => true do |evolution|
-    evolution.resources :children, :controller => 'evolutions'
-    evolution.resources :mutations do |mutation|
-      mutation.resources :children, :controller => 'mutations'
+  map.resources :features, :shallow => true do |feature|
+    feature.resources :children, :controller => 'features'
+    feature.resources :evolutions do |evolution|
+      evolution.resources :children, :controller => 'evolutions'
+      evolution.resources :mutations do |mutation|
+        mutation.resources :children, :controller => 'mutations'
+      end
     end
   end
-  map.root :evolutions
+  map.root :features
   map.resources :agenda
-
-  map.move_mutation_current '/mutations/:id/move_current', :controller => 'mutations', :action => 'move_current'
-  map.new_mutation_after '/mutations/:id/new_after', :controller => 'mutations', :action => 'new_after'
-  map.new_mutation_current '/mutations/:id/new_current', :controller => 'mutations', :action => 'new_current'
-  
-  map.evolution_start '/evolutions/:id/start', :controller => 'evolutions', :action => 'start'
-  map.mutation_complete '/mutations/:id/complete', :controller => 'mutations', :action => 'complete'
 
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
