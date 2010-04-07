@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+
+	<title>Module: ApplicationHelper</title>
+
+	<link rel="stylesheet" href="./rdoc.css" type="text/css" media="screen" />
+
+	<script src="./js/jquery.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script src="./js/thickbox-compressed.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script src="./js/quicksearch.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script src="./js/darkfish.js" type="text/javascript"
+		charset="utf-8"></script>
+
+</head>
+<body class="module">
+
+	<div id="metadata">
+		<div id="file-metadata">
+			<div id="file-list-section" class="section">
+				<h3 class="section-header">In Files</h3>
+				<div class="section-body">
+					<ul>
+					
+						<li><a href="./app/helpers/application_helper_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+							class="thickbox" title="app/helpers/application_helper.rb">app/helpers/application_helper.rb</a></li>
+					
+					</ul>
+				</div>
+			</div>
+
+			
+		</div>
+
+		<div id="class-metadata">
+
+			<!-- Parent Class -->
+			
+
+			<!-- Namespace Contents -->
+			
+
+			<!-- Method Quickref -->
+			
+			<div id="method-list-section" class="section">
+				<h3 class="section-header">Methods</h3>
+				<ul class="link-list">
+					
+					<li><a href="#M000002">#check_for_childship</a></li>
+					
+					<li><a href="#M000003">#check_for_childship_children</a></li>
+					
+					<li><a href="#M000000">#toggle_div</a></li>
+					
+					<li><a href="#M000001">#toggle_div_id</a></li>
+					
+				</ul>
+			</div>
+			
+
+			<!-- Included Modules -->
+			
+		</div>
+
+		<div id="project-metadata">
+			
+			
+			<div id="fileindex-section" class="section project-section">
+				<h3 class="section-header">Files</h3>
+				<ul>
+				
+					<li class="file"><a href="./doc/README_FOR_APP.html">README_FOR_APP</a></li>
+				
+				</ul>
+			</div>
+			
+
+			<div id="classindex-section" class="section project-section">
+				<h3 class="section-header">Class Index
+					<span class="search-toggle"><img src="./images/find.png"
+						height="16" width="16" alt="[+]"
+						title="show/hide quicksearch" /></span></h3>
+				<form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+				<fieldset>
+					<legend>Quicksearch</legend>
+					<input type="text" name="quicksearch" value=""
+						class="quicksearch-field" />
+				</fieldset>
+				</form>
+
+				<ul class="link-list">
+				
+					<li><a href="./AgendaController.html">AgendaController</a></li>
+				
+					<li><a href="./AgendaHelper.html">AgendaHelper</a></li>
+				
+					<li><a href="./ApplicationController.html">ApplicationController</a></li>
+				
+					<li><a href="./ApplicationHelper.html">ApplicationHelper</a></li>
+				
+					<li><a href="./Evolution.html">Evolution</a></li>
+				
+					<li><a href="./EvolutionsController.html">EvolutionsController</a></li>
+				
+					<li><a href="./EvolutionsHelper.html">EvolutionsHelper</a></li>
+				
+					<li><a href="./Feature.html">Feature</a></li>
+				
+					<li><a href="./FeaturesController.html">FeaturesController</a></li>
+				
+					<li><a href="./FeaturesHelper.html">FeaturesHelper</a></li>
+				
+					<li><a href="./LayoutHelper.html">LayoutHelper</a></li>
+				
+					<li><a href="./Mutation.html">Mutation</a></li>
+				
+					<li><a href="./MutationsController.html">MutationsController</a></li>
+				
+					<li><a href="./MutationsHelper.html">MutationsHelper</a></li>
+				
+				</ul>
+				<div id="no-class-search-results" style="display: none;">No matching classes.</div>
+			</div>
+
+			
+		</div>
+	</div>
+
+	<div id="documentation">
+		<h1 class="module">ApplicationHelper</h1>
+
+		<div id="description">
+			<p>
+Methods added to this helper will be available to all templates in the
+application.
+</p>
+
+		</div>
+
+		<!-- Constants -->
+		
+
+		<!-- Attributes -->
+		
+
+		<!-- Methods -->
+		
+		<div id="public-instance-method-details" class="method-section section">
+			<h3 class="section-header">Public Instance Methods</h3>
+
+		
+			<div id="check-for-childship-method" class="method-detail ">
+				<a name="M000002"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">check_for_childship</span><span
+						class="method-args">(pass1, pass2)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+*<a href="ApplicationHelper.html#M000002">check_for_childship</a>
+</p>
+					
+
+					
+					<div class="method-source-code"
+						id="check-for-childship-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/helpers/application_helper.rb, line 25</span>
+25:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">check_for_childship</span>(<span class="ruby-identifier">pass1</span>, <span class="ruby-identifier">pass2</span>) <span class="ruby-comment cmt"># get to_be_checked and to_check_from</span>
+26:     <span class="ruby-identifier">result</span> = <span class="ruby-keyword kw">false</span> <span class="ruby-comment cmt"># result starts out at false</span>
+27:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">pass1</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">pass2</span> <span class="ruby-comment cmt"># if to-be-checked is equal to to_check_from</span>
+28:       <span class="ruby-identifier">result</span> = <span class="ruby-keyword kw">true</span> <span class="ruby-comment cmt"># return true</span>
+29:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">pass1</span>.<span class="ruby-identifier">children</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-comment cmt"># else if to-be-checked has children</span>
+30:       <span class="ruby-identifier">check_for_childship_children</span> <span class="ruby-identifier">pass1</span>, <span class="ruby-identifier">pass2</span> <span class="ruby-comment cmt"># send to children checker...</span>
+31:     <span class="ruby-keyword kw">end</span> <span class="ruby-comment cmt"># end</span>
+32:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">result</span>
+33:   <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+			</div>
+
+		
+			<div id="check-for-childship-children-method" class="method-detail ">
+				<a name="M000003"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">check_for_childship_children</span><span
+						class="method-args">(pass1, pass2)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p class="missing-docs">(Not documented)</p>
+					
+
+					
+					<div class="method-source-code"
+						id="check-for-childship-children-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/helpers/application_helper.rb, line 34</span>
+34:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">check_for_childship_children</span>(<span class="ruby-identifier">pass1</span>, <span class="ruby-identifier">pass2</span>) <span class="ruby-comment cmt"># check if child of check_from</span>
+35:     <span class="ruby-identifier">pass1</span>.<span class="ruby-identifier">children</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">child</span><span class="ruby-operator">|</span> <span class="ruby-comment cmt"># for children of to be checked, get child</span>
+36:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">pass1</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">child</span> <span class="ruby-comment cmt"># if to be checked is equal to child</span>
+37:         <span class="ruby-identifier">result</span> = <span class="ruby-keyword kw">true</span> <span class="ruby-comment cmt"># result equals true</span>
+38:       <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">pass1</span>.<span class="ruby-identifier">children</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-comment cmt"># else, if there are more children</span>
+39:         <span class="ruby-identifier">check_for_childship_children</span> <span class="ruby-identifier">child</span>, <span class="ruby-identifier">pass1</span> <span class="ruby-comment cmt"># loop</span>
+40:       <span class="ruby-keyword kw">end</span> <span class="ruby-comment cmt"># end</span>
+41:       <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">result</span> <span class="ruby-comment cmt"># return result</span>
+42:     <span class="ruby-keyword kw">end</span> <span class="ruby-comment cmt"># end</span>
+43:   <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+			</div>
+
+		
+			<div id="toggle-div-method" class="method-detail ">
+				<a name="M000000"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">toggle_div</span><span
+						class="method-args">(link_text, div_id)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+TOGGLE DIV
+</p>
+					
+
+					
+					<div class="method-source-code"
+						id="toggle-div-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/helpers/application_helper.rb, line 11</span>
+11:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">toggle_div</span>(<span class="ruby-identifier">link_text</span>, <span class="ruby-identifier">div_id</span>)
+12:     <span class="ruby-identifier">html</span> = <span class="ruby-keyword kw">nil</span>
+13:     <span class="ruby-identifier">html</span> = <span class="ruby-identifier">link_to_function</span> <span class="ruby-identifier">link_text</span>, <span class="ruby-node">&quot;Effect.toggle('#{div_id}_#{link_text}')&quot;</span>
+14:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">html</span>
+15:   <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+			</div>
+
+		
+			<div id="toggle-div-id-method" class="method-detail ">
+				<a name="M000001"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">toggle_div_id</span><span
+						class="method-args">(link_text, div_id)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+TOGGLE DIV ID&#8212;JUST ADD </DIV> AT END
+</p>
+					
+
+					
+					<div class="method-source-code"
+						id="toggle-div-id-source">
+<pre>
+    <span class="ruby-comment cmt"># File app/helpers/application_helper.rb, line 17</span>
+17:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">toggle_div_id</span>(<span class="ruby-identifier">link_text</span>, <span class="ruby-identifier">div_id</span>)
+18:     <span class="ruby-identifier">html</span> = <span class="ruby-keyword kw">nil</span>
+19:     <span class="ruby-identifier">html</span> = <span class="ruby-node">&quot;&lt;div id=\&quot;#{div_id}_#{link_text}\&quot;, style=\&quot;display:none;\&quot;&gt;&quot;</span>
+20:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">html</span>
+21:   <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+			</div>
+
+		
+		</div>
+	
+
+	</div>
+
+
+	<div id="rdoc-debugging-section-dump" class="debugging-section">
+	
+		<p>Disabled; run with --debug to generate this.</p>
+	
+	</div>
+
+	<div id="validator-badges">
+		<p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+		<p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+			Rdoc Generator</a> 1.1.6</small>.</p>
+	</div>
+
+</body>
+</html>
+

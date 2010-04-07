@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100407070336) do
+ActiveRecord::Schema.define(:version => 20100407041630) do
 
   create_table "evolutions", :force => true do |t|
     t.integer  "evolution_id"
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(:version => 20100407070336) do
     t.integer  "ancestorization"
     t.integer  "prioritization"
     t.boolean  "childless"
-    t.integer  "super_id"
+    t.integer  "feature_id"
   end
 
   create_table "features", :force => true do |t|
