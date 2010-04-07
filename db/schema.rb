@@ -11,15 +11,6 @@
 
 ActiveRecord::Schema.define(:version => 20100407041630) do
 
-  create_table "evolution_priorities", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "evolution_id"
-    t.integer  "mutation_id"
-    t.integer  "prioritization"
-    t.integer  "ancestorization"
-  end
-
   create_table "evolutions", :force => true do |t|
     t.integer  "evolution_id"
     t.datetime "created_at"

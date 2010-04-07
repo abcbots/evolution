@@ -1,6 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
 
-  # take this out: map.resources :evolution_priorities
 
   map.resources :features, :shallow => true do |feature|
     feature.resources :children, :controller => 'features'
