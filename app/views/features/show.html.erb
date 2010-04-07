@@ -1,0 +1,12 @@
+<% title "Feature" %>
+
+<p>
+  <strong>Evolution:</strong>
+  <%=h @feature.evolution_id %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_feature_path(@feature) %> |
+  <%= link_to "Destroy", @feature, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", features_path %>
+</p>

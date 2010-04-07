@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :features
+
   map.resources :evolution_priorities
 
   map.resources :evolutions, :shallow => true do |evolution|
