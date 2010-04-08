@@ -1,12 +1,39 @@
-<p>
+
+
+
+<% counter = 0 %>
+
+<% while counter < @prioritization_max %>
+
+<% counter = counter + 1 %>
+<fieldset><legend><b>Phase (<%= counter %>)</b></legend>
+<ol>
+
 <% for child in @evolutions %>
-  <%= child.super_id %>
-  |
-  <%= child.prioritization %>
-  |
-  <%= child.ancestorization %>
-  |
-  <%= child.header %>
-  <br />
+
+<% if child.prioritization == counter %>
+<p>
+<li>
+  <%= child.super_id %> |
+  <%= child.prioritization %> |
+  <%= child.ancestorization %> |
+  <%= link_to_unless_current child.header, child %>
+</li>
+</p>
+<% end %>
 
 <% end %>
+
+</ol>
+</fieldset>
+
+<% end %>
+
+
+
+
+  
+
+
+
+

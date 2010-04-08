@@ -181,24 +181,39 @@ class EvolutionsController < ApplicationController
     redirect_to @evolution # redirect to current
   end
 
+  # toggle edit [mode]
+  #   if toggle is true
+  #     switch to false
+  #   elsif toggle is false
+  #     switch to true
+  #   end
+  #   refresh
+  # end
+  def toggle_edit
+    if session[:toggle_edit] == false
+      session[:toggle_edit] = true
+    elsif session[:toggle_edit] == true
+      session[:toggle_edit] = false
+    end
+    redirect_to @evolution
+  end
+
   def move_to_move_uni
     session[:evolution_move_uni_id] = session[:evolution_move_id] # set uni to normal
     session[:evolution_move_id] = nil # nil normal
     redirect_to :action => 'show', :id => params[:id] # redirect to show and pass along id
   end
-
   def move_uni_to_move
     session[:evolution_move_id] = session[:evolution_move_uni_id] # set uni to normal
     session[:evolution_move_uni_id] = nil # nil normal
     redirect_to :action => 'show', :id => params[:id] # redirect to show and pass along id
   end
-
+  
   def clone_to_clone_uni
     session[:evolution_clone_uni_id] = session[:evolution_clone_id] # set uni to normal
     session[:evolution_clone_id] = nil # nil normal
     redirect_to :action => 'show', :id => params[:id] # redirect to show and pass along id
   end
-
   def clone_uni_to_clone
     session[:evolution_clone_id] = session[:evolution_clone_uni_id] # set uni to normal
     session[:evolution_clone_uni_id] = nil # nil normal
@@ -589,6 +604,11 @@ class EvolutionsController < ApplicationController
         check_for_childship @evolution_move_uni, @evolution # check for childship
       end # end
     end
+    if session[:toggle_edit]
+      @edit = true
+    else
+      @edit = false
+    end
   end
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
@@ -623,20 +643,36 @@ class EvolutionsController < ApplicationController
     end
   end
 
+  # set prioritization with pass
+  #   counter equals one
+  #   prioritization equals counter
+  #   save
+  #   for each ancestor
+  #     advance counter
+  #     pioritization equals counter
+  #     save
+  #   end
+  # end
   def set_prioritization(pass)
-    counting = 1
-    pass.prioritization = counting
+    counter = 1
+    pass.prioritization = counter
     pass.save
     pass.ancestors.each do |ancestor|
-      counting = counting + 1
-      ancestor.prioritization = counting
+      counter = counter + 1
+      ancestor.prioritization = counter
       ancestor.save
     end
   end
 
+  # [show] agenda
+  #   get evolutions
+  #   evolutions equals all of same super, in order of prioritization, ascending
+  #   prioritization max equals max prioritization of same super
+  # end
   def agenda
-    get_evolutions 				# get root object
+    get_evolutions
     @evolutions = Evolution.find(:all, :conditions => {:super_id => @evolution_super.id}, :order => "prioritization ASC" )
+    @prioritization_max = Evolution.maximum(:prioritization, :conditions => {:super_id => @evolution_super.id} )
   end
 
   # locate and get childless objects of passed object
@@ -649,6 +685,7 @@ class EvolutionsController < ApplicationController
   #       loop passing child
   #     end
   #   end
+  # end
   def get_childless(pass) 
     pass1 = pass
     pass2 = pass
