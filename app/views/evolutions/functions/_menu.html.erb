@@ -6,6 +6,7 @@
     [<%= toggle_div "new", "functions" %>]
     <%= render :partial => 'evolutions/functions/move' %>
     <%= render :partial => 'evolutions/functions/clone' %>
+    [<%= link_to 'edit', :action => 'toggle_edit', :id => @evolution.id %>]
     <%= render :partial => 'evolutions/functions/destroy' %>
 
 <%= toggle_div_id "new", "functions" %>

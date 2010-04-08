@@ -190,12 +190,14 @@ class EvolutionsController < ApplicationController
   #   refresh
   # end
   def toggle_edit
-    if session[:toggle_edit] == false
-      session[:toggle_edit] = true
-    elsif session[:toggle_edit] == true
-      session[:toggle_edit] = false
+    get_evolution
+    if session[:edit] == false
+      session[:edit] = true
+      redirect_to @evolution
+    elsif session[:edit] == true
+      session[:edit] = false
+      redirect_to @evolution
     end
-    redirect_to @evolution
   end
 
   def move_to_move_uni
@@ -579,6 +581,9 @@ class EvolutionsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
+  def get_evolution(pass=params[:id])
+    @evolution = Evolution.find(pass) # get current
+  end
   def get_evolutions(pass=params[:id])
     @evolution = Evolution.find(pass) # get current
     @evolution_root = @evolution.ancestors.last || @evolution # get root
