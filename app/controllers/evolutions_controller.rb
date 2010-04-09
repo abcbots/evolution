@@ -80,7 +80,7 @@ class EvolutionsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def save_new
+  def save_new(obj_new, obj_current)
     if @evolution_new.save
       flash_success
       redirect_to @evolution_new
@@ -199,25 +199,29 @@ class EvolutionsController < ApplicationController
   end
 
   def move_to_move_uni
+    get_evolutions
     session[:evolution_move_uni_id] = session[:evolution_move_id] # set uni to normal
     session[:evolution_move_id] = nil # nil normal
-    redirect_to :action => 'show', :id => params[:id] # redirect to show and pass along id
+    redirect_to @evolution # redirect to current
   end
   def move_uni_to_move
+    get_evolutions
     session[:evolution_move_id] = session[:evolution_move_uni_id] # set uni to normal
     session[:evolution_move_uni_id] = nil # nil normal
-    redirect_to :action => 'show', :id => params[:id] # redirect to show and pass along id
+    redirect_to @evolution # redirect to current
   end
   
   def clone_to_clone_uni
+    get_evolutions
     session[:evolution_clone_uni_id] = session[:evolution_clone_id] # set uni to normal
     session[:evolution_clone_id] = nil # nil normal
-    redirect_to :action => 'show', :id => params[:id] # redirect to show and pass along id
+    redirect_to @evolution # redirect to current
   end
   def clone_uni_to_clone
+    get_evolutions
     session[:evolution_clone_id] = session[:evolution_clone_uni_id] # set uni to normal
     session[:evolution_clone_uni_id] = nil # nil normal
-    redirect_to :action => 'show', :id => params[:id] # redirect to show and pass along id
+    redirect_to @evolution # redirect to current
   end
 
 

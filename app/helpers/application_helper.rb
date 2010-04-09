@@ -42,4 +42,23 @@ module ApplicationHelper
     end # end
   end # end
 
+  # [toggle] edit [mode]
+  #   if toggle is true
+  #     switch to false
+  #   elsif toggle is false
+  #     switch to true
+  #   end
+  #   refresh
+  # end
+  def toggle_edit
+
+    get_evolution
+    if session[:edit] == true
+      session[:edit] = false
+    else
+      session[:edit] = true 
+    end
+    redirect_to @evolution
+  end
+
 end
