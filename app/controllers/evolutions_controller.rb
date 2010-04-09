@@ -20,7 +20,7 @@ class EvolutionsController < ApplicationController
       flash_success   
       redirect_to @evolution
     else
-      flash_success   
+      flash_fail  
       redirect_to evolutions_path
     end
   end
@@ -35,17 +35,34 @@ class EvolutionsController < ApplicationController
     end
   end
   
-  def edit
-    @evolution = Evolution.find(params[:id])
+ 
+  # [toggle] edit [mode]
+  #   if toggle is true
+  #     switch to false
+  #   elsif toggle is false
+  #     switch to true
+  #   end
+  #   refresh
+  # end
+  def toggle_edit
+    get_evolution
+    if session[:edit] == true
+      session[:edit] = false
+    else
+      session[:edit] = true 
+    end
+    redirect_to @evolution
   end
-  
+
   def update
     @evolution = Evolution.find(params[:id])
     if @evolution.update_attributes(params[:evolution])
-      flash[:notice] = "Successfully updated evolution."
+      flash_success
+      session[:edit] = false
       redirect_to @evolution
     else
-      render :action => 'edit'
+      flash_fail
+      redirect_to @evolution
     end
   end
   
@@ -179,25 +196,6 @@ class EvolutionsController < ApplicationController
     get_evolutions
     session[:evolution_move_uni_id] = @evolution.id # set move uni
     redirect_to @evolution # redirect to current
-  end
-
-  # toggle edit [mode]
-  #   if toggle is true
-  #     switch to false
-  #   elsif toggle is false
-  #     switch to true
-  #   end
-  #   refresh
-  # end
-  def toggle_edit
-    get_evolution
-    if session[:edit] == false
-      session[:edit] = true
-      redirect_to @evolution
-    elsif session[:edit] == true
-      session[:edit] = false
-      redirect_to @evolution
-    end
   end
 
   def move_to_move_uni
@@ -608,11 +606,6 @@ class EvolutionsController < ApplicationController
       if @evolution # if current
         check_for_childship @evolution_move_uni, @evolution # check for childship
       end # end
-    end
-    if session[:toggle_edit]
-      @edit = true
-    else
-      @edit = false
     end
   end
 

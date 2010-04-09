@@ -18,6 +18,8 @@
 
 <ul>
 
+<%= link_to 'agenda', :action => 'get_agenda', :id => @evolution.id %>
+
 
 <% if session[:edit] %>
   <%= render :partial => 'evolutions/forms/header_and_detail' %>
