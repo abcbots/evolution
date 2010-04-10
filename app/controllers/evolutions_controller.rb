@@ -80,7 +80,7 @@ class EvolutionsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def save_new(obj_new, obj_current)
+  def save_new
     if @evolution_new.save
       flash_success
       redirect_to @evolution_new
@@ -468,6 +468,19 @@ class EvolutionsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
+  # isolate object
+  #   if object has a parent
+  #     get parent
+  #     attach object children to parent
+  #   else, if object has super
+  #     for each object child
+  #       
+  #       
+  #       save
+  #     end
+  #   end
+  #
+  #
   def isolate_evolution(pass1)
     if pass1.evolution_id # if pass1 has parent
       pass1_parent = Evolution.find(pass1.evolution_id) # let pass1 parent be the pass1 parent
@@ -489,11 +502,12 @@ class EvolutionsController < ApplicationController
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
   def place_at_root(pass)
-    #pass.evolution_id = @evolution_root.evolution_id
+    pass.super_id = @evolution_super.id
     pass.evolution_id = nil
     pass.save
   end
   def place_at_parent(pass)
+    pass.super_id = @evolution_super.id
     if @evolution_parent # if parent
       attach_to pass, @evolution_parent # attach pass to parent
       pass.save # save pass
@@ -505,6 +519,7 @@ class EvolutionsController < ApplicationController
     @evolution.save # save evolution to new parent
   end
   def place_at_current(pass)
+    pass.super_id = @evolution_super.id
     if @evolution_parent # if parent 
       attach_to pass, @evolution_parent # attach pass to parent
     else # else, is root
@@ -513,10 +528,12 @@ class EvolutionsController < ApplicationController
     pass.save # save pass
   end
   def place_at_child(pass)
+    pass.super_id = @evolution_super.id
     attach_to pass, @evolution
     pass.save
   end
   def place_at_children(pass)
+    pass.super_id = @evolution_super.id
     move_children_to pass
     place_at_child pass
     pass.save

@@ -1,8 +1,18 @@
 
-<p><fieldset><legend><%= @evolution.class %>: <%= link_to_unless_current @evolution.id, @evolution %></legend>
+<% show_ancestors_open = @mutation %>
+<% show_current = @mutation %>
+<% show_children = @mutation %>
+<% show_ancestors_close = @mutation %>
 
-<% if @mutation %>
-  <p><%= render :partial => 'mutations/trees/family', :locals => {:mutation => @mutation} %>
-<% end %>
+<p><fieldset><legend><%= show_current.class %></legend>
+
+  <%= render :partial => 'mutations/show/ancestors_open', :locals => { :mutation => show_ancestors_open } %>
+
+  <%= render :partial => 'mutations/show/current', :locals => { :mutation => show_current } %>
+
+  <%= render :partial => 'mutations/trees/children', :locals => { :mutation => show_children } %>
+
+  <%= render :partial => 'mutations/show/ancestors_close', :locals => { :mutation => show_ancestors_close } %>
 
 </fieldset></p>
+

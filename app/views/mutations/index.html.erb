@@ -1,6 +1,6 @@
-
-<hr>
-  <% @mutations.each do |mutation| %>
-    <%= render :partial => 'mutations/trees/agenda', :locals => { :mutation => mutation } %>
-  <% end %>
+<% if @mutations %>
+  <%= render :partial => @mutations %>
+<% else %>
+  <%= link_to "new", :action => "new" %> 
+<% end %>
 

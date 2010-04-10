@@ -1,21 +1,21 @@
 
-<% evolution.children.each do |evolution| %>
+<% mutation.children.each do |mutation| %>
 
   <fieldset>
 
-    <% if check_for_childship evolution, @evolution_move||@evolution_clone %>
+    <% if check_for_childship mutation, @mutation_move||@mutation_clone %>
       <b>
     <% end %>
 
     <legend>
-      <%= render :partial => 'evolution', :locals => { :evolution => evolution } %>
+      <%= render :partial => 'mutation', :locals => { :mutation => mutation } %>
     </legend>
 
-    <%- unless evolution.children.empty? -%>
-      <%= render :partial => 'children', :locals => { :evolution => evolution } %>
+    <%- unless mutation.children.empty? -%>
+      <%= render :partial => 'children', :locals => { :mutation => mutation } %>
     <%- end -%>
 
-    <% if check_for_childship evolution, @evolution_move||@evolution_clone %>
+    <% if check_for_childship mutation, @mutation_move||@mutation_clone %>
       </b>
     <% end %>
 

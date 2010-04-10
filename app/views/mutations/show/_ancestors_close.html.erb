@@ -1,0 +1,11 @@
+<% mutation_move = @mutation_move %>
+<% mutation_clone = @mutation_clone %>
+
+<% mutation.ancestors.each do |ancestor| %>
+  <% if check_for_childship ancestor, mutation_move||mutation_clone %>
+    </b>
+  <% end %>
+  </fieldset>
+<% end %>
+
+

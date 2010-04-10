@@ -1,0 +1,8 @@
+
+<% if @mutation.show_formatting %>
+  <p><%= auto_link(simple_format(h(@mutation.detail))) %></p>
+<% else %>
+  <p><%= auto_link(h(@mutation.detail)) %></p>
+<% end %>
+
+

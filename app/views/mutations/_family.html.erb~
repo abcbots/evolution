@@ -1,0 +1,39 @@
+<% mutation_current = mutation %>
+
+<% mutation.ancestors.reverse.each do |mutation| %>
+
+<ul>
+<fieldset>
+<legend>
+
+<% if mutation == @mutation_move || @mutation_move_uni || @mutation_clone || @mutation_clone_uni %>
+
+<% end %>
+
+  <%= link_to_unless_current mutation.id, mutation %>
+
+<% if mutation == @mutation_move || @mutation_move_uni || @mutation_clone || @mutation_clone_uni %>
+    <strong></strong>
+<% end %>
+
+</legend>
+<% end %>
+
+
+<ul>
+<fieldset>
+<legend>
+<b><%= mutation_current.id %></b>
+</legend>
+
+
+<ul>
+<%= render :partial => 'children', 
+  :locals => {:mutation => mutation_current} %>
+</ul>
+</fieldset>
+
+<% mutation_current.ancestors.each do |mutation| %>
+</fieldset>
+</ul>
+<% end %>

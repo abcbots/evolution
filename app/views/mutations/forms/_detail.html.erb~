@@ -1,0 +1,12 @@
+<% form_for @mutation do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.text_area :detail, :cols => 90 %>
+    <%= f.check_box "mutation", "show_formatting" %>
+    <%= f.check_box "mutation", "show_space" %>
+  </p>
+  <p><%= f.submit "Go" %></p>
+<% end %>
+
+
+

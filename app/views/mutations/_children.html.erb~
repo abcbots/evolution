@@ -1,0 +1,30 @@
+<% mutation_current = mutation %>
+
+<% mutation.children.each do |mutation| %>
+
+<fieldset>
+<legend>
+
+<% if mutation == @mutation_move_uni || @mutation_move_uni || @mutation_clone || @mutation_clone_uni %>
+  <%= link_to_unless_current mutation.id, mutation %></p>
+<% else %>
+  <%= link_to_unless_current mutation.id, mutation %>
+<% end %>
+
+</legend>
+
+<%- if !mutation.children.empty? -%>
+
+<ul>
+<%= render :partial => 'children', 
+  :locals => { :mutation => mutation } %>
+</ul>
+
+<%- end -%>
+</fieldset>
+
+<% end %>
+
+<% mutation_current.children.each do |mutation| %>
+<% end %>
+

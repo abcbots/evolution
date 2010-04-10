@@ -1,15 +1,19 @@
 
+<% labeling = mutation.header||mutation.id %>
+<% labeling = labeling.to_s.titleize %>
+<% labeling = "[" + labeling + "]" %>
+
   <% if mutation == @mutation %>
-    <b><%= link_to_unless_current mutation.id, mutation %></b>
+    <b><%= link_to_unless_current labeling, mutation %></b>
   <% elsif mutation == @mutation_move %>
-    <b><%= link_to_unless_current mutation.id, mutation %></b>
+    <b><%= link_to_unless_current labeling, mutation %></b>
   <% elsif mutation == @mutation_clone %>
-    <b><%= link_to_unless_current mutation.id, mutation %></b>
+    <b><%= link_to_unless_current labeling, mutation %></b>
   <% elsif mutation == @mutation_move_uni %>
-    <b><i><%= link_to_unless_current mutation.id, mutation %></i></b>
+    <b><i><%= link_to_unless_current labeling, mutation %></i></b>
   <% elsif mutation == @mutation_clone_uni %>
-    <b><i><%= link_to_unless_current mutation.id, mutation %></i></b>
+    <b><i><%= link_to_unless_current labeling, mutation %></i></b>
   <% else %>
-    <%= link_to_unless_current mutation.id, mutation %>
+    <%= link_to_unless_current labeling, mutation %>
   <% end %>
 

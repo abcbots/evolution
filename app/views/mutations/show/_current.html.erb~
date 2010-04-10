@@ -1,0 +1,33 @@
+
+<% mutation_current = mutation %>
+
+<fieldset>
+<legend>
+<b>
+  <%= mutation_current.header||mutation_current.id %>
+  [<%= toggle_div "do", "functions" %>]
+  <%= render :partial => 'mutations/functions/move/all' %>
+  <%= render :partial => 'mutations/functions/move/one' %>
+  <%= render :partial => 'mutations/functions/clone/all' %>
+  <%= render :partial => 'mutations/functions/clone/one' %>
+</legend>
+<%= toggle_div_id "do", "functions" %>
+  <%= render :partial => 'mutations/functions/menu' %>
+</div>
+</b>
+
+<ul>
+
+<%= link_to 'agenda', :action => 'get_agenda', :id => @mutation.id %>
+
+
+<% if session[:edit] %>
+  <%= render :partial => 'mutations/forms/header_and_detail' %>
+<% else %>
+  <%= render :partial => 'mutations/contents/header' %>
+  <%= render :partial => 'mutations/contents/detail' %>
+<% end %>
+
+
+</ul>
+

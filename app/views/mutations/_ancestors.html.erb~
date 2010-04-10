@@ -1,0 +1,29 @@
+<% mutation_current = mutation %>
+
+<% mutation.ancestors.reverse.each do |mutation| %>
+
+<ul>
+<fieldset>
+<legend>
+<%= link_to_unless_current mutation.id, mutation %>
+</legend>
+<% end %>
+
+
+<ul>
+<fieldset>
+<legend>
+<b><%= mutation_current.id %></b>
+</legend>
+
+
+<ul>
+<%= render :partial => 'children', 
+  :locals => {:mutation => mutation_current} %>
+</ul>
+</fieldset>
+
+<% mutation_current.ancestors.each do |mutation| %>
+</fieldset>
+</ul>
+<% end %>

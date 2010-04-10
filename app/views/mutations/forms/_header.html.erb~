@@ -1,0 +1,6 @@
+
+  <p>
+    <%= f.text_field :header %>
+  </p>
+  <p><%= f.submit "Go" %></p>
+

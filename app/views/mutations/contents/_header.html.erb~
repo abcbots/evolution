@@ -1,0 +1,6 @@
+
+  <h1><%=h @mutation.header.titleize %></h1>
+  <%= toggle_div_id "edit", "header" %>
+    <p><%= render :partial => 'mutations/forms/header' %></p>
+  </div>
+  <right>[<%= toggle_div "edit", "header" %>]</right>

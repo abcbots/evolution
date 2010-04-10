@@ -23,19 +23,14 @@ class MutationsController < ApplicationController
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
   def index
-    @mutations = Mutation.all
+    @evolution = Evolution.find(params[:evolution_id])
+    @mutations = @evolution.mutations.all
   end
   
   def show
     get_mutations
   end
    
-  def new
-    @no_links = true
-    @mutation = Mutation.new
-    @mutation.mutation_id = params[:mutation_id]
-  end
-  
   def create
     @mutation = Mutation.new(params[:mutation])
     if @mutation.save
@@ -133,6 +128,18 @@ class MutationsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
+  def new
+    @evolution = Evolution.find(params[:evolution_id])
+    @mutation = Mutation.new
+    @mutation.evolution_id = @evolution.id
+    if @mutation.save
+      flash_success
+      redirect_to @mutation
+    else
+      flash_fail
+      redirect_to @evolution
+    end
+  end
   def new_root
     get_mutations
     @mutation_new = Mutation.new
@@ -574,10 +581,8 @@ class MutationsController < ApplicationController
 
   def get_mutations(pass=params[:id])
     @mutation = Mutation.find(pass) # get current
-    @mutation_root = @mutation.ancestors.last # get root
-    #if @mutation.mutation_id
-      #@mutation_super = Mutation.find(@mutation.mutation_id)
-    #end # get super of current
+    @mutation_root = @mutation.ancestors.last || @mutation # get root
+    @evolution = Evolution.find(@mutation_root.evolution_id) # get evolution
     if @mutation.mutation_id
       @mutation_parent = Mutation.find(@mutation.mutation_id)
     end # get parent of current

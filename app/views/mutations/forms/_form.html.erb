@@ -1,7 +1,7 @@
-<% form_for @evolution do |f| %>
+<% form_for @mutation do |f| %>
   <%= f.error_messages %>
   <p>
-    <%= f.hidden_field :evolution_id %>
+    <%= f.hidden_field :mutation_id %>
   </p>
   <p><%= f.submit "Send" %></p>
 <% end %>

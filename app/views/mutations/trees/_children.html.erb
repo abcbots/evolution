@@ -1,39 +1,13 @@
+<% mutation_move = @mutation_move %>
+<% mutation_clone = @mutation_clone %>
 
-<% mutation.children.each do |mutation| %>
-<% mutation2 = mutation %>
-<% mutation3 = mutation %>
-<% mutation4 = mutation %>
-<% mutation5 = mutation %>
-
-<fieldset>
-
-  <% if check_for_childship mutation2, @mutation_move||@mutation_clone %>
-    <b>
-  <% end %>
-
-  <legend>
-    <%= render :partial => mutation3 %>
-  </legend>
-
-    <ol>
-    <% if mutation.children.empty? # if last mutation on tree %> 
-      <% mutation4.ancestors.reverse.each do |ancestor| # get ancestors %>  
-        <li><%= ancestor.id %>
-      <% end %> 
+<% mutation.children.each do |child| %>
+  <fieldset><legend><%= render :partial => child %></legend>
+  <% if check_for_childship child, mutation_move||mutation_clone %><b><% end %>
+    <% unless child.children.empty? %>
+      <%= render :partial => 'mutations/trees/children', :locals => { :mutation => child } %>
     <% end %>
-    </ol>
-<hr>
-    
-
-    <% unless mutation.children.empty? %>
-      <%= render :partial => 'mutations/trees/children', :locals => { :mutation => mutation5 } %>
-    <% end %>
-
-  <% if check_for_childship mutation2, @mutation_move||@mutation_clone %>
-    </b>
-  <% end %>
-
-</fieldset>
-
+  <% if check_for_childship child, mutation_move||mutation_clone %></b><% end %>
+  </fieldset>
 <% end %>
 
