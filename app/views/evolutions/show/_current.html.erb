@@ -1,10 +1,8 @@
 
-<% evolution_current = evolution %>
-
 <fieldset>
 <legend>
 <b>
-  <%= evolution_current.header||evolution_current.id %>
+  <%= render :partial => evolution %>
   [<%= toggle_div "do", "functions" %>]
   <%= render :partial => 'evolutions/functions/move/all' %>
   <%= render :partial => 'evolutions/functions/move/one' %>

@@ -1,15 +1,19 @@
 
+<% labeling = evolution.header||evolution.id %>
+<% labeling = labeling.to_s.titleize %>
+<% labeling = "[" + labeling + "]" %>
+
   <% if evolution == @evolution %>
-    <b><%= link_to_unless_current evolution.header||evolution.id, evolution %></b>
+    <b><%= link_to_unless_current labeling, evolution %></b>
   <% elsif evolution == @evolution_move %>
-    <b><%= link_to_unless_current evolution.header||evolution.id, evolution %></b>
+    <b><%= link_to_unless_current labeling, evolution %></b>
   <% elsif evolution == @evolution_clone %>
-    <b><%= link_to_unless_current evolution.header||evolution.id, evolution %></b>
+    <b><%= link_to_unless_current labeling, evolution %></b>
   <% elsif evolution == @evolution_move_uni %>
-    <b><i><%= link_to_unless_current evolution.header||evolution.id, evolution %></i></b>
+    <b><i><%= link_to_unless_current labeling, evolution %></i></b>
   <% elsif evolution == @evolution_clone_uni %>
-    <b><i><%= link_to_unless_current evolution.header||evolution.id, evolution %></i></b>
+    <b><i><%= link_to_unless_current labeling, evolution %></i></b>
   <% else %>
-    <%= link_to_unless_current evolution.header||evolution.id, evolution %>
+    <%= link_to_unless_current labeling, evolution %>
   <% end %>
 

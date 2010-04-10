@@ -1,0 +1,11 @@
+<% evolution_move = @evolution_move %>
+<% evolution_clone = @evolution_clone %>
+
+<% evolution.ancestors.each do |ancestor| %>
+  <% if check_for_childship ancestor, evolution_move||evolution_clone %>
+    </b>
+  <% end %>
+  </fieldset>
+<% end %>
+
+

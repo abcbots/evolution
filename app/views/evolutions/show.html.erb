@@ -1,15 +1,18 @@
 
-<% evolution_show_upper = @evolution %>
-<% evolution_show_current = @evolution %>
-<% evolution_show_lower = @evolution %>
+<% show_ancestors_open = @evolution %>
+<% show_current = @evolution %>
+<% show_children = @evolution %>
+<% show_ancestors_close = @evolution %>
 
-<p><fieldset><legend>Evolution</legend>
+<p><fieldset><legend><%= show_current.class %></legend>
 
-  <%= render :partial => 'evolutions/show/upper', :locals => { :evolution => evolution_show_upper } %>
+  <%= render :partial => 'evolutions/show/ancestors_open', :locals => { :evolution => show_ancestors_open } %>
 
-  <%= render :partial => 'evolutions/show/current', :locals => { :evolution => evolution_show_current } %>
+  <%= render :partial => 'evolutions/show/current', :locals => { :evolution => show_current } %>
 
-  <%= render :partial => 'evolutions/show/lower', :locals => { :evolution => evolution_show_lower } %>
+  <%= render :partial => 'evolutions/trees/children', :locals => { :evolution => show_children } %>
+
+  <%= render :partial => 'evolutions/show/ancestors_close', :locals => { :evolution => show_ancestors_close } %>
 
 </fieldset></p>
 
