@@ -150,34 +150,44 @@ class MutationsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
+  # new root
+  #   get mutations
+  #   get new
+  #   place new at root
+  #   save
+  # end
   def new_root
     get_mutations
-    @mutation_new = Mutation.new
+    @mutation_new = @mutation_super.mutations.new
+    @mutation_new.super_id = @mutation_super.id
     place_at_root @mutation_new
     save_new
   end
   def new_parent
     get_mutations
     @mutation_new = Mutation.new
+    @mutation_new.super_id = @mutation_super.id
     place_at_parent @mutation_new
     save_new
   end
   def new_current
     get_mutations
     @mutation_new = Mutation.new
+    @mutation_new.super_id = @mutation_super.id
     place_at_current @mutation_new
     save_new
   end
   def new_children
     get_mutations
     @mutation_new = Mutation.new
-    @mutation_new.save
+    @mutation_new.super_id = @mutation_super.id
     place_at_children @mutation_new
     save_new
   end
   def new_child
     get_mutations
     @mutation_new = Mutation.new
+    @mutation_new.super_id = @mutation_super.id
     place_at_child @mutation_new
     save_new
   end
@@ -597,10 +607,10 @@ class MutationsController < ApplicationController
     @mutation = Mutation.find(params[:id])
     @mutation.start_time = Time.now
     if @mutation.save
-      flash[:notice] = "Successfully started mutation(#{@mutation.id}) at #{@mutation.start_time}"
+      flash_success
       redirect_to @mutation
     else
-      flash[:error] = "Sorry, try again."
+      flash_fail
       redirect_to @mutation
     end
   end 
@@ -666,8 +676,7 @@ class MutationsController < ApplicationController
   #   set prioritization with ready_to_prioritize
   # end
   def get_prioritization(pass)
-    pass1 = pass 
-    mutations = Mutation.find(:all, :conditions => {:childless => true, :super_id => pass1.id}, :order => "ancestorization ASC" )
+    mutations = Mutation.find(:all, :conditions => {:childless => true, :super_id => pass.id}, :order => "ancestorization ASC" )
     for mutation in mutations 
       set_prioritization mutation 
     end
