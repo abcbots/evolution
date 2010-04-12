@@ -1,7 +1,25 @@
-<p><fieldset><legend>Evolution</legend>
 
-<% if @evolution %>
-  <p><%= render :partial => 'family', :locals => {:evolution => @evolution} %>
-<% end %>
+<% show_ancestors_open = @evolution %>
+<% show_current = @evolution %>
+<% mutations_show_index = @evolution %>
+<% show_children = @evolution %>
+<% show_ancestors_close = @evolution %>
+
+<p><fieldset><legend><%= show_current.class %></legend>
+
+  <%= render :partial => 'evolutions/show/ancestors_open', :locals => { :evolution => show_ancestors_open } %>
+
+  <%= render :partial => 'evolutions/show/current', :locals => { :evolution => show_current } %>
+
+<hr>
+
+  <%= render :partial => 'mutations/show/index', :locals => { :evolution => mutations_show_index } %>
+
+<hr>
+
+  <%= render :partial => 'evolutions/show/children', :locals => { :evolution => show_children } %>
+
+  <%= render :partial => 'evolutions/show/ancestors_close', :locals => { :evolution => show_ancestors_close } %>
 
 </fieldset></p>
+

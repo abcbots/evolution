@@ -12,30 +12,7 @@ class MutationsController < ApplicationController
   def show
     get_mutations
   end
-   
-  # new 
-  #   find evolution by params
-  #   new evolution mutation
-  #   if mutation save
-  #     flash success
-  #     goto mutation
-  #   else, mutation save not
-  #     flash fail
-  #     go to mutations index
-  #   end
-  # end
-  def new
-    @evolution = Evolution.find(params[:evolution_id])
-    @mutation = @evolution.mutations.new
-    if @mutation.save
-      flash_success   
-      redirect_to @mutation
-    else
-      flash_fail  
-      redirect_to mutations_path
-    end
-  end
-  
+ 
   def create
     @mutation = Mutation.new(params[:mutation])
     if @mutation.save
@@ -149,7 +126,30 @@ class MutationsController < ApplicationController
 # *new
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
-
+   
+  # new 
+  #   find evolution by params
+  #   new evolution mutation
+  #   if mutation save
+  #     flash success
+  #     goto mutation
+  #   else, mutation save not
+  #     flash fail
+  #     go to mutations index
+  #   end
+  # end
+  def new
+    @evolution = Evolution.find(params[:evolution_id])
+    @mutation = @evolution.mutations.new
+    if @mutation.save
+      flash_success   
+      redirect_to @mutation
+    else
+      flash_fail  
+      redirect_to mutations_path
+    end
+  end
+ 
   # new root
   #   get mutations
   #   get new
@@ -710,12 +710,10 @@ class MutationsController < ApplicationController
   # end
   def agenda
     get_mutations
-    @mutations = Mutation.find(:all, :conditions => {:super_id => @mutation_super.id}, :order => "prioritization ASC" )
-    @prioritization_max = Mutation.maximum(:prioritization, :conditions => {:super_id => @mutation_super.id} )
+    @mutations = @mutation.class.find(:all, :conditions => {:super_id => @mutation_super.id}, :order => "prioritization ASC" )
   end
 
   # locate and get childless objects of passed object
-  #   get passes
   #   set childless status with pass
   #   set ancestorization with pass
   #   set super with pass
@@ -726,22 +724,17 @@ class MutationsController < ApplicationController
   #   end
   # end
   def get_childless(pass) 
-    pass1 = pass
-    pass2 = pass
-    pass3 = pass
-    pass4 = pass
-    set_childless_status pass1 
-    set_ancestorization pass2 
-    set_super pass4
-    if !pass3.children.empty? 
-      for child in pass3.children		 
+    set_childless_status pass 
+    set_ancestorization pass 
+    set_super pass
+    if !pass.children.empty? 
+      for child in pass.children		 
         get_childless child
       end
     end 
   end 
 
   # set childless state of passed object
-  #   get pass
   #   if childless, then
   #     childless is true
   #   else, not childless, so
@@ -750,13 +743,12 @@ class MutationsController < ApplicationController
   #   save
   # end
   def set_childless_status(pass)
-    pass1 = pass	
-    if pass1.children.empty? 	
-      pass1.childless = true 	
+    if pass.children.empty? 	
+      pass.childless = true 	
     else 			
-      pass1.childless = false 	
+      pass.childless = false 	
     end 		
-    pass1.save 		
+    pass.save 		
   end 	
 
   # set ancestorization with passed object

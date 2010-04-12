@@ -2,20 +2,23 @@
 <fieldset>
 <legend>
 <b>
+
   <%= render :partial => mutation %>
   [<%= toggle_div "do", "functions" %>]
   <%= render :partial => 'mutations/functions/move/all' %>
   <%= render :partial => 'mutations/functions/move/one' %>
   <%= render :partial => 'mutations/functions/clone/all' %>
   <%= render :partial => 'mutations/functions/clone/one' %>
+
 </legend>
-<%= toggle_div_id "do", "functions" %>
+
+  <%= toggle_div_id "do", "functions" %>
   <%= render :partial => 'mutations/functions/menu' %>
+
 </div>
 </b>
 
 <ul>
-
 
 <% if session[:edit] %>
   <%= render :partial => 'mutations/forms/header_and_detail' %>
@@ -23,7 +26,6 @@
   <%= render :partial => 'mutations/contents/header' %>
   <%= render :partial => 'mutations/contents/detail' %>
 <% end %>
-
 
 </ul>
 

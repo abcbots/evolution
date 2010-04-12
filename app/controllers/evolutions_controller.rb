@@ -638,13 +638,12 @@ class EvolutionsController < ApplicationController
 
   # get the prioritized evolutions lists
   #   get evolutions
-  #   get childless with root
-  #   set prioritization with super
+  #   refresh agenda
   #   redirect to action, agenda, id is evolution id
   # end
   def get_agenda
     get_evolutions 
-    get_childless @evolution_root
+    get_childless @evolution_root, @evolution_super
     get_prioritization @evolution_super
     redirect_to :action => 'agenda', :id => @evolution.id
   end
@@ -705,16 +704,12 @@ class EvolutionsController < ApplicationController
   #     end
   #   end
   # end
-  def get_childless(pass) 
-    pass1 = pass
-    pass2 = pass
-    pass3 = pass
-    pass4 = pass
-    set_childless_status pass1 
-    set_ancestorization pass2 
-    set_super pass4
-    if !pass3.children.empty? 
-      for child in pass3.children		 
+  def get_childless(pass, pass_super) 
+    set_childless_status pass
+    set_ancestorization pass
+    set_super pass, pass_super
+    if !pass.children.empty? 
+      for child in pass.children
         get_childless child
       end
     end 
@@ -745,9 +740,8 @@ class EvolutionsController < ApplicationController
   #   save
   # end
   def set_ancestorization(pass)
-    pass1 = pass
-    pass1.ancestorization = pass1.ancestors.size 
-    pass1.save 
+    pass.ancestorization = pass.ancestors.size 
+    pass.save 
   end
 
   # set super with pass and pass super
@@ -755,10 +749,9 @@ class EvolutionsController < ApplicationController
   #   pass super is current super
   #   save
   # end
-  def set_super(pass)
-    pass1 = pass
-    pass1.super_id = @evolution_super.id
-    pass1.save
+  def set_super(pass, pass_super)
+    pass.super_id = pass_super.id
+    pass.save
   end
 
 

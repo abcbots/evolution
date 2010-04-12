@@ -1,0 +1,13 @@
+<% evolution_move = @evolution_move %>
+<% evolution_clone = @evolution_clone %>
+
+<% evolution.children.each do |child| %>
+  <fieldset><legend><%= render :partial => child %></legend>
+  <% if check_for_childship child, evolution_move||evolution_clone %><b><% end %>
+    <% unless child.children.empty? %>
+      <%= render :partial => 'evolutions/show/children', :locals => { :evolution => child } %>
+    <% end %>
+  <% if check_for_childship child, evolution_move||evolution_clone %></b><% end %>
+  </fieldset>
+<% end %>
+

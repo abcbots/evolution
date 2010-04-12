@@ -1,4 +1,5 @@
   <p>
+    <ul>
   new: 
     [<%= link_to_unless_current "root", 
       :action => 'new_root',
@@ -15,3 +16,6 @@
     [<%= link_to_unless_current "child",
       :action => 'new_child',
       :id => @evolution.id %>]
+    [<i><%= link_to_unless_current "mutation",
+      new_evolution_mutation_path(:evolution_id => @evolution.id) %></i>]
+  </ul>

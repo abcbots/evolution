@@ -17,5 +17,5 @@
       :action => 'new_child',
       :id => @evolution.id %>]
     [<i><%= link_to_unless_current "mutation",
-      new_evolution_mutation_path(:evolution_id => @evolution.id) %></i>]
+      new_evolution_mutation_path(@evolution) %></i>]
   </ul>

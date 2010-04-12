@@ -1,0 +1,12 @@
+
+
+<% mutation.children.each do |child| %>
+  <fieldset><legend><%= render :partial => child %></legend>
+  <% if check_for_childship child, @mutation_move||@mutation_clone %><b><% end %> 
+    <% unless child.children.empty? %>
+      <%= render :partial => 'mutations/show/children', :locals => { :mutation => child } %>
+    <% end %>
+  <% if check_for_childship child, @mutation_move||@mutation_clone %></b><% end %> 
+  </fieldset>
+<% end %>
+

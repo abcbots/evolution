@@ -1,0 +1,38 @@
+
+<% mutations = Mutation.find(:all, :conditions => {:super_id => evolution.id}, :order => "prioritization ASC" ) %>
+
+<% prioritization_max = Mutation.maximum(:prioritization, :conditions => {:super_id => evolution.id} ) %>
+
+<% if prioritization_max %>
+
+<% counter = 0 %>
+
+
+  <% while counter < prioritization_max %>
+
+    <% counter = counter + 1 %>
+    <fieldset><legend><b>Agenda (<%= counter %>)</b></legend>
+    <ol>
+
+    <% for child in mutations %>
+
+      <% if child.prioritization == counter %>
+      <p><li>
+        <%= child.super_id %> |
+        <%= child.prioritization %> |
+        <%= child.ancestorization %> |
+        <%= link_to_unless_current child.header, child %>
+      </li></p>
+      <% end %>
+
+    <% end %>
+
+    </ol>
+    </fieldset>
+
+  <% end %>
+
+<% end %>
+
+
+

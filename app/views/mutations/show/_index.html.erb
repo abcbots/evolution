@@ -1,0 +1,14 @@
+
+<% evolution = evolution||@evolution %>
+<% mutations = evolution.mutations.all %>
+
+<%= render :partial => evolution %>
+
+<% mutations.each do |mutation| %>
+
+  <%= render :partial => mutation %>
+  <%= render :partial => 'mutations/show/children', :locals => { :mutation => mutation } %>
+
+<% end %>
+
+

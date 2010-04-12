@@ -1,18 +1,15 @@
 
-<% show_ancestors_open = @mutation %>
-<% show_current = @mutation %>
-<% show_children = @mutation %>
-<% show_ancestors_close = @mutation %>
+<p><fieldset><legend>
+  <%= render :partial => @mutation_super %> 
+</legend>
 
-<p><fieldset><legend><%= show_current.class %></legend>
+  <%= render :partial => 'mutations/show/ancestors_open', :locals => { :mutation => @mutation } %>
 
-  <%= render :partial => 'mutations/show/ancestors_open', :locals => { :mutation => show_ancestors_open } %>
+  <%= render :partial => 'mutations/show/current', :locals => { :mutation => @mutation } %>
 
-  <%= render :partial => 'mutations/show/current', :locals => { :mutation => show_current } %>
+  <%= render :partial => 'mutations/show/children', :locals => { :mutation => @mutation } %>
 
-  <%= render :partial => 'mutations/trees/children', :locals => { :mutation => show_children } %>
-
-  <%= render :partial => 'mutations/show/ancestors_close', :locals => { :mutation => show_ancestors_close } %>
+  <%= render :partial => 'mutations/show/ancestors_close', :locals => { :mutation => @mutation } %>
 
 </fieldset></p>
 
