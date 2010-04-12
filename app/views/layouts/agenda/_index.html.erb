@@ -1,0 +1,46 @@
+
+
+
+<% object_group = object_current.class.find(:all, :conditions => {:super_id => object_super.id}, :order => "prioritization ASC" ) %>
+
+<% object_group_prioritization_max = object_current.class.maximum(:prioritization, :conditions => {:super_id => object_super.id}, :order => "prioritization ASC" ) %>
+
+
+<% counter = 0 %>
+
+<% while counter < object_group_prioritization_max %>
+  <% counter = counter + 1 %>
+
+  <fieldset><legend><b>Phase (<%= counter %>)</b></legend>
+  <ol>
+
+<% object_group.each do |object_single| %>
+
+<% if object_single.prioritization == counter %>
+
+<p>
+<li>
+  <%= object_single.super_id %> |
+  <%= object_single.prioritization %> |
+  <%= object_single.ancestorization %> |
+  <%= render :partial => object_single %>
+</li>
+</p>
+
+<% end %>
+
+<% end %>
+
+  </ol>
+  </fieldset>
+
+<% end %>
+
+
+
+
+  
+
+
+
+
