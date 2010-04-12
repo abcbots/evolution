@@ -627,7 +627,7 @@ class MutationsController < ApplicationController
   def get_mutations(pass=params[:id])
     @mutation = Mutation.find(pass) # get current
     @mutation_root = @mutation.ancestors.last || @mutation # get root
-    @mutation_super = Evolution.find(@mutation_root.evolution_id) #*** for testing then switch to feature id
+    @mutation_super = Evolution.find(@mutation.super_id) #*** for testing then switch to feature id
     if @mutation.mutation_id
       @mutation_parent = Mutation.find(@mutation.mutation_id)
     end # get parent of current
@@ -710,7 +710,6 @@ class MutationsController < ApplicationController
   # end
   def agenda
     get_mutations
-    @mutations = @mutation.class.find(:all, :conditions => {:super_id => @mutation_super.id}, :order => "prioritization ASC" )
   end
 
   # locate and get childless objects of passed object
