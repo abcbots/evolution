@@ -1,45 +1,48 @@
-<% object_group = object_current.class.find(:all, :conditions => {:super_id => object_super.id}, :order => "prioritization ASC" ) %>
-<% object_group_prioritization_max = object_current.class.maximum(:prioritization, :conditions => {:super_id => object_super.id}, :order => "prioritization ASC" ) %>
 
-<%= object_group_prioritization_max %>
+<% _current = _current||@mutation %>
+<% _super = _super||@mutation_super %>
+<% _word = _word||_current.class %>
+
+<% currents = _current.class.find(:all, :conditions => {:super_id => _super.id}, :order => "prioritization ASC" ) %>
+
+<% priority_max = _current.class.maximum(:prioritization, :conditions => {:super_id => _super.id}, :order => "prioritization ASC" ) %>
 
 
 
 <% counter = 0 %>
 
-<% while counter < object_group_prioritization_max %>
-  <% counter = counter + 1 %>
+<% if priority_max %>
 
-  <fieldset><legend><b>Agenda (<%= counter %>)</b></legend>
-  <ol>
+  <% while counter < priority_max %>
 
-<% object_group.each do |object_single| %>
+    <% counter = counter + 1 %>
 
-<% if object_single.prioritization == counter %>
+      <fieldset><legend><strong>
 
-<p>
-<li>
-  <%= object_single.super_id %> |
-  <%= object_single.prioritization %> |
-  <%= object_single.ancestorization %> |
-  <%= render :partial => object_single %>
-</li>
-</p>
+      <%= _word %>
+      (<%= counter %>)
+      
+      </strong></legend>
+
+      <ol>
+
+      <% currents.each do |one| %>
+
+        <% if one.prioritization == counter %>
+
+	  <li>
+	    <%= render :partial => one %>
+	  </li>
+
+	<% end %>
+
+      <% end %>
+
+      </ol>
+
+      </fieldset>
+
+  <% end %>
 
 <% end %>
-
-<% end %>
-
-  </ol>
-  </fieldset>
-
-<% end %>
-
-
-
-
-  
-
-
-
 

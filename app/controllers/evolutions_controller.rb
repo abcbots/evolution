@@ -638,123 +638,22 @@ class EvolutionsController < ApplicationController
 
   # get the prioritized evolutions lists
   #   get evolutions
-  #   refresh agenda
+  #   get childless with root
+  #   set prioritization with super
   #   redirect to action, agenda, id is evolution id
   # end
-  def get_agenda
+  def prioritize
     get_evolutions 
-    get_childless @evolution_root, @evolution_super
-    get_prioritization @evolution_super
+    get_prioritization @evolution_root
     redirect_to :action => 'agenda', :id => @evolution.id
-  end
-
-  # get prioritization with super id
-  #   get super id
-  #   pre prioritizations are objects with super id and ascending ancestorizations
-  #   set prioritization with ready_to_prioritize
-  # end
-  def get_prioritization(pass)
-    pass1 = pass 
-    evolutions = Evolution.find(:all, :conditions => {:childless => true, :super_id => pass1.id}, :order => "ancestorization ASC" )
-    for evolution in evolutions 
-      set_prioritization evolution 
-    end
-  end
-
-  # set prioritization with pass
-  #   counter equals one
-  #   prioritization equals counter
-  #   save
-  #   for each ancestor
-  #     advance counter
-  #     pioritization equals counter
-  #     save
-  #   end
-  # end
-  def set_prioritization(pass)
-    counter = 1
-    pass.prioritization = counter
-    pass.save
-    pass.ancestors.each do |ancestor|
-      counter = counter + 1
-      ancestor.prioritization = counter
-      ancestor.save
-    end
   end
 
   # [show] agenda
   #   get evolutions
-  #   evolutions equals all of same super, in order of prioritization, ascending
-  #   prioritization max equals max prioritization of same super
   # end
   def agenda
     get_evolutions
-    @evolutions = Evolution.find(:all, :conditions => {:super_id => @evolution_super.id}, :order => "prioritization ASC" )
-    @prioritization_max = Evolution.maximum(:prioritization, :conditions => {:super_id => @evolution_super.id} )
   end
-
-  # locate and get childless objects of passed object
-  #   get passes
-  #   set childless status with pass
-  #   set ancestorization with pass
-  #   set super with pass
-  #   if pass not childless, then
-  #     for each child
-  #       loop passing child
-  #     end
-  #   end
-  # end
-  def get_childless(pass, pass_super) 
-    set_childless_status pass
-    set_ancestorization pass
-    set_super pass, pass_super
-    if !pass.children.empty? 
-      for child in pass.children
-        get_childless child
-      end
-    end 
-  end 
-
-  # set childless state of passed object
-  #   get pass
-  #   if childless, then
-  #     childless is true
-  #   else, not childless, so
-  #     childless is false
-  #   end
-  #   save
-  # end
-  def set_childless_status(pass)
-    pass1 = pass	
-    if pass1.children.empty? 	
-      pass1.childless = true 	
-    else 			
-      pass1.childless = false 	
-    end 		
-    pass1.save 		
-  end 	
-
-  # set ancestorization with passed object
-  #   get pass
-  #   pass ancestorization is ancestor size
-  #   save
-  # end
-  def set_ancestorization(pass)
-    pass.ancestorization = pass.ancestors.size 
-    pass.save 
-  end
-
-  # set super with pass and pass super
-  #   get pass
-  #   pass super is current super
-  #   save
-  # end
-  def set_super(pass, pass_super)
-    pass.super_id = pass_super.id
-    pass.save
-  end
-
-
 
 
 

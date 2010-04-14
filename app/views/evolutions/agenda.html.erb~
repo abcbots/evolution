@@ -1,0 +1,44 @@
+<%= render :partial => 'mutations/show/agenda', :locals => {:pass_object => @} %>
+
+
+<% counter = 0 %>
+
+<% while continue %>
+
+<% counter = counter + 1 %>
+
+<fieldset><legend><b>Phase (<%= counter %>)</b></legend>
+<ol>
+
+  <% continue = false %>
+
+<% for child in @evolutions %>
+
+<% if child.prioritization == counter %>
+
+  <% continue = true %>
+
+  <p><li>
+    <%= child.super_id %> |
+    <%= child.prioritization %> |
+    <%= child.ancestorization %> |
+    <%= link_to_unless_current child.header, child %>
+  </li></p>
+
+<% end %>
+
+<% end %>
+
+</ol>
+</fieldset>
+
+<% end %>
+
+
+
+
+  
+
+
+
+

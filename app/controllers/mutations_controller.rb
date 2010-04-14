@@ -33,7 +33,7 @@ class MutationsController < ApplicationController
   #   refresh
   # end
   def toggle_edit
-    get_mutation
+    get_mutations
     if session[:edit] == true
       session[:edit] = false
     else
@@ -78,21 +78,21 @@ class MutationsController < ApplicationController
     end
   end
 
-  def save_clone
-    if @mutation_clone.save
+  def save_clthing_one
+    if @mutation_clthing_one.save
       flash_success
-      session[:mutation_clone_id] = nil
-      redirect_to @mutation_clone
+      session[:mutation_clthing_one_id] = nil
+      redirect_to @mutation_clthing_one
     else
       flash_fail
       redirect_to @mutation
     end
   end
-  def save_clone_uni
-    if @mutation_clone_uni.save
+  def save_clthing_one_uni
+    if @mutation_clthing_one_uni.save
       flash_success
-      session[:mutation_clone_uni_id] = nil
-      redirect_to @mutation_clone_uni
+      session[:mutation_clthing_one_uni_id] = nil
+      redirect_to @mutation_clthing_one_uni
     else
       flash_fail
       redirect_to @mutation
@@ -141,6 +141,7 @@ class MutationsController < ApplicationController
   def new
     @evolution = Evolution.find(params[:evolution_id])
     @mutation = @evolution.mutations.new
+    @mutation.super_id = @evolution.id
     if @mutation.save
       flash_success   
       redirect_to @mutation
@@ -160,6 +161,7 @@ class MutationsController < ApplicationController
     get_mutations
     @mutation_new = @mutation_super.mutations.new
     @mutation_new.super_id = @mutation_super.id
+    @mutation_new.evolution_id = @mutation_super.id
     place_at_root @mutation_new
     save_new
   end
@@ -198,14 +200,14 @@ class MutationsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def set_clone
+  def set_clthing_one
     get_mutations
-    session[:mutation_clone_id] = @mutation.id # set clone
+    session[:mutation_clthing_one_id] = @mutation.id # set clthing_one
     redirect_to @mutation # redirect to current
   end
-  def set_clone_uni
+  def set_clthing_one_uni
     get_mutations
-    session[:mutation_clone_uni_id] = @mutation.id # set clone uni
+    session[:mutation_clthing_one_uni_id] = @mutation.id # set clthing_one uni
     redirect_to @mutation # redirect to current
   end
   def set_move
@@ -232,16 +234,16 @@ class MutationsController < ApplicationController
     redirect_to @mutation # redirect to current
   end
   
-  def clone_to_clone_uni
+  def clthing_one_to_clthing_one_uni
     get_mutations
-    session[:mutation_clone_uni_id] = session[:mutation_clone_id] # set uni to normal
-    session[:mutation_clone_id] = nil # nil normal
+    session[:mutation_clthing_one_uni_id] = session[:mutation_clthing_one_id] # set uni to normal
+    session[:mutation_clthing_one_id] = nil # nil normal
     redirect_to @mutation # redirect to current
   end
-  def clone_uni_to_clone
+  def clthing_one_uni_to_clthing_one
     get_mutations
-    session[:mutation_clone_id] = session[:mutation_clone_uni_id] # set uni to normal
-    session[:mutation_clone_uni_id] = nil # nil normal
+    session[:mutation_clthing_one_id] = session[:mutation_clthing_one_uni_id] # set uni to normal
+    session[:mutation_clthing_one_uni_id] = nil # nil normal
     redirect_to @mutation # redirect to current
   end
 
@@ -252,14 +254,14 @@ class MutationsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def cancel_clone
+  def cancel_clthing_one
     get_mutations
-    session[:mutation_clone_id]=nil # clear session
+    session[:mutation_clthing_one_id]=nil # clear session
     redirect_to @mutation # redirect to current
   end
-  def cancel_clone_uni
+  def cancel_clthing_one_uni
     get_mutations
-    session[:mutation_clone_uni_id]=nil # clear session
+    session[:mutation_clthing_one_uni_id]=nil # clear session
     redirect_to @mutation # redirect to current
   end
   def cancel_move
@@ -275,76 +277,76 @@ class MutationsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-# *clone
+# *clthing_one
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def copy_over(pass1, pass2)
+  def copy_over(thing_one, thing_two)
     #...
   end
-  def clone_children(pass1, pass2)
-    pass1.children.each do |mutation|
+  def clthing_one_children(thing_one, thing_two)
+    thing_one.children.each do |mutation|
       mutation_new = Mutation.new
       copy_over mutation, mutation_new
       mutation_new.save
-      attach_to mutation_new, pass2
-      clone_children mutation, mutation_new
+      attach_to mutation_new, thing_two
+      clthing_one_children mutation, mutation_new
     end
   end
 
-  def make_clone
+  def make_clthing_one
     get_mutations
     mutation_new = Mutation.new
     mutation_new.save
-    copy_over @mutation_clone, mutation_new
-    clone_children @mutation_clone, mutation_new
-    @mutation_clone = mutation_new
+    copy_over @mutation_clthing_one, mutation_new
+    clthing_one_children @mutation_clthing_one, mutation_new
+    @mutation_clthing_one = mutation_new
   end
-  def make_clone_uni
+  def make_clthing_one_uni
     get_mutations
-    mutation_clone_uni = Mutation.new
-    copy_over mutation_clone_uni, @mutation_clone_uni
-    @mutation_clone_uni = mutation_clone_uni
+    mutation_clthing_one_uni = Mutation.new
+    copy_over mutation_clthing_one_uni, @mutation_clthing_one_uni
+    @mutation_clthing_one_uni = mutation_clthing_one_uni
   end
 
-  def clone_to_root
-    make_clone
-    place_at_root @mutation_clone
-    save_clone
+  def clthing_one_to_root
+    make_clthing_one
+    place_at_root @mutation_clthing_one
+    save_clthing_one
   end
-  def clone_to_parent
-    make_clone
-    place_at_parent @mutation_clone
-    save_clone
+  def clthing_one_to_parent
+    make_clthing_one
+    place_at_parent @mutation_clthing_one
+    save_clthing_one
   end
-  def clone_to_current
-    make_clone
-    place_at_current @mutation_clone
-    save_clone
+  def clthing_one_to_current
+    make_clthing_one
+    place_at_current @mutation_clthing_one
+    save_clthing_one
   end
-  def clone_to_children
-    make_clone
-    place_at_children @mutation_clone
-    save_clone
+  def clthing_one_to_children
+    make_clthing_one
+    place_at_children @mutation_clthing_one
+    save_clthing_one
   end
-  def clone_to_child
-    make_clone
-    place_at_child @mutation_clone
-    save_clone
+  def clthing_one_to_child
+    make_clthing_one
+    place_at_child @mutation_clthing_one
+    save_clthing_one
   end
   
-  def clone_uni_to_root
-    make_clone_uni
-    place_at_root @mutation_clone_uni
-    save_clone_uni
+  def clthing_one_uni_to_root
+    make_clthing_one_uni
+    place_at_root @mutation_clthing_one_uni
+    save_clthing_one_uni
   end
-  def clone_uni_to_parent
-    make_clone_uni
-    place_at_parent @mutation_clone_uni
-    save_clone_uni
+  def clthing_one_uni_to_parent
+    make_clthing_one_uni
+    place_at_parent @mutation_clthing_one_uni
+    save_clthing_one_uni
   end
-  def clone_uni_to_current
-    make_clone_uni
+  def clthing_one_uni_to_current
+    make_clthing_one_uni
     isolate_mutation @mutation_move_uni
     place_at_current @mutation_move_uni
     save_move_uni
@@ -361,15 +363,15 @@ class MutationsController < ApplicationController
     place_at_children @mutation_move_uni
     save_move_uni
   end
-  def clone_uni_to_children
-    make_clone_uni
-    place_at_children @mutation_clone_uni
-    save_clone_uni
+  def clthing_one_uni_to_children
+    make_clthing_one_uni
+    place_at_children @mutation_clthing_one_uni
+    save_clthing_one_uni
   end
-  def clone_uni_to_child
-    make_clone
-    place_at_child @mutation_clone_uni
-    save_clone
+  def clthing_one_uni_to_child
+    make_clthing_one
+    place_at_child @mutation_clthing_one_uni
+    save_clthing_one
   end
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
@@ -378,19 +380,19 @@ class MutationsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def check_for_childship(pass1, pass2) # check for childship
-    if pass1 == pass2 # if one equals two
+  def check_for_childship(thing_one, thing_two) # check for childship
+    if thing_one == thing_two # if thing_one equals thing_two
       @child_or_current = true # childship false
     else
-      check_for_childship_children pass1, pass2 # check children
+      check_for_childship_children thing_one, thing_two # check children
     end
   end
-  def check_for_childship_children(pass1, pass2)
-    pass1.children.each do |child|
-      if child == pass2
+  def check_for_childship_children(thing_one, thing_two)
+    thing_one.children.each do |child|
+      if child == thing_two
         @child_or_current = true
       end
-      check_for_childship_children child, pass2
+      check_for_childship_children child, thing_two
     end
   end
     
@@ -420,9 +422,9 @@ class MutationsController < ApplicationController
     save_move # save move
   end
 
-  def move_children_to(pass)
+  def move_children_to(thing_one)
     @mutation.children.each do |child| # for children
-      attach_to child, pass # attach child to pass
+      attach_to child, thing_one # attach child to thing_one
     end # end
   end
 
@@ -479,8 +481,8 @@ class MutationsController < ApplicationController
     end
   end 
 
-# pass1 = the mutation that will be re-assigned
-# pass2 = the mutation that will remain un-changed
+# thing_one = the mutation that will be re-assigned
+# thing_two = the mutation that will remain un-changed
 
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
@@ -502,18 +504,18 @@ class MutationsController < ApplicationController
   #   end
   #
   #
-  def isolate_mutation(pass1)
-    if pass1.mutation_id # if pass1 has parent
-      pass1_parent = Mutation.find(pass1.mutation_id) # let pass1 parent be the pass1 parent
-      attach_children_to pass1, pass1_parent # attach children of pass1 to pass1 parent
-    else # pass1 is root
-      for mutation in pass1.children
+  def isolate_mutation(thing_one)
+    if thing_one.mutation_id # if thing_one has parent
+      thing_one_parent = Mutation.find(thing_one.mutation_id) # let thing_one parent be the thing_one parent
+      attach_children_to thing_one, thing_one_parent # attach children of thing_one to thing_one parent
+    else # thing_one is root
+      for mutation in thing_one.children
         mutation.mutation_id = nil
         mutation.save
       end
     end # end 
-    pass1.mutation_id = nil
-    pass1.save
+    thing_one.mutation_id = nil
+    thing_one.save
   end
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
@@ -522,42 +524,82 @@ class MutationsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def place_at_root(pass)
-    pass.super_id = @mutation_super.id
-    pass.mutation_id = nil
-    pass.save
+  # place at root
+  #   super id to mutation super
+  #   evolution id to super
+  #   mutation id to nil
+  #   save
+  # end
+  def place_at_root(thing_one)
+    thing_one.super_id = @mutation_super.id
+    thing_one.evolution_id = @mutation_super.id
+    thing_one.mutation_id = nil
+    thing_one.save
   end
-  def place_at_parent(pass)
-    pass.super_id = @mutation_super.id
-    if @mutation_parent # if parent
-      attach_to pass, @mutation_parent # attach pass to parent
-      pass.save # save pass
-    else # else, root
-      pass.mutation_id = nil # erase parent
-      pass.save # save pass
-    end # end
-    attach_to @mutation, pass # attach mutation to pass
-    @mutation.save # save mutation to new parent
+  
+  # place at parent
+  #   set super id to super
+  #   if parent
+  #     attach it to parent
+  #     save
+  #   else, root
+  #     attach it to super
+  #     nil parent
+  #     save
+  #   end
+  #   attach mutation to thing_one
+  #   save
+  # end
+  def place_at_parent(thing_one)
+    thing_one.super_id = @mutation_super.id
+    if @mutation_parent
+      attach_to thing_one, @mutation_parent
+      thing_one.save
+    elsif @mutation == @mutation_root 
+      thing_one.evolution_id = @mutation_super.id
+      thing_one.mutation_id = nil
+      thing_one.save
+    end
+    attach_to @mutation, thing_one
+    @mutation.save
   end
-  def place_at_current(pass)
-    pass.super_id = @mutation_super.id
-    if @mutation_parent # if parent 
-      attach_to pass, @mutation_parent # attach pass to parent
-    else # else, is root
-      pass.mutation_id = nil # erase parent
-    end # end 
-    pass.save # save pass
+  
+  # place at current
+  #   set super id to super
+  #   if parent
+  #     attach it to parent
+  #     save
+  #   elsif root
+  #     attach it to super
+  #     erase parent
+  #     save
+  #   end
+  #   save
+  # end 
+  def place_at_current(thing_one)
+    thing_one.super_id = @mutation_super.id
+    if @mutation_parent
+      attach_to thing_one, @mutation_parent
+      thing_one.save
+    else 
+      thing_one.evolution_id = @mutation_super
+      thing_one.mutation_id = nil
+      thing_one.save
+    end  
+    thing_one.save
   end
-  def place_at_child(pass)
-    pass.super_id = @mutation_super.id
-    attach_to pass, @mutation
-    pass.save
+
+
+  def place_at_child(thing_one)
+    thing_one.super_id = @mutation_super.id
+    attach_to thing_one, @mutation
+    thing_one.save
   end
-  def place_at_children(pass)
-    pass.super_id = @mutation_super.id
-    move_children_to pass
-    place_at_child pass
-    pass.save
+  def place_at_children(thing_one)
+    thing_one.super_id = @mutation_super.id
+    move_children_to thing_one
+    place_at_child thing_one
+    thing_one.save
   end
 
  
@@ -567,20 +609,35 @@ class MutationsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def attach_to(pass1, pass2, pass2_is_super=false)
-    if pass2_is_super
-      pass1.mutation_id = nil
-      pass1.mutation_id = pass2.id
-      pass1.save
-    else # pass2 is parent
-      pass1.mutation_id = pass2.id
-      #pass1.mutation_id = nil
-      pass1.save
+  # attach thing_one to thing_two, optional: thing_two is super
+  #   set thing_one super to super
+  #   if thing_two is super
+  #     set thing_one evolution to super
+  #     set thing_one mutation to nil
+  #   else, thing_two not super
+  #     set thing_one mutation to thing_two
+  #   end
+  #   save thing_one
+  # end
+  def attach_to(thing_one, thing_two, thing_two_is_super=false)
+    thing_one.super_id = @mutation_super.id
+    if thing_two_is_super
+      thing_one.evolution_id = @mutation_super.id
+      thing_one.mutation_id = nil 
+    else 
+      thing_one.mutation_id = thing_two.id
     end
+    thing_one.save
   end
-  def attach_children_to(pass1, pass2)
-    for mutation in pass1.children # attach children to pass
-      attach_to mutation, pass2 
+
+  # attach children of thing_one to thing_two
+  #   for each thing_one child
+  #     attach child to thing_two
+  #   end
+  # end
+  def attach_children_to(thing_one, thing_two)
+    thing_one.children.each do |child| 
+      attach_to child, thing_two
     end
   end
 
@@ -599,44 +656,23 @@ class MutationsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-# *function
-#
-# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
- 
-  def start
-    @mutation = Mutation.find(params[:id])
-    @mutation.start_time = Time.now
-    if @mutation.save
-      flash_success
-      redirect_to @mutation
-    else
-      flash_fail
-      redirect_to @mutation
-    end
-  end 
-
-# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
-#
 # *get_mutations 
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def get_mutation(pass=params[:id])
-    @mutation = Mutation.find(pass) # get current
-  end
-  def get_mutations(pass=params[:id])
-    @mutation = Mutation.find(pass) # get current
+  def get_mutations(thing_one=params[:id])
+    @mutation = Mutation.find(thing_one) # get current
     @mutation_root = @mutation.ancestors.last || @mutation # get root
     @mutation_super = Evolution.find(@mutation.super_id) #*** for testing then switch to feature id
     if @mutation.mutation_id
       @mutation_parent = Mutation.find(@mutation.mutation_id)
     end # get parent of current
-    if session[:mutation_clone_id]
-      @mutation_clone = Mutation.find(session[:mutation_clone_id]) 
-    end # get clone_current from session
-    if session[:mutation_clone_uni_id]
-      @mutation_clone_uni = Mutation.find(session[:mutation_clone_uni_id]) 
-    end # get clone_current_uni from session
+    if session[:mutation_clthing_one_id]
+      @mutation_clthing_one = Mutation.find(session[:mutation_clthing_one_id]) 
+    end # get clthing_one_current from session
+    if session[:mutation_clthing_one_uni_id]
+      @mutation_clthing_one_uni = Mutation.find(session[:mutation_clthing_one_uni_id]) 
+    end # get clthing_one_current_uni from session
     if session[:mutation_move_id]
       @mutation_move = Mutation.find(session[:mutation_move_id]) 
       if @mutation # if current
@@ -663,113 +699,17 @@ class MutationsController < ApplicationController
   #   set prioritization with super
   #   redirect to action, agenda, id is mutation id
   # end
-  def get_agenda
+  def prioritize
     get_mutations 
-    get_childless @mutation_root
-    get_prioritization @mutation_super
+    get_prioritization @mutation_root
     redirect_to :action => 'agenda', :id => @mutation.id
-  end
-
-  # get prioritization with super id
-  #   get super id
-  #   pre prioritizations are objects with super id and ascending ancestorizations
-  #   set prioritization with ready_to_prioritize
-  # end
-  def get_prioritization(pass)
-    mutations = Mutation.find(:all, :conditions => {:childless => true, :super_id => pass.id}, :order => "ancestorization ASC" )
-    for mutation in mutations 
-      set_prioritization mutation 
-    end
-  end
-
-  # set prioritization with pass
-  #   counter equals one
-  #   prioritization equals counter
-  #   save
-  #   for each ancestor
-  #     advance counter
-  #     pioritization equals counter
-  #     save
-  #   end
-  # end
-  def set_prioritization(pass)
-    counter = 1
-    pass.prioritization = counter
-    pass.save
-    pass.ancestors.each do |ancestor|
-      counter = counter + 1
-      ancestor.prioritization = counter
-      ancestor.save
-    end
   end
 
   # [show] agenda
   #   get mutations
-  #   mutations equals all of same super, in order of prioritization, ascending
-  #   prioritization max equals max prioritization of same super
   # end
   def agenda
     get_mutations
-  end
-
-  # locate and get childless objects of passed object
-  #   set childless status with pass
-  #   set ancestorization with pass
-  #   set super with pass
-  #   if pass not childless, then
-  #     for each child
-  #       loop passing child
-  #     end
-  #   end
-  # end
-  def get_childless(pass) 
-    set_childless_status pass 
-    set_ancestorization pass 
-    set_super pass
-    if !pass.children.empty? 
-      for child in pass.children		 
-        get_childless child
-      end
-    end 
-  end 
-
-  # set childless state of passed object
-  #   if childless, then
-  #     childless is true
-  #   else, not childless, so
-  #     childless is false
-  #   end
-  #   save
-  # end
-  def set_childless_status(pass)
-    if pass.children.empty? 	
-      pass.childless = true 	
-    else 			
-      pass.childless = false 	
-    end 		
-    pass.save 		
-  end 	
-
-  # set ancestorization with passed object
-  #   get pass
-  #   pass ancestorization is ancestor size
-  #   save
-  # end
-  def set_ancestorization(pass)
-    pass1 = pass
-    pass1.ancestorization = pass1.ancestors.size 
-    pass1.save 
-  end
-
-  # set super with pass and pass super
-  #   get pass
-  #   pass super is current super
-  #   save
-  # end
-  def set_super(pass)
-    pass1 = pass
-    pass1.super_id = @mutation_super.id
-    pass1.save
   end
 
 
