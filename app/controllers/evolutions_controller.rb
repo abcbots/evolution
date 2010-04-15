@@ -28,7 +28,7 @@ class EvolutionsController < ApplicationController
   def create
     @evolution = Evolution.new(params[:evolution])
     if @evolution.save
-      flash[:notice] = "Successfully created evolution."
+      flash_success @evolution
       redirect_to @evolution
     else
       render :action => 'new'
@@ -648,8 +648,6 @@ class EvolutionsController < ApplicationController
   # end
   def prioritize
     get_evolution 
-    get_prioritization @evolution
-    evolutions = Evolution.find( :all, :conditions => { :super_id => @evolution.super_id } )
     redirect_to :action => 'agenda', :id => @evolution.id
   end
 
@@ -658,6 +656,7 @@ class EvolutionsController < ApplicationController
   # end
   def agenda
     get_evolutions
+    debugger
   end
 
 

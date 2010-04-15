@@ -19,6 +19,8 @@
 
 <% if session[:edit] %>
   <%= render :partial => 'evolutions/forms/header_and_detail' %>
+<% elsif @evolution.header == nil %>
+  <%= render :partial => 'evolutions/forms/header_and_detail' %>
 <% else %>
   <%= render :partial => 'evolutions/contents/header' %>
   <%= render :partial => 'evolutions/contents/detail' %>

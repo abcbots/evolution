@@ -1,34 +1,20 @@
+
 <% form_for @evolution do |f| %>
   <%= f.error_messages %>
-
-<table border="0">
-<tr valign="top">
-<td>
   <p>
-    <%= f.label :header %>
-    <br /><%= f.text_field :header %>
-</td>
-<td>
-
-  <%= render :partial => 'evolutions/contents/header' %>
-
-</td>
-</tr>
-<tr valign="top">
-<td>
+    <%= render :partial => 'evolutions/contents/header' %>
+  <p>
+    <%= render :partial => 'evolutions/contents/detail' %>
   <p>
     <%= f.label :detail %>
     <br /><%= f.text_area :detail, :cols => 60 %>
   <p>
     <%= f.check_box :show_formatting %>
     <%= f.label :show_formatting %>
+  <p>
+    <%= f.label :header %>
+    <br /><%= f.text_field :header %>
   </p>
   <p><%= f.submit "Go" %></p>
-</td>
-<td>
-  <%= render :partial => 'evolutions/contents/detail' %>
-</td>
-</tr>
-</table>
-
 <% end %>
+

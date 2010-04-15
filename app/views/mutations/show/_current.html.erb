@@ -22,6 +22,8 @@
 
 <% if session[:edit] %>
   <%= render :partial => 'mutations/forms/header_and_detail' %>
+<% elsif @mutation.header == nil %>
+  <%= render :partial => 'mutations/forms/header_and_detail' %>
 <% else %>
   <%= render :partial => 'mutations/contents/header' %>
   <%= render :partial => 'mutations/contents/detail' %>
