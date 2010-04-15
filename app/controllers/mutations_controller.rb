@@ -1,4 +1,5 @@
 class MutationsController < ApplicationController
+
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
 # *basics
@@ -16,7 +17,7 @@ class MutationsController < ApplicationController
   def create
     @mutation = Mutation.new(params[:mutation])
     if @mutation.save
-      flash[:notice] = "Successfully created mutation."
+      flash_success @mutation
       redirect_to @mutation
     else
       render :action => 'new'
@@ -45,7 +46,7 @@ class MutationsController < ApplicationController
   def update
     @mutation = Mutation.find(params[:id])
     if @mutation.update_attributes(params[:mutation])
-      flash_success
+      flash_success @mutation
       session[:edit] = false
       redirect_to @mutation
     else
@@ -57,7 +58,7 @@ class MutationsController < ApplicationController
   def destroy
     get_mutations
     @mutation.destroy
-    flash_success
+    flash_success @mutation_parent
     redirect_to @mutation_parent||mutations_path
   end
 
@@ -70,7 +71,7 @@ class MutationsController < ApplicationController
 
   def save_new
     if @mutation_new.save
-      flash_success
+      flash_success @mutation_new
       redirect_to @mutation_new
     else
       flash_fail
@@ -78,21 +79,21 @@ class MutationsController < ApplicationController
     end
   end
 
-  def save_clthing_one
-    if @mutation_clthing_one.save
-      flash_success
-      session[:mutation_clthing_one_id] = nil
-      redirect_to @mutation_clthing_one
+  def save_clone
+    if @mutation_clone.save
+      flash_success @mutation_clone
+      session[:mutation_clone_id] = nil
+      redirect_to @mutation_clone
     else
       flash_fail
       redirect_to @mutation
     end
   end
-  def save_clthing_one_uni
-    if @mutation_clthing_one_uni.save
-      flash_success
-      session[:mutation_clthing_one_uni_id] = nil
-      redirect_to @mutation_clthing_one_uni
+  def save_clone_uni
+    if @mutation_clone_uni.save
+      flash_success @mutation_clone_uni
+      session[:mutation_clone_uni_id] = nil
+      redirect_to @mutation_clone_uni
     else
       flash_fail
       redirect_to @mutation
@@ -101,7 +102,7 @@ class MutationsController < ApplicationController
 
   def save_move
     if @mutation_move.save
-      flash_success
+      flash_success @mutation_move
       session[:mutation_move_id] = nil
       redirect_to @mutation_move
     else
@@ -111,7 +112,7 @@ class MutationsController < ApplicationController
   end
   def save_move_uni
     if @mutation_move_uni.save
-      flash_success
+      flash_success @mutation_move_uni
       session[:mutation_move_uni_id] = nil
       redirect_to @mutation_move_uni
     else
@@ -143,7 +144,7 @@ class MutationsController < ApplicationController
     @mutation = @evolution.mutations.new
     @mutation.super_id = @evolution.id
     if @mutation.save
-      flash_success   
+      flash_success @mutation
       redirect_to @mutation
     else
       flash_fail  
@@ -200,14 +201,14 @@ class MutationsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def set_clthing_one
+  def set_clone
     get_mutations
-    session[:mutation_clthing_one_id] = @mutation.id # set clthing_one
+    session[:mutation_clone_id] = @mutation.id # set clone
     redirect_to @mutation # redirect to current
   end
-  def set_clthing_one_uni
+  def set_clone_uni
     get_mutations
-    session[:mutation_clthing_one_uni_id] = @mutation.id # set clthing_one uni
+    session[:mutation_clone_uni_id] = @mutation.id # set clone uni
     redirect_to @mutation # redirect to current
   end
   def set_move
@@ -234,16 +235,16 @@ class MutationsController < ApplicationController
     redirect_to @mutation # redirect to current
   end
   
-  def clthing_one_to_clthing_one_uni
+  def clone_to_clone_uni
     get_mutations
-    session[:mutation_clthing_one_uni_id] = session[:mutation_clthing_one_id] # set uni to normal
-    session[:mutation_clthing_one_id] = nil # nil normal
+    session[:mutation_clone_uni_id] = session[:mutation_clone_id] # set uni to normal
+    session[:mutation_clone_id] = nil # nil normal
     redirect_to @mutation # redirect to current
   end
-  def clthing_one_uni_to_clthing_one
+  def clone_uni_to_clone
     get_mutations
-    session[:mutation_clthing_one_id] = session[:mutation_clthing_one_uni_id] # set uni to normal
-    session[:mutation_clthing_one_uni_id] = nil # nil normal
+    session[:mutation_clone_id] = session[:mutation_clone_uni_id] # set uni to normal
+    session[:mutation_clone_uni_id] = nil # nil normal
     redirect_to @mutation # redirect to current
   end
 
@@ -254,14 +255,14 @@ class MutationsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def cancel_clthing_one
+  def cancel_clone
     get_mutations
-    session[:mutation_clthing_one_id]=nil # clear session
+    session[:mutation_clone_id]=nil # clear session
     redirect_to @mutation # redirect to current
   end
-  def cancel_clthing_one_uni
+  def cancel_clone_uni
     get_mutations
-    session[:mutation_clthing_one_uni_id]=nil # clear session
+    session[:mutation_clone_uni_id]=nil # clear session
     redirect_to @mutation # redirect to current
   end
   def cancel_move
@@ -277,76 +278,76 @@ class MutationsController < ApplicationController
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
-# *clthing_one
+# *clone
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
   def copy_over(thing_one, thing_two)
     #...
   end
-  def clthing_one_children(thing_one, thing_two)
+  def clone_children(thing_one, thing_two)
     thing_one.children.each do |mutation|
       mutation_new = Mutation.new
       copy_over mutation, mutation_new
       mutation_new.save
       attach_to mutation_new, thing_two
-      clthing_one_children mutation, mutation_new
+      clone_children mutation, mutation_new
     end
   end
 
-  def make_clthing_one
+  def make_clone
     get_mutations
     mutation_new = Mutation.new
     mutation_new.save
-    copy_over @mutation_clthing_one, mutation_new
-    clthing_one_children @mutation_clthing_one, mutation_new
-    @mutation_clthing_one = mutation_new
+    copy_over @mutation_clone, mutation_new
+    clone_children @mutation_clone, mutation_new
+    @mutation_clone = mutation_new
   end
-  def make_clthing_one_uni
+  def make_clone_uni
     get_mutations
-    mutation_clthing_one_uni = Mutation.new
-    copy_over mutation_clthing_one_uni, @mutation_clthing_one_uni
-    @mutation_clthing_one_uni = mutation_clthing_one_uni
+    mutation_clone_uni = Mutation.new
+    copy_over mutation_clone_uni, @mutation_clone_uni
+    @mutation_clone_uni = mutation_clone_uni
   end
 
-  def clthing_one_to_root
-    make_clthing_one
-    place_at_root @mutation_clthing_one
-    save_clthing_one
+  def clone_to_root
+    make_clone
+    place_at_root @mutation_clone
+    save_clone
   end
-  def clthing_one_to_parent
-    make_clthing_one
-    place_at_parent @mutation_clthing_one
-    save_clthing_one
+  def clone_to_parent
+    make_clone
+    place_at_parent @mutation_clone
+    save_clone
   end
-  def clthing_one_to_current
-    make_clthing_one
-    place_at_current @mutation_clthing_one
-    save_clthing_one
+  def clone_to_current
+    make_clone
+    place_at_current @mutation_clone
+    save_clone
   end
-  def clthing_one_to_children
-    make_clthing_one
-    place_at_children @mutation_clthing_one
-    save_clthing_one
+  def clone_to_children
+    make_clone
+    place_at_children @mutation_clone
+    save_clone
   end
-  def clthing_one_to_child
-    make_clthing_one
-    place_at_child @mutation_clthing_one
-    save_clthing_one
+  def clone_to_child
+    make_clone
+    place_at_child @mutation_clone
+    save_clone
   end
   
-  def clthing_one_uni_to_root
-    make_clthing_one_uni
-    place_at_root @mutation_clthing_one_uni
-    save_clthing_one_uni
+  def clone_uni_to_root
+    make_clone_uni
+    place_at_root @mutation_clone_uni
+    save_clone_uni
   end
-  def clthing_one_uni_to_parent
-    make_clthing_one_uni
-    place_at_parent @mutation_clthing_one_uni
-    save_clthing_one_uni
+  def clone_uni_to_parent
+    make_clone_uni
+    place_at_parent @mutation_clone_uni
+    save_clone_uni
   end
-  def clthing_one_uni_to_current
-    make_clthing_one_uni
+  def clone_uni_to_current
+    make_clone_uni
     isolate_mutation @mutation_move_uni
     place_at_current @mutation_move_uni
     save_move_uni
@@ -363,15 +364,15 @@ class MutationsController < ApplicationController
     place_at_children @mutation_move_uni
     save_move_uni
   end
-  def clthing_one_uni_to_children
-    make_clthing_one_uni
-    place_at_children @mutation_clthing_one_uni
-    save_clthing_one_uni
+  def clone_uni_to_children
+    make_clone_uni
+    place_at_children @mutation_clone_uni
+    save_clone_uni
   end
-  def clthing_one_uni_to_child
-    make_clthing_one
-    place_at_child @mutation_clthing_one_uni
-    save_clthing_one
+  def clone_uni_to_child
+    make_clone
+    place_at_child @mutation_clone_uni
+    save_clone
   end
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
@@ -469,10 +470,11 @@ class MutationsController < ApplicationController
   def destroy
     get_mutations
     if @mutation.destroy
-      flash_success
       if @mutation_parent
+        flash_success @mutation_parent
         redirect_to @mutation_parent
       else
+        flash_success
         redirect_to :action => "index"
       end
     else
@@ -647,7 +649,10 @@ class MutationsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def flash_success
+  def flash_success(one=nil)
+    if one
+      get_prioritization one
+    end
     flash[:notice] = "Success" # flash success
   end
   def flash_fail
@@ -667,12 +672,12 @@ class MutationsController < ApplicationController
     if @mutation.mutation_id
       @mutation_parent = Mutation.find(@mutation.mutation_id)
     end # get parent of current
-    if session[:mutation_clthing_one_id]
-      @mutation_clthing_one = Mutation.find(session[:mutation_clthing_one_id]) 
-    end # get clthing_one_current from session
-    if session[:mutation_clthing_one_uni_id]
-      @mutation_clthing_one_uni = Mutation.find(session[:mutation_clthing_one_uni_id]) 
-    end # get clthing_one_current_uni from session
+    if session[:mutation_clone_id]
+      @mutation_clone = Mutation.find(session[:mutation_clone_id]) 
+    end # get clone_current from session
+    if session[:mutation_clone_uni_id]
+      @mutation_clone_uni = Mutation.find(session[:mutation_clone_uni_id]) 
+    end # get clone_current_uni from session
     if session[:mutation_move_id]
       @mutation_move = Mutation.find(session[:mutation_move_id]) 
       if @mutation # if current
@@ -693,6 +698,7 @@ class MutationsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
+
   # get the prioritized mutations lists
   #   get mutations
   #   get childless with root
@@ -701,7 +707,7 @@ class MutationsController < ApplicationController
   # end
   def prioritize
     get_mutations 
-    get_prioritization @mutation_root
+    get_prioritization @mutation
     redirect_to :action => 'agenda', :id => @mutation.id
   end
 

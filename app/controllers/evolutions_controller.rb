@@ -17,7 +17,7 @@ class EvolutionsController < ApplicationController
   def new
     @evolution = Evolution.new
     if @evolution.save
-      flash_success   
+      flash_success @evolution
       redirect_to @evolution
     else
       flash_fail  
@@ -57,7 +57,7 @@ class EvolutionsController < ApplicationController
   def update
     @evolution = Evolution.find(params[:id])
     if @evolution.update_attributes(params[:evolution])
-      flash_success
+      flash_success @evolution
       session[:edit] = false
       redirect_to @evolution
     else
@@ -69,7 +69,7 @@ class EvolutionsController < ApplicationController
   def destroy
     get_evolutions
     @evolution.destroy
-    flash_success
+    flash_success @evolution
     redirect_to @evolution_parent||evolutions_path
   end
 
@@ -82,7 +82,7 @@ class EvolutionsController < ApplicationController
 
   def save_new
     if @evolution_new.save
-      flash_success
+      flash_success @evolution_new
       redirect_to @evolution_new
     else
       flash_fail
@@ -92,7 +92,7 @@ class EvolutionsController < ApplicationController
 
   def save_clone
     if @evolution_clone.save
-      flash_success
+      flash_success @evolution_clone
       session[:evolution_clone_id] = nil
       redirect_to @evolution_clone
     else
@@ -102,7 +102,7 @@ class EvolutionsController < ApplicationController
   end
   def save_clone_uni
     if @evolution_clone_uni.save
-      flash_success
+      flash_success @evolution_clone_uni
       session[:evolution_clone_uni_id] = nil
       redirect_to @evolution_clone_uni
     else
@@ -113,7 +113,7 @@ class EvolutionsController < ApplicationController
 
   def save_move
     if @evolution_move.save
-      flash_success
+      flash_success @evolution_move
       session[:evolution_move_id] = nil
       redirect_to @evolution_move
     else
@@ -123,7 +123,7 @@ class EvolutionsController < ApplicationController
   end
   def save_move_uni
     if @evolution_move_uni.save
-      flash_success
+      flash_success @evolution_move_uni
       session[:evolution_move_uni_id] = nil
       redirect_to @evolution_move_uni
     else
@@ -446,10 +446,11 @@ class EvolutionsController < ApplicationController
   def destroy
     get_evolutions
     if @evolution.destroy
-      flash_success
       if @evolution_parent
+        flash_success @evolution_parent
         redirect_to @evolution_parent
       else
+        flash_success 
         redirect_to :action => "index"
       end
     else
@@ -569,7 +570,10 @@ class EvolutionsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def flash_success
+  def flash_success(one=nil)
+    if one
+      get_prioritization one
+    end
     flash[:notice] = "Success" # flash success
   end
   def flash_fail
@@ -643,8 +647,9 @@ class EvolutionsController < ApplicationController
   #   redirect to action, agenda, id is evolution id
   # end
   def prioritize
-    get_evolutions 
-    get_prioritization @evolution_root
+    get_evolution 
+    get_prioritization @evolution
+    evolutions = Evolution.find( :all, :conditions => { :super_id => @evolution.super_id } )
     redirect_to :action => 'agenda', :id => @evolution.id
   end
 
@@ -654,6 +659,7 @@ class EvolutionsController < ApplicationController
   def agenda
     get_evolutions
   end
+
 
 
 

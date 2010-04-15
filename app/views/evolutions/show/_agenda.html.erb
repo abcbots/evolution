@@ -1,53 +1,42 @@
 
-<% _current = _current||@evolution %>
-<% _super = _super||@evolution_super %>
-<% _word = _word||_current.class %>
+<% evolution_current = evolution_current||@evolution %>
+<% evolution_super = evolution_super||@evolution_super %>
+<% _word = _word||evolution_current.class %>
 
-<% currents = _current.class.find(:all, :conditions => {:super_id => _super.id}, :order => "prioritization ASC" ) %>
 
-<% priority_max = _current.class.maximum(:prioritization, :conditions => {:super_id => _super.id}, :order => "prioritization ASC" ) %>
-
+<% priority_max = Evolution.maximum(:prioritization, :conditions => {:super_id => evolution_super.id}, :order => "prioritization ASC" ) %>
 <% counter = 0 %>
-
 <% if priority_max %>
-
   <% while counter < priority_max %>
-
     <% counter = counter + 1 %>
+    <% priority_evolutions = Evolution.find( :all, :conditions => { :super_id => evolution_super.id, :prioritization => counter } ) %>
+    <fieldset><legend><strong>Phase (<%= counter %>)</strong></legend><ol>
+    <% priority_evolutions.each do |priority_evolution| %>
+      <% priority_mutations = Mutation.find( :all, :conditions => { :super_id => priority_evolution.id } ) %>
 
-      <fieldset><legend><strong>
+<% sub_priority_max = Mutation.maximum(:prioritization, :conditions => {:super_id => priority_evolution.id } ) %>
+<% sub_counter = 0 %>
+<% if sub_priority_max %>
+  <% while sub_counter < sub_priority_max %>
+    <% sub_counter = sub_counter + 1 %>
+    <% sub_priority_mutations = Mutation.find( :all, :conditions => { :super_id => priority_evolution.id, :prioritization => sub_counter } ) %>
+    <fieldset><legend><strong>Agenda (<%= sub_counter %>)</strong></legend><ol>
+    <% sub_priority_mutations.each do |sub_priority_mutation| %>
 
-      <%= _word %>
-      (<%= counter %>)
-      
-      </strong></legend>
-
-      <ol>
-
-      <% currents.each do |one| %>
-
-        <% if one.prioritization == counter %>
-
-	  <% if one.mutations.exists? %>
-
-	    <% two = one.mutations.first %>
-
-	    <%= render :partial => 'mutations/show/agenda', :locals => { 
-	      :_current => two, 
-	      :_super => one,
-	      :_word => "Agenda" } %>
-
-	  <% end %>
-	
-	<% end %>
-
+      <% if sub_priority_mutation.prioritization = sub_counter %>
+	<li><%= render :partial => sub_priority_mutation %></li>
       <% end %>
 
-      </ol>
-
-      </fieldset>
-
+    <% end %>
+    </ol></fieldset>
   <% end %>
-
 <% end %>
+
+    <% end %>
+    </ol></fieldset>
+  <% end %>
+<% end %>
+
+
+
 

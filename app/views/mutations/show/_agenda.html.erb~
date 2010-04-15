@@ -7,6 +7,8 @@
 
 <% priority_max = _current.class.maximum(:prioritization, :conditions => {:super_id => _super.id}, :order => "prioritization ASC" ) %>
 
+
+
 <% counter = 0 %>
 
 <% if priority_max %>
