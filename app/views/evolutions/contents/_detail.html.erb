@@ -1,8 +1,10 @@
 
-<% if @evolution.show_formatting %>
-  <p><%= auto_link(simple_format(h(@evolution.detail))) %></p>
+<% evolution = evolution||@evolution %>
+
+<% if evolution.show_formatting %>
+  <p><%= auto_link(simple_format(h(evolution.detail))) %></p>
 <% else %>
-  <p><%= auto_link(h(@evolution.detail)) %></p>
+  <p><%= auto_link(h(evolution.detail)) %></p>
 <% end %>
 
 

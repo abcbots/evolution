@@ -5,29 +5,42 @@
 <% priority_max = evolution.class.maximum(:prioritization, :conditions => {:super_id => evolution.super_id} ) %>
 <% counter = 0 %>
 <% mutations = [] %>
-
 <% if priority_max %>
   <% while counter < priority_max %>
     <% counter = counter + 1 %>
-    <fieldset><legend><strong>Phase (<%= counter %>)</strong></legend><ol>
-    <% current_evolutions.each do |current_evolution| %>
-      <% current_evolution_mutations_priority_max = 0 %>
-      <% if current_evolution.prioritization == counter %>
-        <% current_evolution_mutations = Mutation.find(:all, :conditions => { :super_id => current_evolution.id } ) %>
-        <% sample_current_evolution_mutations_priority_max = Mutation.maximum(:prioritization, :conditions => { :super_id => current_evolution.id } ) %>
-        <% if sample_current_evolution_mutations_priority_max > current_evolution_mutations_priority_max %>
-          <% current_evolution_mutations_priority_max = sample_current_evolution_mutations_priority_max  %>
-	<% end %>
-        <% mutations = mutations + current_evolution_mutations %>
+    <fieldset><legend><strong>Phase(<%= counter %>)</strong></legend><ol>
+
+<% current_evolutions.each do |current_evolution| %>
+  <% if current_evolution.prioritization == counter %>
+    
+    <% mutation_counter = 0 %>
+    <% mutation_priority_max = Mutation.maximum(:prioritization, :conditions => { :super_id => current_evolution.id } ) %>
+
+    <% while mutation_counter < mutation_priority_max.to_i %>
+
+      <% mutation_counter = mutation_counter + 1 %>
+      <% current_evolution.mutations.each do |current_mutation| %>
+
+        <% if current_mutation.prioritization == mutation_counter %>
+          <% mutations = mutations << current_mutation %>
+        <% end %>
+
       <% end %>
+
+      <fieldset><legend><strong>Agenda(<%= mutation_counter %>)</strong></legend><ol>
+
+      <% mutations.each do |mutation| %>
+        <p><%= render :partial => mutation %>
+      <% end %>
+      <% mutations = [] %>
+    
+      </ol></fieldset>
+
     <% end %>
 
-<% mutation_counter = 0 %>
-<% mutations.each do |mutation| %>
-	  <li>
-	    <%= render :partial => mutation %>
-	  </li>
+  <% end %>
 <% end %>
+
 
     </ol></fieldset>
   <% end %>

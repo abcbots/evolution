@@ -1,0 +1,26 @@
+
+<% object_current = object_current %>
+<% object_super = object_super %>
+<% agenda_name = agenda_name||object_current.class %>
+
+<% currents = object_class.find(:all, :conditions => {:super_id => object_super.id}, :order => "prioritization ASC" ) %>
+<% priority_max = object_class.maximum(:prioritization, :conditions => {:super_id => object_super.id}, :order => "prioritization ASC" ) %>
+<% counter = 0 %>
+
+<% if priority_max %>
+  <% while counter < priority_max %>
+    <% counter = counter + 1 %>
+    <fieldset><legend><strong><%= agenda_name %>(<%= counter %>)</strong></legend><ol>
+    <% currents.each do |one| %>
+      <% if one.prioritization == counter %>
+
+	  <li>
+	    <%= render :partial => one %>
+	  </li>
+
+      <% end %>
+    <% end %>
+    </ol></fieldset>
+  <% end %>
+<% end %>
+

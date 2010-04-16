@@ -1,5 +1,8 @@
-<% evolution_move = @evolution_move %>
-<% evolution_clone = @evolution_clone %>
+<% evolution_move = evolution_move||@evolution_move %>
+<% evolution_clone = evolution_move||@evolution_clone %>
+<% evolution = evolution||@evolution %>
+
+<% if evolution.children %>
 
 <% evolution.children.each do |child| %>
   <fieldset><legend><%= render :partial => child %></legend>
@@ -11,3 +14,4 @@
   </fieldset>
 <% end %>
 
+<% end %>

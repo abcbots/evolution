@@ -1,4 +1,5 @@
 
+<% if mutation.children %>
 
 <% mutation.children.each do |child| %>
   <fieldset><legend><%= render :partial => child %></legend>
@@ -8,5 +9,7 @@
     <% end %>
   <% if check_for_childship child, @mutation_move||@mutation_clone %></b><% end %> 
   </fieldset>
+<% end %>
+
 <% end %>
 

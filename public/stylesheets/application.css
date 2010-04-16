@@ -22,7 +22,7 @@ a {
 
 fieldset {
   padding: 11px;
-  border: 1px solid grey;
+  border: 3px solid #ddd;
 }
 
 legend {

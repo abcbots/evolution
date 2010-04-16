@@ -1,0 +1,43 @@
+
+<% evolution = evolution||@evolution %>
+
+<% current_evolutions = evolution.class.find(:all, :conditions => {:super_id => evolution.super_id}, :order => "prioritization ASC" ) %>
+<% priority_max = evolution.class.maximum(:prioritization, :conditions => {:super_id => evolution.super_id} ) %>
+<% counter = 0 %>
+<% mutations = [] %>
+
+<% if priority_max %>
+  <% while counter < priority_max %>
+    <% counter = counter + 1 %>
+    <fieldset><legend><strong>Phase (<%= counter %>)</strong></legend><ol>
+    <% mutations_priority_max = 0 %>
+    <% current_evolutions.each do |current_evolution| %>
+      <% if current_evolution.prioritization == counter %>
+        <% current_evolution_mutations = Mutation.find(:all, :conditions => { :super_id => current_evolution.id } ) %>
+        <% sample_mutations_priority_max = Mutation.maximum(:prioritization, :conditions => { :super_id => current_evolution.id } ) %>
+        <% mutations = mutations + current_evolution_mutations %>
+	<% if sample_mutations_priority_max.to_i <=> mutations_priority_max.to_i %>
+	  <% mutations_priority_max = sample_mutations_priority_max %>
+	<% end %>
+      <% end %>
+    <% end %>
+    <% mutations_priority_max = mutations_priority_max.to_i %>
+
+<% mutation_counter = 0 %>
+<% while mutation_counter < mutations_priority_max %>
+  <% mutation_counter = mutation_counter + 1 %>
+  <fieldset><legend><strong>Agenda (<%= mutation_counter %>)</strong></legend><ol>
+  <% mutations.each do |mutation| %>
+    <% if mutation.prioritization == mutation_counter %>
+      <li><%= render :partial => mutation %></li>
+    <% end %>
+  <% end %>
+  </ol></fieldset>
+<% end %>
+
+
+
+    </ol></fieldset>
+  <% end %>
+<% end %>
+

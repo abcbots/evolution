@@ -258,9 +258,6 @@ class EvolutionsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def copy_over(pass1, pass2)
-    #...
-  end
   def clone_children(pass1, pass2)
     pass1.children.each do |evolution|
       evolution_new = Evolution.new
@@ -277,6 +274,8 @@ class EvolutionsController < ApplicationController
     evolution_new.save
     copy_over @evolution_clone, evolution_new
     clone_children @evolution_clone, evolution_new
+    clone_mutations @evolution_clone, evolution_new
+#...here
     @evolution_clone = evolution_new
   end
   def make_clone_uni
@@ -443,14 +442,27 @@ class EvolutionsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
+  # destroy
+  #   get evolutions
+  #   if destroy
+  #     flass success
+  #     if parent
+  #       goto parent
+  #     else
+  #       goto index
+  #     end
+  #   else
+  #     flash fail
+  #     go back to parent
+  #   end
+  # end
   def destroy
     get_evolutions
     if @evolution.destroy
+      flash_success
       if @evolution_parent
-        flash_success @evolution_parent
         redirect_to @evolution_parent
       else
-        flash_success 
         redirect_to :action => "index"
       end
     else
@@ -656,7 +668,6 @@ class EvolutionsController < ApplicationController
   # end
   def agenda
     get_evolutions
-    debugger
   end
 
 

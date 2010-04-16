@@ -3,6 +3,9 @@
   <%= render :partial => @mutation_super %> 
 </legend>
 
+  <%= render :partial => 'evolutions/contents/header', :locals => { :evolution => @mutation_super } %>
+  <%= render :partial => 'evolutions/contents/detail', :locals => { :evolution => @mutation_super } %>
+
   <%= render :partial => 'mutations/show/ancestors_open', :locals => { :mutation => @mutation } %>
 
   <%= render :partial => 'mutations/show/current', :locals => { :mutation => @mutation } %>

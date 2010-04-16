@@ -5,9 +5,9 @@
 
   <%= render :partial => 'evolutions/show/current', :locals => { :evolution => @evolution } %>
 
-  <%= render :partial => 'mutations/agenda/latest', :locals => { :evolution => @evolution } %>
+  <%= render :partial => 'layouts/show/agenda', :locals => { :object_super => @evolution, :object_class => Mutation, :agenda_name => "Agenda" } %>
 
-  <%= render :partial => 'evolutions/show/children', :locals => { :evolution => @evolution } %>
+  <%= render :partial => 'evolutions/show/children' %>
 
   <%= render :partial => 'evolutions/show/ancestors_close', :locals => { :evolution => @evolution } %>
 

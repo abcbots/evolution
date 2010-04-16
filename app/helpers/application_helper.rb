@@ -138,4 +138,13 @@ module ApplicationHelper
     end
   end
 
+  # duplicate object attributes
+  #   two equals one
+  # end
+  def copy_over(one, two)
+    two.header = one.header
+    two.detail = one.detail
+    two.save
+  end
+
 end

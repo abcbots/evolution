@@ -282,9 +282,6 @@ class MutationsController < ApplicationController
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def copy_over(thing_one, thing_two)
-    #...
-  end
   def clone_children(thing_one, thing_two)
     thing_one.children.each do |mutation|
       mutation_new = Mutation.new
@@ -470,11 +467,10 @@ class MutationsController < ApplicationController
   def destroy
     get_mutations
     if @mutation.destroy
+      flash_success 
       if @mutation_parent
-        flash_success @mutation_parent
         redirect_to @mutation_parent
       else
-        flash_success
         redirect_to :action => "index"
       end
     else
@@ -482,9 +478,6 @@ class MutationsController < ApplicationController
       redirect_to @mutation
     end
   end 
-
-# thing_one = the mutation that will be re-assigned
-# thing_two = the mutation that will remain un-changed
 
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
