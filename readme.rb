@@ -1,10 +1,33 @@
+# naming of objects convention
+#
+# for objects that are in a state of flux, changing, on standby,
+# adjective then object
+def examples
+  active_object
+  moving_object
+  whatevering_object
+end
+# for objects that are in a state of inersia, stationary, independent,
+# object then describing noun
+def examples
+  object_parent
+  object_child
+  object_whatever
+end
 
-
-Nexties
-script/gen translationette id:integer
-add phrasing string
-add expaining text
-add tonguing string
+# vehicle guidlines and policy
+#
+# a system of logical components that exist to get things done (business for example)
+# with absolutely minimal requirements of work, and of power, from each and every organization member;
+# with absolutely maximal benefit to each and every organization member;
+# made possible through the pure efficiency of bsolutely equal and timely distribution of all work, power and benefit.
+#
+# a typical, conventional organization of thirty or more can reduce its monthly work requirement from 20 to 2 days per month per organization member;
+# whilst simultaineously increasing take home pay of each and every organization member,
+# to that of the hiararchy's highest paid, top ten percent---think about this for a moment:
+# one-tenth the current work-load, in exchange for the maximum amount of take-home benefit your organization can possibly provide.
+# also, because the organization is running at full efficiency, the odds of your organization being able to provide more, are increased at leaste.
+# 
 
 == Debugging Rails
 
@@ -47,7 +70,7 @@ and also on programming in general.
 Debugger support is available through the debugger command when you start your Mongrel or
 Webrick server with --debugger. This means that you can break out of execution at any point
 in the code, investigate and change the model, AND then resume execution! 
-You need to install ruby-debug to run the server in debugging mode. With gems, use 'gem install ruby-debug'
+You need to install ruby-debug to run the server in debugging mode. With gems, use ''gem install ruby-debug''
 Example:
 
   class WeblogController < ActionController::Base
@@ -73,13 +96,13 @@ with a IRB prompt in the server window. Here you can do things like:
   >> f.
   Display all 152 possibilities? (y or n)
 
-Finally, when you're ready to resume execution, you enter "cont"
+Finally, when you''re ready to resume execution, you enter "cont"
 
 
 == Console
 
 You can interact with the domain model by starting the console through <tt>script/console</tt>.
-Here you'll have all parts of the application configured, just like it is when the
+Here you''ll have all parts of the application configured, just like it is when the
 application is running. You can inspect domain models, change values, and save to the
 database. Starting the script without arguments will launch it in the development environment.
 Passing an argument will specify a different environment, like <tt>script/console production</tt>.
@@ -97,7 +120,7 @@ Currently works for mysql, postgresql and sqlite.
 == Description of Contents
 
 app
-  Holds all the code that's specific to this particular application.
+  Holds all the code that''s specific to this particular application.
 
 app/controllers
   Holds controllers that should be named like weblogs_controller.rb for
@@ -136,7 +159,7 @@ doc
   using <tt>rake doc:app</tt>
 
 lib
-  Application specific libraries. Basically, any kind of custom code that doesn't
+  Application specific libraries. Basically, any kind of custom code that doesn''t
   belong under controllers, models, or helpers. This directory is in the load path.
 
 public
