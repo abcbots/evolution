@@ -25,14 +25,39 @@ module ActsAsTreeLogic
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
+# *check_for
+#
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+
+  def check_for_childship(active_object, object_test)
+    if active_object == object_test
+      @childship = true
+    else
+      check_for_childship_children active_object, object_test
+    end
+  end
+  def check_for_childship_children(active_object, object_test)
+    active_object.children.each do |child|
+      if child == object_test
+        @childship = true
+      end
+      check_for_childship_children child, object_test
+    end
+  end
+
+# ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
+#
 # *clone
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
   def make_clone(active_object)
+    clone_object active_object
+    clone_children_to active_object, @new_object
+  end
+  def clone_object(active_object)
     @new_object = active_object.dup
     @new_object.save
-    clone_children_to active_object, @new_object
   end
   def clone_children_to(active_object, new_object)
     active_object.children.each do |active_object_child|
@@ -42,80 +67,63 @@ module ActsAsTreeLogic
       clone_children_to active_object_child, new_object_child
     end
   end
-  #  hhhhhheeeeeerrrrrrrrrdhere!!!
+
   def make_clone_uni
     fetch_objects
-    duplicate_object
-    copy_over evolution_clone_uni, @clone_object_uni
-    @clone_object_uni = evolution_clone_uni
+    clone_object @clone_object_uni
   end
-  def clone_object(active_object)
-    @new_object = active_object.dup
-  end
-
+  
   def clone_to_root
     make_clone @clone_object
     place_at_root @new_object, @object_super
     save_clone
   end
   def clone_to_parent
-    make_clone
+    make_clone @clone_object
     place_at_parent @clone_object, @object_current
     save_clone
   end
   def clone_to_current
-    make_clone
+    make_clone @clone_object
     place_at_current @clone_object
     save_clone
   end
   def clone_to_children
-    make_clone
+    make_clone @clone_object
     place_at_children @clone_object
     save_clone
   end
   def clone_to_child
-    make_clone
+    make_clone @clone_object
     place_at_child @clone_object
     save_clone
   end
   
   def clone_uni_to_root
     make_clone_uni
-    place_at_root @clone_object_uni, @object_super
+    place_at_root @object_new, @object_super
     save_clone_uni
   end
   def clone_uni_to_parent
     make_clone_uni
-    place_at_parent @clone_object_uni, @object_current
+    place_at_parent @object_new, @object_current
     save_clone_uni
   end
   def clone_uni_to_current
     make_clone_uni
-    isolate_evolution @object_move_uni
-    place_at_current @object_move_uni
+    place_at_current @object_new, @object_current
     save_move_uni
   end
-  def move_uni_to_child
-    fetch_objects
-    isolate_evolution @object_move_uni
-    place_at_child @object_move_uni
-    save_move_uni
-  end
-  def move_uni_to_children
-    fetch_objects
-    isolate_evolution @object_move_uni
-    place_at_children @object_move_uni
-    save_move_uni
-  end
+
   def clone_uni_to_children
     make_clone_uni
-    place_at_children @clone_object_uni
+    place_at_children @object_new, @object_current
     save_clone_uni
   end
   def clone_uni_to_child
-    make_clone
-    place_at_child @clone_object_uni
-    save_clone
+    make_clone_uni
+    place_at_child @object_new
+    save_clone_uni
   end
 
 
@@ -204,29 +212,14 @@ module ActsAsTreeLogic
     active_object.save
   end
 
-
+ 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
 # *move
 #
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 
-  def check_for_childship(active_object, object_test)
-    if active_object == object_test
-      @childship = true
-    else
-      check_for_childship_children active_object, object_test
-    end
-  end
-  def check_for_childship_children(active_object, object_test)
-    active_object.children.each do |child|
-      if child == object_test
-        @childship = true
-      end
-      check_for_childship_children child, object_test
-    end
-  end
-    
+   
   def move_to_root
     fetch_objects
     place_at_root @move_object, @object_current
@@ -284,6 +277,19 @@ module ActsAsTreeLogic
     save_move_uni
   end
 
+  def move_uni_to_child
+    fetch_objects
+    isolate_evolution @object_move_uni
+    place_at_child @object_move_uni
+    save_move_uni
+  end
+  def move_uni_to_children
+    fetch_objects
+    isolate_evolution @object_move_uni
+    place_at_children @object_move_uni
+    save_move_uni
+  end
+  
 
 # ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** 
 #
